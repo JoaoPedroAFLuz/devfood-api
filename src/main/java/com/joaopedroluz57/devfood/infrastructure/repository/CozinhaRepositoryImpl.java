@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public class CozinhaRepositoryImpl implements CozinhaRepository {
+
     @PersistenceContext
     private EntityManager entityManager;
 
