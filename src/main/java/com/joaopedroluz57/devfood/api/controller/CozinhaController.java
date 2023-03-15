@@ -6,6 +6,7 @@ import com.joaopedroluz57.devfood.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,9 +34,10 @@ public class CozinhaController {
     }
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public Cozinha adicionar(@RequestBody Cozinha cozinha) {
-        return cozinhaRepository.adicionar(cozinha);
+    public ResponseEntity<Cozinha> adicionar(@RequestBody Cozinha cozinha) {
+        Cozinha cozinhaPersistida = cozinhaRepository.adicionar(cozinha);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaPersistida);
     }
 
 }
