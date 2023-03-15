@@ -4,6 +4,7 @@ import com.joaopedroluz57.devfood.domain.model.Cozinha;
 import com.joaopedroluz57.devfood.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,11 @@ public class CozinhaController {
 
     @GetMapping()
     public List<Cozinha> listar() {
-        return this.cozinhaRepository.todos();
+        return cozinhaRepository.todos();
     }
 
+    @GetMapping("/{cozinhaId}")
+    public Cozinha buscar(@PathVariable Long cozinhaId) {
+        return cozinhaRepository.porId(cozinhaId);
+    }
 }
