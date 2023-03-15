@@ -8,11 +8,14 @@ import javax.persistence.*;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class FormaPagamento {
+public class Permissao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Id;
+
+    @Column(nullable = false)
+    private String nome;
 
     @Column(nullable = false)
     private String descricao;
