@@ -9,4 +9,6 @@ insert into forma_pagamento (descricao) value ('Cartão de débito');
 insert into forma_pagamento (descricao) value ('PIX');
 insert into forma_pagamento (descricao) value ('Dinheiro');
 
-insert into estado (nome, sigla) values ('Bahia', 'BA')
+insert into estado (id, nome, sigla) values (1, 'Bahia', 'BA');
+
+insert into cidade (nome, estado_id) values ('Vitória da Conquista', 1);
