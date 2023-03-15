@@ -8,3 +8,5 @@ insert into forma_pagamento (descricao) value ('Cartão de crédito');
 insert into forma_pagamento (descricao) value ('Cartão de débito');
 insert into forma_pagamento (descricao) value ('PIX');
 insert into forma_pagamento (descricao) value ('Dinheiro');
+
+insert into estado (nome, sigla) values ('Bahia', 'BA')
