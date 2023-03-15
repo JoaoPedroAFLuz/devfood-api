@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/cozinhas")
@@ -29,8 +30,15 @@ public class CozinhaController {
     }
 
     @GetMapping("/{cozinhaId}")
-    public Cozinha buscar(@PathVariable Long cozinhaId) {
-        return cozinhaRepository.porId(cozinhaId);
+    public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
+        Cozinha cozinha = cozinhaRepository.porId(cozinhaId);
+
+        if (Objects.nonNull(cozinha)) {
+            return ResponseEntity.ok(cozinha);
+        }
+
+        return ResponseEntity.notFound().build();
+
     }
 
     @PostMapping()
