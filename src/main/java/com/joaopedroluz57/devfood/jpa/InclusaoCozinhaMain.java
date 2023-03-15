@@ -2,6 +2,7 @@ package com.joaopedroluz57.devfood.jpa;
 
 import com.joaopedroluz57.devfood.DevfoodApiApplication;
 import com.joaopedroluz57.devfood.domain.model.Cozinha;
+import com.joaopedroluz57.devfood.domain.repository.CozinhaRepository;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -12,7 +13,7 @@ public class InclusaoCozinhaMain {
                 .web(WebApplicationType.NONE)
                 .run(args);
 
-        CadastroCozinha cadastro = applicationContext.getBean(CadastroCozinha.class);
+        CozinhaRepository cozinhas = applicationContext.getBean(CozinhaRepository.class);
 
         Cozinha cozinhaFrancesa = new Cozinha();
         cozinhaFrancesa.setNome("Francesa");
@@ -20,8 +21,8 @@ public class InclusaoCozinhaMain {
         Cozinha cozinhaBrasileira = new Cozinha();
         cozinhaBrasileira.setNome("Brasileira");
 
-        cozinhaFrancesa = cadastro.salvar(cozinhaFrancesa);
-        cozinhaBrasileira = cadastro.salvar(cozinhaBrasileira);
+        cozinhaFrancesa = cozinhas.adicionar(cozinhaFrancesa);
+        cozinhaBrasileira = cozinhas.adicionar(cozinhaBrasileira);
 
 
         System.out.printf("%d - %s\n", cozinhaFrancesa.getId(), cozinhaFrancesa.getNome());
