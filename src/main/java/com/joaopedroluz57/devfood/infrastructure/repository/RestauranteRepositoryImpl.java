@@ -2,12 +2,14 @@ package com.joaopedroluz57.devfood.infrastructure.repository;
 
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
 import com.joaopedroluz57.devfood.domain.repository.RestauranteRepository;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
+@Component
 public class RestauranteRepositoryImpl implements RestauranteRepository {
 
     @PersistenceContext
