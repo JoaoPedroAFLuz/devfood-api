@@ -42,9 +42,9 @@ public class CozinhaController {
 
     @PostMapping
     public ResponseEntity<Cozinha> adicionar(@RequestBody Cozinha cozinha) {
-        Cozinha cozinhaPersistida = cadastroCozinhaService.salvar(cozinha);
+        cozinha = cadastroCozinhaService.salvar(cozinha);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaPersistida);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cozinha);
     }
 
 
