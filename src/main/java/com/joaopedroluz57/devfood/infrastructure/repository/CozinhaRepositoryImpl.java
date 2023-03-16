@@ -2,12 +2,14 @@ package com.joaopedroluz57.devfood.infrastructure.repository;
 
 import com.joaopedroluz57.devfood.domain.model.Cozinha;
 import com.joaopedroluz57.devfood.domain.repository.CozinhaRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class CozinhaRepositoryImpl implements CozinhaRepository {
@@ -33,7 +35,13 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 
     @Transactional
     @Override
-    public void remover(Cozinha cozinha) {
+    public void remover(Long id) {
+        Cozinha cozinha = buscarPorId(id);
+
+        if (Objects.isNull(cozinha)) {
+            throw new EmptyResultDataAccessException(1);
+        }
+
         entityManager.remove(cozinha);
     }
 }
