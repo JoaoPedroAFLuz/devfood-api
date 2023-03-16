@@ -16,7 +16,7 @@ public class PermissaoRepositoryImpl implements PermissaoRepository {
     private EntityManager entityManager;
 
     @Override
-    public List<Permissao> todos() {
+    public List<Permissao> buscarTodas() {
         return entityManager.createQuery("from Permissao", Permissao.class).getResultList();
     }
 
@@ -27,7 +27,7 @@ public class PermissaoRepositoryImpl implements PermissaoRepository {
 
     @Transactional
     @Override
-    public Permissao adicionar(Permissao permissao) {
+    public Permissao salvar(Permissao permissao) {
         return entityManager.merge(permissao);
     }
 

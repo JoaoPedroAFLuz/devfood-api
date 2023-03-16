@@ -21,8 +21,8 @@ public class InclusaoCozinhaMain {
         Cozinha cozinhaBrasileira = new Cozinha();
         cozinhaBrasileira.setNome("Brasileira");
 
-        cozinhaFrancesa = cozinhas.adicionar(cozinhaFrancesa);
-        cozinhaBrasileira = cozinhas.adicionar(cozinhaBrasileira);
+        cozinhaFrancesa = cozinhas.salvar(cozinhaFrancesa);
+        cozinhaBrasileira = cozinhas.salvar(cozinhaBrasileira);
 
 
         System.out.printf("%d - %s\n", cozinhaFrancesa.getId(), cozinhaFrancesa.getNome());

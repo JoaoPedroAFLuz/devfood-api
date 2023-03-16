@@ -16,7 +16,7 @@ public class FormaPagamentoRepositoryImpl implements FormaPagamentoRepository {
     private EntityManager entityManager;
 
     @Override
-    public List<FormaPagamento> todos() {
+    public List<FormaPagamento> buscarTodas() {
         return entityManager.createQuery("from FormaPagamento", FormaPagamento.class).getResultList();
     }
 
@@ -27,7 +27,7 @@ public class FormaPagamentoRepositoryImpl implements FormaPagamentoRepository {
 
     @Transactional
     @Override
-    public FormaPagamento adicionar(FormaPagamento formaPagamento) {
+    public FormaPagamento salvar(FormaPagamento formaPagamento) {
         return entityManager.merge(formaPagamento);
     }
 

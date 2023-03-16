@@ -3,6 +3,7 @@ package com.joaopedroluz57.devfood.api.controller;
 import com.joaopedroluz57.devfood.api.controller.model.CozinhasXmlWrapper;
 import com.joaopedroluz57.devfood.domain.model.Cozinha;
 import com.joaopedroluz57.devfood.domain.repository.CozinhaRepository;
+import com.joaopedroluz57.devfood.domain.service.CadastroCozinhaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,14 +22,17 @@ public class CozinhaController {
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
+    @Autowired
+    private CadastroCozinhaService cadastroCozinhaService;
+
     @GetMapping
     public List<Cozinha> listar() {
-        return cozinhaRepository.todos();
+        return cozinhaRepository.buscarTodas();
     }
 
     @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
     public CozinhasXmlWrapper listarXml() {
-        return new CozinhasXmlWrapper(cozinhaRepository.todos());
+        return new CozinhasXmlWrapper(cozinhaRepository.buscarTodas());
     }
 
     @GetMapping("/{cozinhaId}")
@@ -44,7 +48,7 @@ public class CozinhaController {
 
     @PostMapping
     public ResponseEntity<Cozinha> adicionar(@RequestBody Cozinha cozinha) {
-        Cozinha cozinhaPersistida = cozinhaRepository.adicionar(cozinha);
+        Cozinha cozinhaPersistida = cadastroCozinhaService.salvar(cozinha);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaPersistida);
     }
@@ -60,7 +64,7 @@ public class CozinhaController {
 
         BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
 
-        cozinhaAtual = cozinhaRepository.adicionar(cozinhaAtual);
+        cozinhaAtual = cozinhaRepository.salvar(cozinhaAtual);
 
         return ResponseEntity.ok(cozinhaAtual);
     }

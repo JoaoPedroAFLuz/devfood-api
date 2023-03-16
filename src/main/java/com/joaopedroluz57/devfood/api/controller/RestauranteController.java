@@ -19,7 +19,7 @@ public class RestauranteController {
 
     @GetMapping()
     public List<Restaurante> listar() {
-        return restauranteRepository.todos();
+        return restauranteRepository.buscarTodos();
     }
 
     @GetMapping("/{restauranteId}")

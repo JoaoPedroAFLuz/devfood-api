@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface CidadeRepository {
 
-    List<Cidade> todos();
+    List<Cidade> buscarTodas();
 
     Cidade buscarPorId(Long id);
 
-    Cidade adicionar(Cidade cidade);
+    Cidade salvar(Cidade cidade);
 
     void remover(Cidade cidade);
 

@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface PermissaoRepository {
 
-    List<Permissao> todos();
+    List<Permissao> buscarTodas();
 
     Permissao buscarPorId(Long id);
 
-    Permissao adicionar(Permissao permissao);
+    Permissao salvar(Permissao permissao);
 
     void remover(Permissao permissao);
 
