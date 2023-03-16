@@ -8,7 +8,7 @@ public interface PermissaoRepository {
 
     List<Permissao> todos();
 
-    Permissao porId(Long id);
+    Permissao buscarPorId(Long id);
 
     Permissao adicionar(Permissao permissao);
 

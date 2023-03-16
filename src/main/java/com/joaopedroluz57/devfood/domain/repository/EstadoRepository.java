@@ -9,7 +9,7 @@ public interface EstadoRepository {
 
     List<Estado> todos();
 
-    Estado porId(Long id);
+    Estado buscarPorId(Long id);
 
     Estado adicionar(Estado estado);
 

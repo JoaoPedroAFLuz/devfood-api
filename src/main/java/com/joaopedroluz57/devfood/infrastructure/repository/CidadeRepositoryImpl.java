@@ -21,7 +21,7 @@ public class CidadeRepositoryImpl implements CidadeRepository {
     }
 
     @Override
-    public Cidade porId(Long id) {
+    public Cidade buscarPorId(Long id) {
         return entityManager.find(Cidade.class, id);
     }
 
@@ -34,7 +34,7 @@ public class CidadeRepositoryImpl implements CidadeRepository {
     @Transactional
     @Override
     public void remover(Cidade cidade) {
-        cidade = porId(cidade.getId());
+        cidade = buscarPorId(cidade.getId());
         entityManager.remove(cidade);
     }
 }

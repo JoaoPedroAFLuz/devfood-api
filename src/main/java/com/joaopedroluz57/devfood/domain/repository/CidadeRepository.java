@@ -9,7 +9,7 @@ public interface CidadeRepository {
 
     List<Cidade> todos();
 
-    Cidade porId(Long id);
+    Cidade buscarPorId(Long id);
 
     Cidade adicionar(Cidade cidade);
 

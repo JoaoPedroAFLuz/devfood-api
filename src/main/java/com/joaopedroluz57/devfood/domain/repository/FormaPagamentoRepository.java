@@ -8,7 +8,7 @@ public interface FormaPagamentoRepository {
 
     List<FormaPagamento> todos();
 
-    FormaPagamento porId(Long id);
+    FormaPagamento buscarPorId(Long id);
 
     FormaPagamento adicionar(FormaPagamento formaPagamento);
 

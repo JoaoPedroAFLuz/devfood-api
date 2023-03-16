@@ -21,7 +21,7 @@ public class RestauranteRepositoryImpl implements RestauranteRepository {
     }
 
     @Override
-    public Restaurante porId(Long id) {
+    public Restaurante buscarPorId(Long id) {
         return entityManager.find(Restaurante.class, id);
     }
 

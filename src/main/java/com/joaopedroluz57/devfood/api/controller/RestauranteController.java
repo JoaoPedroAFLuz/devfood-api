@@ -24,7 +24,7 @@ public class RestauranteController {
 
     @GetMapping("/{restauranteId}")
     public Restaurante buscar(@PathVariable Long restauranteId) {
-        return restauranteRepository.porId(restauranteId);
+        return restauranteRepository.buscarPorId(restauranteId);
     }
 
 }

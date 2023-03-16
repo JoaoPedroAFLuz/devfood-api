@@ -21,7 +21,7 @@ public class FormaPagamentoRepositoryImpl implements FormaPagamentoRepository {
     }
 
     @Override
-    public FormaPagamento porId(Long id) {
+    public FormaPagamento buscarPorId(Long id) {
         return entityManager.find(FormaPagamento.class, id);
     }
 
