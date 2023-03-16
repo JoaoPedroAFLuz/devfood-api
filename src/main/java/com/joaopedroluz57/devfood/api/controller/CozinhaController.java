@@ -1,6 +1,5 @@
 package com.joaopedroluz57.devfood.api.controller;
 
-import com.joaopedroluz57.devfood.api.controller.model.CozinhasXmlWrapper;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeEmUsoException;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.model.Cozinha;
@@ -9,7 +8,6 @@ import com.joaopedroluz57.devfood.domain.service.CadastroCozinhaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,11 +27,6 @@ public class CozinhaController {
     @GetMapping
     public List<Cozinha> listar() {
         return cozinhaRepository.buscarTodas();
-    }
-
-    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
-    public CozinhasXmlWrapper listarXml() {
-        return new CozinhasXmlWrapper(cozinhaRepository.buscarTodas());
     }
 
     @GetMapping("/{cozinhaId}")
@@ -65,7 +58,7 @@ public class CozinhaController {
 
         BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
 
-        cozinhaAtual = cozinhaRepository.salvar(cozinhaAtual);
+        cozinhaAtual = cadastroCozinhaService.salvar(cozinhaAtual);
 
         return ResponseEntity.ok(cozinhaAtual);
     }
