@@ -32,11 +32,11 @@ public class CadastroEstadoService {
             estadoRepository.remover(estado);
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
-                    String.format("Estado com id %d não pode ser removido, pois está em uso", id)
+                    String.format("Estado com id %d não pode ser removido, pois está em uso.", id)
             );
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
-                    String.format("Não há um cadastro de estado com o id: %d", id)
+                    String.format("Não há um cadastro de estado com o id: %d.", id)
             );
         }
     }

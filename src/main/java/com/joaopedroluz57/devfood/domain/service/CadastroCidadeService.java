@@ -1,15 +1,12 @@
 package com.joaopedroluz57.devfood.domain.service;
 
-import com.joaopedroluz57.devfood.domain.exception.EntidadeEmUsoException;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.model.Cidade;
 import com.joaopedroluz57.devfood.domain.model.Estado;
 import com.joaopedroluz57.devfood.domain.repository.CidadeRepository;
 import com.joaopedroluz57.devfood.domain.repository.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -30,7 +27,7 @@ public class CadastroCidadeService {
 
         if (Objects.isNull(estado)) {
             throw new EntidadeNaoEncontradaException(
-                    String.format("Não foi encontrado um estado com o id: %d", estadoId)
+                    String.format("Não foi encontrado um estado com o id: %d.", estadoId)
             );
         }
 
@@ -51,7 +48,7 @@ public class CadastroCidadeService {
 
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
-                    String.format("Não há um cadastro de cidade com o id: %d", id)
+                    String.format("Não há um cadastro de cidade com o id: %d.", id)
             );
         }
     }

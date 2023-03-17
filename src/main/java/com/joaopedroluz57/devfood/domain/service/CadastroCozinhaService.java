@@ -32,11 +32,11 @@ public class CadastroCozinhaService {
             cozinhaRepository.remover(id);
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
-                    String.format("Cozinha de código %d não pode ser removida, pois está em uso", id)
+                    String.format("Cozinha de código %d não pode ser removida, pois está em uso.", id)
             );
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
-                    String.format("Não há um cadastro de cozinha com o id: %d", id)
+                    String.format("Não há um cadastro de cozinha com o id: %d.", id)
             );
         }
     }

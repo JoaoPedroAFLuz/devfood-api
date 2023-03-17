@@ -4,7 +4,6 @@ import com.joaopedroluz57.devfood.domain.model.Cidade;
 
 import java.util.List;
 
-
 public interface CidadeRepository {
 
     List<Cidade> buscarTodas();

@@ -4,7 +4,6 @@ import com.joaopedroluz57.devfood.domain.model.Estado;
 
 import java.util.List;
 
-
 public interface EstadoRepository {
 
     List<Estado> buscarTodos();
