@@ -1,6 +1,7 @@
 package com.joaopedroluz57.devfood.api.controller;
 
 import com.joaopedroluz57.devfood.domain.exception.EntidadeEmUsoException;
+import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.model.Estado;
 import com.joaopedroluz57.devfood.domain.repository.EstadoRepository;
 import com.joaopedroluz57.devfood.domain.service.CadastroEstadoService;
@@ -47,7 +48,7 @@ public class EstadoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Estado estado) {
+    public ResponseEntity<Estado> atualizar(@PathVariable Long id, @RequestBody Estado estado) {
         Estado estadoAtual = estadoRepository.buscarPorId(id);
 
         if (Objects.isNull(estadoAtual)) {
@@ -61,4 +62,18 @@ public class EstadoController {
         return ResponseEntity.ok().body(estadoAtual);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> remover(@PathVariable Long id) {
+        try {
+            estadoService.excluir(id);
+
+            return ResponseEntity.noContent().build();
+
+        } catch (EntidadeEmUsoException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+
+        } catch (EntidadeNaoEncontradaException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
