@@ -39,6 +39,11 @@ public class CidadeController {
         return ResponseEntity.ok().body(cidade);
     }
 
+    @GetMapping("/por-estado")
+    public List<Cidade> buscarPorEstado(@RequestParam("estadoId") Long estadoId) {
+        return cidadeRepository.buscarPorEstadoId(estadoId);
+    }
+
     @PostMapping
     public ResponseEntity<?> adicionar(@RequestBody Cidade cidade) {
         try {

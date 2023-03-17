@@ -10,5 +10,9 @@ insert into forma_pagamento (descricao) value ('PIX');
 insert into forma_pagamento (descricao) value ('Dinheiro');
 
 insert into estado (id, nome, sigla) values (1, 'Bahia', 'BA');
+insert into estado (id, nome, sigla) values (2, 'Ceará', 'CE');
+insert into estado (id, nome, sigla) values (3, 'Minas Gerais', 'MG');
 
 insert into cidade (nome, estado_id) values ('Vitória da Conquista', 1);
+insert into cidade (nome, estado_id) values ('Juazeiro do Norte', 2);
+insert into cidade (nome, estado_id) values ('Belo Horizonte', 3);

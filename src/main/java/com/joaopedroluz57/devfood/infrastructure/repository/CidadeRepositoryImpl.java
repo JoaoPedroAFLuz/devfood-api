@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -23,6 +24,14 @@ public class CidadeRepositoryImpl implements CidadeRepository {
     @Override
     public Cidade buscarPorId(Long id) {
         return entityManager.find(Cidade.class, id);
+    }
+
+    @Override
+    public List<Cidade> buscarPorEstadoId(Long estadoId) {
+        TypedQuery<Cidade> query = entityManager.createQuery("from Cidade c WHERE c.estado.id = :estadoId", Cidade.class);
+        query.setParameter("estadoId", estadoId);
+
+        return query.getResultList();
     }
 
     @Transactional

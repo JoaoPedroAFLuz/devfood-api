@@ -47,7 +47,6 @@ public class CozinhaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(cozinha);
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<Cozinha> atualizar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
         Cozinha cozinhaAtual = cozinhaRepository.buscarPorId(id);

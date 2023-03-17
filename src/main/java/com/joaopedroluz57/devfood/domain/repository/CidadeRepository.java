@@ -11,6 +11,8 @@ public interface CidadeRepository {
 
     Cidade buscarPorId(Long id);
 
+    List<Cidade> buscarPorEstadoId(Long estadoId);
+
     Cidade salvar(Cidade cidade);
 
     void remover(Cidade cidade);
