@@ -1,20 +1,13 @@
 package com.joaopedroluz57.devfood.domain.repository;
 
 import com.joaopedroluz57.devfood.domain.model.Cozinha;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+@Repository
+public interface CozinhaRepository extends JpaRepository<Cozinha, Long> {
 
-public interface CozinhaRepository {
-
-    List<Cozinha> buscarTodas();
-
-    Cozinha buscarPorId(Long id);
-
-    List<Cozinha> buscarPorNome(String nome);
-
-    Cozinha salvar(Cozinha cozinha);
-
-    void remover(Long id);
+//    List<Cozinha> buscarPorNome(String nome);
 
 }
 

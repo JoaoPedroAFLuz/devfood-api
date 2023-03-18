@@ -9,8 +9,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 public class CadastroCozinhaService {
 
@@ -18,18 +16,13 @@ public class CadastroCozinhaService {
     private CozinhaRepository cozinhaRepository;
 
     public Cozinha salvar(Cozinha cozinha) {
-        return cozinhaRepository.salvar(cozinha);
+        return cozinhaRepository.save(cozinha);
     }
 
     public void excluir(Long id) {
         try {
-            Cozinha cozinha = cozinhaRepository.buscarPorId(id);
+            cozinhaRepository.deleteById(id);
 
-            if (Objects.isNull(cozinha)) {
-                throw new EmptyResultDataAccessException(1);
-            }
-
-            cozinhaRepository.remover(id);
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
                     String.format("Cozinha de código %d não pode ser removida, pois está em uso.", id)
