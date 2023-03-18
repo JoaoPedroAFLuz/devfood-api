@@ -28,10 +28,10 @@ public class CidadeRepositoryImpl implements CidadeRepository {
 
     @Override
     public List<Cidade> buscarPorEstadoId(Long estadoId) {
-        TypedQuery<Cidade> query = entityManager.createQuery("from Cidade c WHERE c.estado.id = :estadoId", Cidade.class);
-        query.setParameter("estadoId", estadoId);
-
-        return query.getResultList();
+        return entityManager
+                .createQuery("from Cidade where estado.id = :estadoId", Cidade.class)
+                .setParameter("estadoId", estadoId)
+                .getResultList();
     }
 
     @Transactional
