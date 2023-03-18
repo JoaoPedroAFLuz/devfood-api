@@ -33,18 +33,12 @@ public class CadastroCidadeService {
 
         cidade.setEstado(estado);
 
-        return cidadeRepository.salvar(cidade);
+        return cidadeRepository.save(cidade);
     }
 
     public void excluir(Long id) {
         try {
-            Cidade cidade = cidadeRepository.buscarPorId(id);
-
-            if (Objects.isNull(cidade)) {
-                throw new EmptyResultDataAccessException(1);
-            }
-
-            cidadeRepository.remover(cidade);
+            cidadeRepository.deleteById(id);
 
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(

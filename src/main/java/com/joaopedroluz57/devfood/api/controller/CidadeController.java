@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cidades")
@@ -25,23 +25,23 @@ public class CidadeController {
 
     @GetMapping
     public List<Cidade> listar() {
-        return cidadeRepository.buscarTodas();
+        return cidadeRepository.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Cidade> buscar(@PathVariable Long id) {
-        final Cidade cidade = cidadeRepository.buscarPorId(id);
+        final Optional<Cidade> cidade = cidadeRepository.findById(id);
 
-        if (Objects.isNull(cidade)) {
+        if (cidade.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok().body(cidade);
+        return ResponseEntity.ok().body(cidade.get());
     }
 
     @GetMapping("/por-estado")
     public List<Cidade> buscarPorEstado(@RequestParam("estadoId") Long estadoId) {
-        return cidadeRepository.buscarPorEstadoId(estadoId);
+        return cidadeRepository.findByEstadoId(estadoId);
     }
 
     @PostMapping
@@ -58,17 +58,17 @@ public class CidadeController {
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Cidade cidade) {
         try {
-            Cidade cidadeAtual = cidadeRepository.buscarPorId(id);
+            final Optional<Cidade> cidadeAtual = cidadeRepository.findById(id);
 
-            if (Objects.isNull(cidadeAtual)) {
+            if (cidadeAtual.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
 
-            BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+            BeanUtils.copyProperties(cidade, cidadeAtual.get(), "id");
 
-            cidadeAtual = cidadeService.salvar(cidadeAtual);
+            cidade = cidadeService.salvar(cidadeAtual.get());
 
-            return ResponseEntity.ok().body(cidadeAtual);
+            return ResponseEntity.ok().body(cidade);
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
