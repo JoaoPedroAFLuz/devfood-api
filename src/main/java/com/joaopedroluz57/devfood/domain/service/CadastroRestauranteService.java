@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 public class CadastroRestauranteService {
 
@@ -31,18 +29,13 @@ public class CadastroRestauranteService {
 
         restaurante.setCozinha(cozinha);
 
-        return restauranteRepository.salvar(restaurante);
+        return restauranteRepository.save(restaurante);
     }
 
     public void excluir(Long id) {
         try {
-            final Restaurante restaurante = restauranteRepository.buscarPorId(id);
+            restauranteRepository.deleteById(id);
 
-            if (Objects.isNull(restaurante)) {
-                throw new EmptyResultDataAccessException(1);
-            }
-
-            restauranteRepository.remover(id);
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
                     String.format("Restaurante com id %d não encontrado.", id)

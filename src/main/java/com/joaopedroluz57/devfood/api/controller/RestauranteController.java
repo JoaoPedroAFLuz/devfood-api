@@ -1,15 +1,12 @@
 package com.joaopedroluz57.devfood.api.controller;
 
-import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
-import com.joaopedroluz57.devfood.domain.model.Cozinha;
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
 import com.joaopedroluz57.devfood.domain.repository.RestauranteRepository;
 import com.joaopedroluz57.devfood.domain.service.CadastroRestauranteService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
@@ -18,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -32,18 +29,18 @@ public class RestauranteController {
 
     @GetMapping()
     public List<Restaurante> listar() {
-        return restauranteRepository.buscarTodos();
+        return restauranteRepository.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Restaurante> buscar(@PathVariable Long id) {
-        final Restaurante restaurante = restauranteRepository.buscarPorId(id);
+        final Optional<Restaurante> restaurante = restauranteRepository.findById(id);
 
-        if (Objects.isNull(restaurante)) {
+        if (restaurante.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok().body(restaurante);
+        return ResponseEntity.ok().body(restaurante.get());
     }
 
     @PostMapping
@@ -60,17 +57,17 @@ public class RestauranteController {
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Restaurante restaurante) {
         try {
-            Restaurante restauranteAtual = restauranteRepository.buscarPorId(id);
+            Optional<Restaurante> restauranteAtual = restauranteRepository.findById(id);
 
-            if (Objects.isNull(restauranteAtual)) {
+            if (restauranteAtual.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
 
-            BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
+            BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id");
 
-            restauranteAtual = restauranteService.salvar(restauranteAtual);
+            final Restaurante restaurantePersistido = restauranteService.salvar(restauranteAtual.get());
 
-            return ResponseEntity.ok().body(restauranteAtual);
+            return ResponseEntity.ok().body(restaurantePersistido);
 
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -79,15 +76,15 @@ public class RestauranteController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos) {
-        Restaurante restauranteAtual = restauranteRepository.buscarPorId(id);
+        Optional<Restaurante> restauranteAtual = restauranteRepository.findById(id);
 
-        if (Objects.isNull(restauranteAtual)) {
+        if (restauranteAtual.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        merge(campos, restauranteAtual);
+        merge(campos, restauranteAtual.get());
 
-        return atualizar(id, restauranteAtual);
+        return atualizar(id, restauranteAtual.get());
     }
 
     private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
@@ -96,6 +93,8 @@ public class RestauranteController {
 
         dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
             Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+
+            assert field != null;
             field.setAccessible(true);
 
             Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
