@@ -40,7 +40,7 @@ public class CidadeController {
     }
 
     @GetMapping("/por-estado")
-    public List<Cidade> buscarPorEstado(@RequestParam("estadoId") Long estadoId) {
+    public List<Cidade> buscarPorEstado(Long estadoId) {
         return cidadeRepository.findByEstadoId(estadoId);
     }
 
