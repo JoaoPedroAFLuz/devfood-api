@@ -41,6 +41,11 @@ public class CozinhaController {
         return ResponseEntity.ok(cozinha.get());
     }
 
+    @GetMapping("/por-nome")
+    public List<Cozinha> buscarPorNome(@RequestParam String nome) {
+        return cozinhaRepository.findByNomeContaining(nome);
+    }
+
     @PostMapping
     public ResponseEntity<Cozinha> adicionar(@RequestBody Cozinha cozinha) {
         cozinha = cadastroCozinhaService.salvar(cozinha);
