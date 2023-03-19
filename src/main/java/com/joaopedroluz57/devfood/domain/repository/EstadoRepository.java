@@ -1,18 +1,11 @@
 package com.joaopedroluz57.devfood.domain.repository;
 
 import com.joaopedroluz57.devfood.domain.model.Estado;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface EstadoRepository {
-
-    List<Estado> buscarTodos();
-
-    Estado buscarPorId(Long id);
-
-    Estado salvar(Estado estado);
-
-    void remover(Estado estado);
+@Repository
+public interface EstadoRepository extends JpaRepository<Estado, Long> {
 
 }
 

@@ -9,8 +9,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 public class CadastroEstadoService {
 
@@ -18,18 +16,12 @@ public class CadastroEstadoService {
     private EstadoRepository estadoRepository;
 
     public Estado salvar(Estado estado) {
-        return estadoRepository.salvar(estado);
+        return estadoRepository.save(estado);
     }
 
     public void excluir(Long id) {
         try {
-            final Estado estado = estadoRepository.buscarPorId(id);
-
-            if (Objects.isNull(estado)) {
-                throw new EmptyResultDataAccessException(1);
-            }
-
-            estadoRepository.remover(estado);
+            estadoRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
                     String.format("Estado com id %d não pode ser removido, pois está em uso.", id)

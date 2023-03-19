@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 public class CadastroCidadeService {
 
@@ -23,13 +21,7 @@ public class CadastroCidadeService {
     public Cidade salvar(Cidade cidade) {
         final Long estadoId = cidade.getEstado().getId();
 
-        Estado estado = estadoRepository.buscarPorId(estadoId);
-
-        if (Objects.isNull(estado)) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format("Não foi encontrado um estado com o id: %d.", estadoId)
-            );
-        }
+        Estado estado = estadoRepository.findById(estadoId).orElseThrow(() -> new EmptyResultDataAccessException(1));
 
         cidade.setEstado(estado);
 

@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/estados")
@@ -26,18 +26,18 @@ public class EstadoController {
 
     @GetMapping
     public List<Estado> listar() {
-        return estadoRepository.buscarTodos();
+        return estadoRepository.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Estado> buscar(@PathVariable Long id) {
-        final Estado estado = estadoRepository.buscarPorId(id);
+        final Optional<Estado> estado = estadoRepository.findById(id);
 
-        if (Objects.isNull(estado)) {
+        if (estado.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok().body(estado);
+        return ResponseEntity.ok().body(estado.get());
     }
 
     @PostMapping
@@ -49,17 +49,17 @@ public class EstadoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Estado> atualizar(@PathVariable Long id, @RequestBody Estado estado) {
-        Estado estadoAtual = estadoRepository.buscarPorId(id);
+        Optional<Estado> estadoAtual = estadoRepository.findById(id);
 
-        if (Objects.isNull(estadoAtual)) {
+        if (estadoAtual.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        BeanUtils.copyProperties(estado, estadoAtual, "id");
+        BeanUtils.copyProperties(estado, estadoAtual.get(), "id");
 
-        estadoAtual = estadoService.salvar(estadoAtual);
+        final Estado estadoPersistido = estadoService.salvar(estadoAtual.get());
 
-        return ResponseEntity.ok().body(estadoAtual);
+        return ResponseEntity.ok().body(estadoPersistido);
     }
 
     @DeleteMapping("/{id}")
