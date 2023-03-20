@@ -50,8 +50,13 @@ public class RestauranteController {
     }
 
     @GetMapping("/por-taxa-entrega")
-    public List<Restaurante> buscarPorTaxaFrete(BigDecimal taxaInicial, BigDecimal taxaFinal) {
+    public List<Restaurante> buscarPorTaxaEntrega(BigDecimal taxaInicial, BigDecimal taxaFinal) {
         return restauranteRepository.findByTaxaEntregaBetween(taxaInicial, taxaFinal);
+    }
+
+    @GetMapping("/por-nome-e-taxa-entrega")
+    public List<Restaurante> buscarPorNomeETaxaEntrega(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
+        return restauranteRepository.buscarPorNomeETaxaEntrega(nome, taxaInicial, taxaFinal);
     }
 
     @PostMapping
