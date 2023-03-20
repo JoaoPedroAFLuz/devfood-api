@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface RestauranteRepository extends JpaRepository<Restaurante, Long> {
 
-    List<Restaurante> findByNomeContaining(String nome);
+    List<Restaurante> consultarPorNome(String nome, Long cozinhaId);
 
     List<Restaurante> findByTaxaEntregaBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
 
