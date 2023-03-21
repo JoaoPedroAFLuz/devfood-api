@@ -5,6 +5,8 @@ import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaExceptio
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
 import com.joaopedroluz57.devfood.domain.repository.RestauranteRepository;
 import com.joaopedroluz57.devfood.domain.service.CadastroRestauranteService;
+import com.joaopedroluz57.devfood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
+import com.joaopedroluz57.devfood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,6 +59,14 @@ public class RestauranteController {
     @GetMapping("/por-nome-e-taxa-entrega")
     public List<Restaurante> buscarPorNomeETaxaEntrega(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
         return restauranteRepository.buscarPorNomeETaxaEntrega(nome, taxaInicial, taxaFinal);
+    }
+
+    @GetMapping("/por-nome-e-frete-gratis")
+    public List<Restaurante> buscarPorNomeETaxaEntregaGratis(String nome) {
+        var comFreteGratis = new RestauranteComFreteGratisSpec();
+        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+
+        return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
     }
 
     @PostMapping
