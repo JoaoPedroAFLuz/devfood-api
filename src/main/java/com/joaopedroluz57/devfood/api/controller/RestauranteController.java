@@ -62,10 +62,7 @@ public class RestauranteController {
 
     @GetMapping("/por-nome-e-frete-gratis")
     public List<Restaurante> buscarPorNomeETaxaEntregaGratis(String nome) {
-
-        return restauranteRepository.findAll(
-                RestauranteSpecs.comFreteGratis().and(RestauranteSpecs.comNomeSemelhante(nome)
-                ));
+        return restauranteRepository.buscarPorNomeEFreteGratis(nome);
     }
 
     @PostMapping
