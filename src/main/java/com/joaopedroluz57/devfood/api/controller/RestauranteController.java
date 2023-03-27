@@ -65,6 +65,11 @@ public class RestauranteController {
         return restauranteRepository.buscarPorNomeEFreteGratis(nome);
     }
 
+    @GetMapping("/primeiro")
+    public Optional<Restaurante> buscarPrimeiro() {
+        return restauranteRepository.buscarPrimeiro();
+    }
+
     @PostMapping
     public ResponseEntity<?> adicionar(@RequestBody Restaurante restaurante) {
         try {
