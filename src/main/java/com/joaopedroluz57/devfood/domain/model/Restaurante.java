@@ -1,6 +1,7 @@
 package com.joaopedroluz57.devfood.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.joaopedroluz57.devfood.domain.Endereco;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -28,6 +29,10 @@ public class Restaurante {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Cozinha cozinha;
+
+    @JsonIgnore
+    @Embedded
+    private Endereco endereco;
 
     @JsonIgnore
     @ManyToMany

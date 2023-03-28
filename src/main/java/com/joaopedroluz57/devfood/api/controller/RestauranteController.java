@@ -90,7 +90,7 @@ public class RestauranteController {
                 return ResponseEntity.notFound().build();
             }
 
-            BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id", "formasPagamento");
+            BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id", "formasPagamento", "endereco");
 
             final Restaurante restaurantePersistido = restauranteService.salvar(restauranteAtual.get());
 
