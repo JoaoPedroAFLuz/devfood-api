@@ -17,8 +17,8 @@ import java.util.List;
 @Entity
 public class Restaurante {
 
-    @Id
     @EqualsAndHashCode.Include
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
