@@ -1,6 +1,5 @@
-package com.joaopedroluz57.devfood.domain;
+package com.joaopedroluz57.devfood.domain.model;
 
-import com.joaopedroluz57.devfood.domain.model.Cidade;
 import lombok.Data;
 
 import javax.persistence.Column;
