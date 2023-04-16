@@ -1,7 +1,6 @@
 package com.joaopedroluz57.devfood.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.joaopedroluz57.devfood.domain.Endereco;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;

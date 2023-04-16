@@ -18,3 +18,6 @@ insert into restaurante (nome, taxa_entrega, cozinha_id, data_cadastro, data_atu
 insert into restaurante (nome, taxa_entrega, cozinha_id, data_cadastro, data_atualizacao, endereco_cep, endereco_cidade_id, endereco_bairro, endereco_complemento, endereco_logradouro, endereco_numero) values ('Dona Maria', 5.50, 2, utc_timestamp, utc_timestamp, '4500500', 1, 'Recreio', 'Apartamento', null, '500');
 
 insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (1, 4), (2, 1), (2, 2), (2, 4);
+
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Porção de carne e fritas', 'Porção de carne de sol e batatas fritas com molho a parte', 15.9, true, 1);
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Coca-cola 2L', 'Coca-cola 2 litros', 8, true, 1);
