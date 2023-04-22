@@ -1,6 +1,6 @@
-insert into estado (id, nome, sigla) values (1, 'Bahia', 'BA');
-insert into estado (id, nome, sigla) values (2, 'Ceará', 'CE');
-insert into estado (id, nome, sigla) values (3, 'Minas Gerais', 'MG');
+insert into estado (id, nome) values (1, 'Bahia');
+insert into estado (id, nome) values (2, 'Ceará');
+insert into estado (id, nome) values (3, 'Minas Gerais');
 
 insert into cidade (nome, estado_id) values ('Vitória da Conquista', 1);
 insert into cidade (nome, estado_id) values ('Juazeiro do Norte', 2);
@@ -16,11 +16,11 @@ insert into cozinha (id, nome) values (2, 'Italiana');
 insert into cozinha (id, nome) values (3, 'Argentina');
 insert into cozinha (id, nome) values (4, 'Brasileira');
 
-insert into restaurante (id, nome, taxa_entrega, cozinha_id, data_cadastro, data_atualizacao, endereco_cep, endereco_cidade_id, endereco_bairro, endereco_complemento, endereco_logradouro, endereco_numero) values (1, 'Seu Zé', 7.50, 1, utc_timestamp, utc_timestamp, '4500500', 1, 'Candeias', 'Casa', null, '96');
-insert into restaurante (id, nome, taxa_entrega, cozinha_id, data_cadastro, data_atualizacao, endereco_cep, endereco_cidade_id, endereco_bairro, endereco_complemento, endereco_logradouro, endereco_numero) values (2, 'Dona Maria', 5.50, 2, utc_timestamp, utc_timestamp, '4500500', 1, 'Recreio', 'Apartamento', null, '500');
-insert into restaurante (id, nome, taxa_entrega, cozinha_id, data_cadastro, data_atualizacao) values (3, 'Java Steakhouse', 12, 3, utc_timestamp, utc_timestamp);
-insert into restaurante (id, nome, taxa_entrega, cozinha_id, data_cadastro, data_atualizacao) values (4, 'Lanchonete do Tio Sam', 11, 4, utc_timestamp, utc_timestamp);
-insert into restaurante (id, nome, taxa_entrega, cozinha_id, data_cadastro, data_atualizacao) values (5, 'Bar da Maria', 6, 4, utc_timestamp, utc_timestamp);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cep, endereco_cidade_id, endereco_bairro, endereco_complemento, endereco_logradouro, endereco_numero) values (1, 'Seu Zé', 7.50, 1, utc_timestamp, utc_timestamp, '4500500', 1, 'Candeias', 'Casa', null, '96');
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cep, endereco_cidade_id, endereco_bairro, endereco_complemento, endereco_logradouro, endereco_numero) values (2, 'Dona Maria', 5.50, 2, utc_timestamp, utc_timestamp, '4500500', 1, 'Recreio', 'Apartamento', null, '500');
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (3, 'Java Steakhouse', 12, 3, utc_timestamp, utc_timestamp);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (4, 'Lanchonete do Tio Sam', 11, 4, utc_timestamp, utc_timestamp);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (5, 'Bar da Maria', 6, 4, utc_timestamp, utc_timestamp);
 
 insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (1, 4), (2, 1), (2, 2), (2, 4), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2);
 
