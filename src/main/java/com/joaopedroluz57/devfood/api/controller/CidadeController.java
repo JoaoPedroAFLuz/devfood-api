@@ -36,6 +36,7 @@ public class CidadeController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Cidade adicionar(@RequestBody Cidade cidade) {
         return cidadeService.salvar(cidade);
     }

@@ -13,7 +13,8 @@ public interface RestauranteRepository
         extends CustomJpaRepository<Restaurante, Long>, RestauranteRepositoryQueries, JpaSpecificationExecutor<Restaurante> {
 
     @Query("from Restaurante r "
-            + "join fetch r.cozinha ")
+            + "join fetch r.cozinha "
+            + "order by r.id asc ")
     List<Restaurante> findAll();
 
     List<Restaurante> consultarPorNome(String nome, Long cozinhaId);
