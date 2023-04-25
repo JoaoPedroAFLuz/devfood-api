@@ -20,9 +20,9 @@ public class EstadoService {
 
     public Estado buscarOuFalharPorId(Long estadoId) {
         return estadoRepository.findById(estadoId)
-                .orElseThrow(
-                        () -> new EntidadeNaoEncontradaException(String.format(MSG_ESTADO_NAO_ENCONTRADO, estadoId))
-                );
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(MSG_ESTADO_NAO_ENCONTRADO, estadoId)
+                ));
     }
 
     public Estado salvar(Estado estado) {

@@ -24,9 +24,9 @@ public class CidadeService {
 
     public Cidade buscarOuFalharPorId(Long cidadeId) {
         return cidadeRepository.findById(cidadeId)
-                .orElseThrow(
-                        () -> new EntidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_ENCONTRADA, cidadeId))
-                );
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(MSG_CIDADE_NAO_ENCONTRADA, cidadeId)
+                ));
     }
 
     public Cidade salvar(Cidade cidade) {
