@@ -2,6 +2,7 @@ package com.joaopedroluz57.devfood.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
+import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
 import com.joaopedroluz57.devfood.domain.repository.RestauranteRepository;
 import com.joaopedroluz57.devfood.domain.service.RestauranteService;
@@ -66,7 +67,11 @@ public class RestauranteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Restaurante adicionar(@RequestBody Restaurante restaurante) {
-        return restauranteService.salvar(restaurante);
+        try {
+            return restauranteService.salvar(restaurante);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @PutMapping("/{restauranteId}")
@@ -75,7 +80,11 @@ public class RestauranteController {
 
         BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
 
-        return restauranteService.salvar(restauranteAtual);
+        try {
+            return restauranteService.salvar(restauranteAtual);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
