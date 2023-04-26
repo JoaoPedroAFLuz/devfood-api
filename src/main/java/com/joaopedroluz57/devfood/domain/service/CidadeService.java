@@ -1,7 +1,7 @@
 package com.joaopedroluz57.devfood.domain.service;
 
+import com.joaopedroluz57.devfood.domain.exception.CidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeEmUsoException;
-import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.model.Cidade;
 import com.joaopedroluz57.devfood.domain.model.Estado;
 import com.joaopedroluz57.devfood.domain.repository.CidadeRepository;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CidadeService {
 
-    public static final String MSG_CIDADE_NAO_ENCONTRADA = "Não há um cadastro de cidade com o código: %d.";
     public static final String MSG_CIDADE_EM_USO = "Cidade com o código %d não pode ser removida, pois está em uso.";
 
     @Autowired
@@ -24,9 +23,7 @@ public class CidadeService {
 
     public Cidade buscarOuFalharPorId(Long cidadeId) {
         return cidadeRepository.findById(cidadeId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format(MSG_CIDADE_NAO_ENCONTRADA, cidadeId)
-                ));
+                .orElseThrow(() -> new CidadeNaoEncontradaException(cidadeId));
     }
 
     public Cidade salvar(Cidade cidade) {
@@ -48,9 +45,7 @@ public class CidadeService {
                     String.format(MSG_CIDADE_EM_USO, cidadeId)
             );
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format(MSG_CIDADE_NAO_ENCONTRADA, cidadeId)
-            );
+            throw new CidadeNaoEncontradaException(cidadeId);
         }
     }
 
