@@ -1,6 +1,8 @@
 package com.joaopedroluz57.devfood.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.joaopedroluz57.devfood.domain.exception.CidadeNaoEncontradaException;
+import com.joaopedroluz57.devfood.domain.exception.CozinhaNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
@@ -82,8 +84,8 @@ public class RestauranteController {
 
         try {
             return restauranteService.salvar(restauranteAtual);
-        } catch (EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
+        } catch (CozinhaNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
         }
     }
 
