@@ -1,6 +1,6 @@
 package com.joaopedroluz57.devfood.api.controller;
 
-import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
+import com.joaopedroluz57.devfood.domain.exception.EstadoNaoEncontradoException;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import com.joaopedroluz57.devfood.domain.model.Cidade;
 import com.joaopedroluz57.devfood.domain.repository.CidadeRepository;
@@ -42,21 +42,21 @@ public class CidadeController {
     public Cidade adicionar(@RequestBody Cidade cidade) {
         try {
             return cidadeService.salvar(cidade);
-        } catch (EntidadeNaoEncontradaException e) {
+        } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage());
         }
     }
 
     @PutMapping("/{cidadeId}")
     public Cidade atualizar(@PathVariable Long cidadeId, @RequestBody Cidade cidade) {
-        Cidade cidadeAtual = cidadeService.buscarOuFalharPorId(cidadeId);
-
-        BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-
         try {
+            Cidade cidadeAtual = cidadeService.buscarOuFalharPorId(cidadeId);
+
+            BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+
             return cidadeService.salvar(cidadeAtual);
-        } catch (EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
+        } catch (EstadoNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
         }
     }
 
