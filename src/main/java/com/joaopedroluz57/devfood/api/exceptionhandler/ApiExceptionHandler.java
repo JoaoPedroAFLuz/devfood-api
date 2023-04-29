@@ -1,5 +1,6 @@
 package com.joaopedroluz57.devfood.api.exceptionhandler;
 
+import com.joaopedroluz57.devfood.domain.exception.EntidadeEmUsoException;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,16 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
+    @ExceptionHandler(NegocioException.class)
+    public ResponseEntity<?> tratarNegocioException(NegocioException e) {
+        Problema problema = Problema.builder()
+                .dataHora(LocalDateTime.now())
+                .mensagem(e.getMessage())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
+    }
+
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
     public ResponseEntity<?> tratarEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e) {
         Problema problema = Problema.builder()
@@ -23,14 +34,14 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problema);
     }
 
-    @ExceptionHandler(NegocioException.class)
-    public ResponseEntity<?> tratarNegocioException(NegocioException e) {
+    @ExceptionHandler(EntidadeEmUsoException.class)
+    public ResponseEntity<?> tratarEntidadeEmUsoException(EntidadeEmUsoException e) {
         Problema problema = Problema.builder()
                 .dataHora(LocalDateTime.now())
                 .mensagem(e.getMessage())
                 .build();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(problema);
     }
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)

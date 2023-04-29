@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RestauranteService {
 
-    public static final String MSG_CIDADE_EM_USO = "Restaurante com o código %d não pode ser removida, pois está em uso.";
+    public static final String MSG_CIDADE_EM_USO = "Restaurante com o código %d não pode ser removido, pois está em uso.";
 
     @Autowired
     private RestauranteRepository restauranteRepository;
