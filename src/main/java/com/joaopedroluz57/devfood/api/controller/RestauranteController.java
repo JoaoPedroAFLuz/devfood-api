@@ -1,7 +1,6 @@
 package com.joaopedroluz57.devfood.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.joaopedroluz57.devfood.domain.exception.CidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.CozinhaNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
@@ -11,7 +10,6 @@ import com.joaopedroluz57.devfood.domain.service.RestauranteService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
