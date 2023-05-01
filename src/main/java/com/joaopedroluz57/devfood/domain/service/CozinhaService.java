@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CozinhaService {
 
-    public static final String MSG_COZINHA_EM_USO = "Cozinha com o código %d não pode ser removida, pois está em uso.";
+    public static final String MSG_COZINHA_EM_USO = "Cozinha com o código %d não pode ser removida, pois está em uso";
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
