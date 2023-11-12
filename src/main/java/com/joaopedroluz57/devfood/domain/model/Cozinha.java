@@ -1,10 +1,13 @@
 package com.joaopedroluz57.devfood.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.joaopedroluz57.devfood.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +16,13 @@ import java.util.List;
 @Entity
 public class Cozinha {
 
-    @EqualsAndHashCode.Include
     @Id
+    @NotNull(groups = Groups.CozinhaId.class)
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     @Column(nullable = false)
     private String nome;
 

@@ -13,7 +13,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.server.ServletServerHttpAsyncRequestControl;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +33,7 @@ public class RestauranteController {
     private RestauranteRepository restauranteRepository;
 
     @Autowired
-    RestauranteService restauranteService;
+    private RestauranteService restauranteService;
 
     @GetMapping()
     public List<Restaurante> listar() {
@@ -82,7 +81,7 @@ public class RestauranteController {
     }
 
     @PutMapping("/{restauranteId}")
-    public Restaurante atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
+    public Restaurante atualizar(@PathVariable Long restauranteId, @RequestBody @Valid Restaurante restaurante) {
         Restaurante restauranteAtual = restauranteService.buscarOuFalharPorId(restauranteId);
 
         BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
@@ -130,8 +129,6 @@ public class RestauranteController {
                 Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
 
                 ReflectionUtils.setField(field, restauranteDestino, novoValor);
-
-                System.out.println(nomePropriedade + " = " + valorPropriedade + " = " + novoValor);
             });
         } catch (IllegalArgumentException e) {
             Throwable rootCause = ExceptionUtils.getRootCause(e);
