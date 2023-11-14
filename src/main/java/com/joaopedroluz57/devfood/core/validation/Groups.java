@@ -1,4 +1,4 @@
-package com.joaopedroluz57.devfood;
+package com.joaopedroluz57.devfood.core.validation;
 
 public interface Groups {
 

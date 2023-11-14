@@ -1,6 +1,6 @@
 package com.joaopedroluz57.devfood.domain.model;
 
-import com.joaopedroluz57.devfood.Groups;
+import com.joaopedroluz57.devfood.core.validation.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
