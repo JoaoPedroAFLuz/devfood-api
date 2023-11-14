@@ -2,6 +2,7 @@ package com.joaopedroluz57.devfood.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.joaopedroluz57.devfood.core.validation.Groups;
+import com.joaopedroluz57.devfood.core.validation.TaxaFrete;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,7 +12,6 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 import javax.validation.groups.ConvertGroup;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,8 +32,7 @@ public class Restaurante {
     @Column(nullable = false)
     private String nome;
 
-    @NotNull
-    @PositiveOrZero
+    @TaxaFrete
     @Column(nullable = false)
     private BigDecimal taxaEntrega;
 
