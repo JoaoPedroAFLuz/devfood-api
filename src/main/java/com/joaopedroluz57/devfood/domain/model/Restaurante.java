@@ -3,6 +3,7 @@ package com.joaopedroluz57.devfood.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.joaopedroluz57.devfood.core.validation.Groups;
 import com.joaopedroluz57.devfood.core.validation.TaxaFrete;
+import com.joaopedroluz57.devfood.core.validation.ValorZeroIncluiDescricao;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@ValorZeroIncluiDescricao(valorField = "taxaEntrega", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
