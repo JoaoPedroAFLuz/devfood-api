@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.joaopedroluz57.devfood.domain.exception.CozinhaNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
+import com.joaopedroluz57.devfood.domain.exception.ValidacaoException;
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
 import com.joaopedroluz57.devfood.domain.repository.RestauranteRepository;
 import com.joaopedroluz57.devfood.domain.service.RestauranteService;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +37,9 @@ public class RestauranteController {
 
     @Autowired
     private RestauranteService restauranteService;
+
+    @Autowired
+    private SmartValidator validator;
 
     @GetMapping()
     public List<Restaurante> listar() {
@@ -101,6 +107,8 @@ public class RestauranteController {
 
         merge(campos, restauranteAtual, request);
 
+        validate(restauranteAtual);
+
         return atualizar(restauranteId, restauranteAtual);
     }
 
@@ -133,6 +141,16 @@ public class RestauranteController {
         } catch (IllegalArgumentException e) {
             Throwable rootCause = ExceptionUtils.getRootCause(e);
             throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
+        }
+    }
+
+    private void validate(Restaurante restaurante) {
+        BeanPropertyBindingResult errors = new BeanPropertyBindingResult(restaurante, "restaurante");
+
+        validator.validate(restaurante, errors);
+
+        if (errors.hasErrors()) {
+            throw new ValidacaoException(errors);
         }
     }
 
