@@ -1,5 +1,7 @@
 package com.joaopedroluz57.devfood;
 
+import com.joaopedroluz57.devfood.domain.exception.CozinhaNaoEncontradaException;
+import com.joaopedroluz57.devfood.domain.exception.EntidadeEmUsoException;
 import com.joaopedroluz57.devfood.domain.model.Cozinha;
 import com.joaopedroluz57.devfood.domain.service.CozinhaService;
 import org.junit.Test;
@@ -32,12 +34,22 @@ public class CadastroCozinhaIntegrationTests {
         assertThat(novaCozinha.getNome()).isEqualTo("Chinesa");
     }
 
-    @Test(expected = ConstraintViolationException .class)
+    @Test(expected = ConstraintViolationException.class)
     public void deveFalhar_QuandoCadastrarCozinhaSemNome() {
         Cozinha novaCozinha = new Cozinha();
         novaCozinha.setNome(null);
 
         cozinhaService.salvar(novaCozinha);
+    }
+
+    @Test(expected = EntidadeEmUsoException.class)
+    public void deveFalhar_QuandoExcluirCozinhaEmUso() {
+        cozinhaService.excluir(1L);
+    }
+
+    @Test(expected = CozinhaNaoEncontradaException.class)
+    public void deveFalhar_QuandoExcluirCozinhaInexistente() {
+        cozinhaService.excluir(100L);
     }
 
 }
