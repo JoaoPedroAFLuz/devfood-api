@@ -1,6 +1,8 @@
 package com.joaopedroluz57.devfood;
 
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,11 +21,16 @@ public class CozinhaAPITests {
     @LocalServerPort
     private int port;
 
+    @Before
+    public void setUp() {
+        RestAssured.port = port;
+        basePath = "/cozinhas";
+        enableLoggingOfRequestAndResponseIfValidationFails();
+    }
+
     @Test
     public void deveRetornarStatus200_QuandoConsultarCozinhas() {
         given()
-                .basePath("/cozinhas")
-                .port(port)
                 .accept(ContentType.JSON)
                 .when()
                 .get()
@@ -34,13 +41,11 @@ public class CozinhaAPITests {
     @Test
     public void deveRetornar4Cozinhas_QuandoConsultarCozinhas() {
         given()
-                .basePath("/cozinhas")
-                .port(port)
                 .accept(ContentType.JSON)
                 .when()
                 .get()
                 .then()
-                .body("nome", hasSize(5))
+                .body("nome", hasSize(4))
                 .body("nome", hasItems("Tailandesa", "Indiana"));
     }
 
