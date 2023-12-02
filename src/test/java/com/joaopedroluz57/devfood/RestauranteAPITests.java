@@ -1,7 +1,9 @@
 package com.joaopedroluz57.devfood;
 
 import com.joaopedroluz57.devfood.domain.model.Cozinha;
+import com.joaopedroluz57.devfood.domain.model.Restaurante;
 import com.joaopedroluz57.devfood.domain.repository.CozinhaRepository;
+import com.joaopedroluz57.devfood.domain.repository.RestauranteRepository;
 import com.joaopedroluz57.devfood.util.DatabaseCleaner;
 import com.joaopedroluz57.devfood.util.ResourceUtils;
 import io.restassured.RestAssured;
@@ -16,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
@@ -23,7 +27,7 @@ import static org.hamcrest.Matchers.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "/application-test.properties")
-public class CozinhaAPITests {
+public class RestauranteAPITests {
 
     @LocalServerPort
     private int port;
@@ -32,30 +36,33 @@ public class CozinhaAPITests {
     private DatabaseCleaner databaseCleaner;
 
     @Autowired
+    private RestauranteRepository restauranteRepository;
+
+    @Autowired
     private CozinhaRepository cozinhaRepository;
 
-    private static final int ID_COZINHA_INEXISTENTE = 100;
+    private static final int ID_RESTAURANTE_INEXISTENTE = 100;
 
-    private Cozinha cozinhaBrasileira;
-    private int quantidadeCozinhasCadastradas;
-    private String jsonCorretoCozinhaItaliana;
+    private int quantidadeRestaurantesCadastrados;
+    private String jsonCorretoBarDaOrla;
+    private Restaurante restauranteDoSeuZe;
 
 
     @Before
     public void setUp() {
         RestAssured.port = port;
-        basePath = "/cozinhas";
+        basePath = "/restaurantes";
         enableLoggingOfRequestAndResponseIfValidationFails();
 
-        jsonCorretoCozinhaItaliana = ResourceUtils
-                .getContentFromResource("/json/correto/cozinha-italiana.json");
+        jsonCorretoBarDaOrla = ResourceUtils
+                .getContentFromResource("/json/correto/restaurante.json");
 
         databaseCleaner.clearTables();
-        prepararCozinha();
+        prepararRestaurantes();
     }
 
     @Test
-    public void deveRetornarStatus200_QuandoConsultarCozinhas() {
+    public void deveRetornarStatus200_QuandoConsultarRestaurantes() {
         given()
                 .accept(ContentType.JSON)
                 .when()
@@ -65,20 +72,20 @@ public class CozinhaAPITests {
     }
 
     @Test
-    public void deveRetornarQuantidadeCorretaDeCozinhas_QuandoConsultarCozinhas() {
+    public void deveRetornarQuantidadeCorretaDeRestaurantes_QuandoConsultarRestaurantes() {
         given()
                 .accept(ContentType.JSON)
                 .when()
                 .get()
                 .then()
-                .body("", hasSize(quantidadeCozinhasCadastradas))
-                .body("nome", hasItems(cozinhaBrasileira.getNome()));
+                .body("", hasSize(quantidadeRestaurantesCadastrados))
+                .body("nome", hasItems(restauranteDoSeuZe.getNome()));
     }
 
     @Test
-    public void deveRetornarStatus201_QuandoCadastrarCozinhaComDadosCorretos() {
+    public void deveRetornarStatus201_QuandoCadastrarRestauranteComDadosCorretos() {
         given()
-                .body(jsonCorretoCozinhaItaliana)
+                .body(jsonCorretoBarDaOrla)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
@@ -88,38 +95,46 @@ public class CozinhaAPITests {
     }
 
     @Test
-    public void deveRetornarRepostaEStatusCorretos_QuandoConsultarCozinhaExistente() {
+    public void deveRetornarRepostaEStatusCorretos_QuandoConsultarRestauranteExistente() {
         given()
-                .pathParam("cozinhaId", cozinhaBrasileira.getId())
+                .pathParam("restauranteId", restauranteDoSeuZe.getId())
                 .accept(ContentType.JSON)
                 .when()
-                .get("/{cozinhaId}")
+                .get("/{restauranteId}")
                 .then()
                 .statusCode(HttpStatus.OK.value())
-                .body("nome", equalTo(cozinhaBrasileira.getNome()));
+                .body("nome", equalTo(restauranteDoSeuZe.getNome()));
     }
 
     @Test
-    public void deveRetornarStatus404_QuandoConsultarCozinhaInexistente() {
+    public void deveRetornarStatus404_QuandoConsultarRestauranteInexistente() {
         given()
-                .pathParam("cozinhaId", ID_COZINHA_INEXISTENTE)
+                .pathParam("restauranteId", ID_RESTAURANTE_INEXISTENTE)
                 .accept(ContentType.JSON)
                 .when()
-                .get("/{cozinhaId}")
+                .get("/{restauranteId}")
                 .then()
                 .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
-    private void prepararCozinha() {
-        cozinhaBrasileira = new Cozinha();
+    private void prepararRestaurantes() {
+        Cozinha cozinhaBrasileira = new Cozinha();
         cozinhaBrasileira.setNome("Brasileira");
         cozinhaRepository.save(cozinhaBrasileira);
 
-        Cozinha cozinhaChinesa = new Cozinha();
-        cozinhaChinesa.setNome("Chinesa");
-        cozinhaRepository.save(cozinhaChinesa);
+        restauranteDoSeuZe = new Restaurante();
+        restauranteDoSeuZe.setNome("Restaurante do Seu Zé");
+        restauranteDoSeuZe.setCozinha(cozinhaBrasileira);
+        restauranteDoSeuZe.setTaxaEntrega(BigDecimal.TEN);
+        restauranteRepository.save(restauranteDoSeuZe);
 
-        quantidadeCozinhasCadastradas = (int) cozinhaRepository.count();
+        restauranteDoSeuZe = new Restaurante();
+        restauranteDoSeuZe.setNome("Restaurante da Dona Maria");
+        restauranteDoSeuZe.setCozinha(cozinhaBrasileira);
+        restauranteDoSeuZe.setTaxaEntrega(BigDecimal.ONE);
+        restauranteRepository.save(restauranteDoSeuZe);
+
+        quantidadeRestaurantesCadastrados = (int) restauranteRepository.count();
     }
 
 }

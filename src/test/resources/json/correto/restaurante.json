@@ -1,0 +1,7 @@
+{
+  "nome": "Bar da Orla",
+  "taxaEntrega": 6.50,
+  "cozinha": {
+    "id": 1
+  }
+}
