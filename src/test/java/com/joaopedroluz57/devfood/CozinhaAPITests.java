@@ -54,7 +54,7 @@ public class CozinhaAPITests {
     }
 
     @Test
-    public void deveRetornar4Cozinhas_QuandoConsultarCozinhas() {
+    public void deveRetornar2Cozinhas_QuandoConsultarCozinhas() {
         given()
                 .accept(ContentType.JSON)
                 .when()
@@ -76,6 +76,28 @@ public class CozinhaAPITests {
                 .statusCode(HttpStatus.CREATED.value());
     }
 
+    @Test
+    public void deveRetornarRepostaEStatusCorretos_QuandoConsultarCozinhaExistente() {
+        given()
+                .pathParam("cozinhaId", 1)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/{cozinhaId}")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("nome", equalTo("Brasileira"));
+    }
+
+    @Test
+    public void deveRetornarStatus404_QuandoConsultarCozinhaInexistente() {
+        given()
+                .pathParam("cozinhaId", 3)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/{cozinhaId}")
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value());
+    }
 
     private void prepararCozinha() {
         Cozinha cozinha1 = new Cozinha();
