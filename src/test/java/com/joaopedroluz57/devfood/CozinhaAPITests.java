@@ -3,6 +3,7 @@ package com.joaopedroluz57.devfood;
 import com.joaopedroluz57.devfood.domain.model.Cozinha;
 import com.joaopedroluz57.devfood.domain.repository.CozinhaRepository;
 import com.joaopedroluz57.devfood.util.DatabaseCleaner;
+import com.joaopedroluz57.devfood.util.ResourceUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.Before;
@@ -33,11 +34,21 @@ public class CozinhaAPITests {
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
+    private static final int ID_COZINHA_INEXISTENTE = 100;
+
+    private Cozinha cozinhaBrasileira;
+    private int quantidadeCozinhasCadastradas;
+    private String jsonCorretoCozinhaItaliana;
+
+
     @Before
     public void setUp() {
         RestAssured.port = port;
         basePath = "/cozinhas";
         enableLoggingOfRequestAndResponseIfValidationFails();
+
+        jsonCorretoCozinhaItaliana = ResourceUtils.getContentFromResource(
+                "/json/correto/cozinha-italiana.json");
 
         databaseCleaner.clearTables();
         prepararCozinha();
@@ -54,20 +65,20 @@ public class CozinhaAPITests {
     }
 
     @Test
-    public void deveRetornar2Cozinhas_QuandoConsultarCozinhas() {
+    public void deveRetornarQuantidadeCorretaDeCozinhas_QuandoConsultarCozinhas() {
         given()
                 .accept(ContentType.JSON)
                 .when()
                 .get()
                 .then()
-                .body("", hasSize(2))
-                .body("nome", hasItems("Brasileira", "Chinesa"));
+                .body("", hasSize(quantidadeCozinhasCadastradas))
+                .body("nome", hasItems(cozinhaBrasileira.getNome()));
     }
 
     @Test
     public void deveRetornarStatus201_QuandoCadastrarCozinhaComDadosCorretos() {
         given()
-                .body("{\"nome\": \"Chinesa\"}")
+                .body(jsonCorretoCozinhaItaliana)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
@@ -79,19 +90,19 @@ public class CozinhaAPITests {
     @Test
     public void deveRetornarRepostaEStatusCorretos_QuandoConsultarCozinhaExistente() {
         given()
-                .pathParam("cozinhaId", 1)
+                .pathParam("cozinhaId", cozinhaBrasileira.getId())
                 .accept(ContentType.JSON)
                 .when()
                 .get("/{cozinhaId}")
                 .then()
                 .statusCode(HttpStatus.OK.value())
-                .body("nome", equalTo("Brasileira"));
+                .body("nome", equalTo(cozinhaBrasileira.getNome()));
     }
 
     @Test
     public void deveRetornarStatus404_QuandoConsultarCozinhaInexistente() {
         given()
-                .pathParam("cozinhaId", 3)
+                .pathParam("cozinhaId", ID_COZINHA_INEXISTENTE)
                 .accept(ContentType.JSON)
                 .when()
                 .get("/{cozinhaId}")
@@ -100,13 +111,15 @@ public class CozinhaAPITests {
     }
 
     private void prepararCozinha() {
-        Cozinha cozinha1 = new Cozinha();
-        cozinha1.setNome("Brasileira");
-        cozinhaRepository.save(cozinha1);
+        cozinhaBrasileira = new Cozinha();
+        cozinhaBrasileira.setNome("Brasileira");
+        cozinhaRepository.save(cozinhaBrasileira);
 
-        Cozinha cozinha2 = new Cozinha();
-        cozinha2.setNome("Chinesa");
-        cozinhaRepository.save(cozinha2);
+        Cozinha cozinhaChinesa = new Cozinha();
+        cozinhaChinesa.setNome("Chinesa");
+        cozinhaRepository.save(cozinhaChinesa);
+
+        quantidadeCozinhasCadastradas = (int) cozinhaRepository.count();
     }
 
 }
