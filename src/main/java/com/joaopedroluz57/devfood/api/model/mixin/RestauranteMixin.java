@@ -8,10 +8,9 @@ import com.joaopedroluz57.devfood.domain.model.FormaPagamento;
 import com.joaopedroluz57.devfood.domain.model.Produto;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-public class RestauranteMixin {
+public abstract class RestauranteMixin {
 
     @JsonIgnoreProperties(value = "nome", allowGetters = true)
     private Cozinha cozinha;
@@ -20,10 +19,10 @@ public class RestauranteMixin {
     private Endereco endereco;
 
     @JsonIgnore
-    private List<FormaPagamento> formasPagamento = new ArrayList<>();
+    private List<FormaPagamento> formasPagamento;
 
     @JsonIgnore
-    private List<Produto> produtos = new ArrayList<>();
+    private List<Produto> produtos;
 
     @JsonIgnore
     private LocalDateTime dataCadastro;
