@@ -1,12 +1,10 @@
 package com.joaopedroluz57.devfood.api.model.mixin;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public abstract class UsuarioMixin {
 
-    @JsonIgnore
-    private LocalDateTime dataCadastro;
+//    @JsonIgnore
+    private OffsetDateTime dataCadastro;
 
 }
