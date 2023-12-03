@@ -1,6 +1,5 @@
 package com.joaopedroluz57.devfood.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.joaopedroluz57.devfood.core.validation.Groups;
 import com.joaopedroluz57.devfood.core.validation.TaxaFrete;
 import com.joaopedroluz57.devfood.core.validation.ValorZeroIncluiDescricao;
@@ -45,27 +44,22 @@ public class Restaurante {
     @JoinColumn(nullable = false)
     private Cozinha cozinha;
 
-    @JsonIgnore
     @Embedded
     private Endereco endereco;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "restaurante_forma_pagamento",
             joinColumns = @JoinColumn(name = "restaurante_id"),
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
-    @JsonIgnore
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos;
 
-    @JsonIgnore
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataCadastro;
 
-    @JsonIgnore
     @UpdateTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataAtualizacao;
