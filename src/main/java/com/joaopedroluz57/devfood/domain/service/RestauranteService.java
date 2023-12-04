@@ -11,6 +11,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 @Service
 public class RestauranteService {
 
@@ -22,9 +25,29 @@ public class RestauranteService {
     @Autowired
     private CozinhaService cozinhaService;
 
+    public List<Restaurante> listar() {
+        return restauranteRepository.findAll();
+    }
+
     public Restaurante buscarOuFalharPorId(Long restauranteId) {
         return restauranteRepository.findById(restauranteId)
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
+    }
+
+    public List<Restaurante> buscarPorNome(String nome, Long cozinhaId) {
+        return restauranteRepository.consultarPorNome(nome, cozinhaId);
+    }
+
+    public List<Restaurante> buscarPorTaxaEntrega(BigDecimal taxaInicial, BigDecimal taxaFinal) {
+        return restauranteRepository.findByTaxaEntregaBetween(taxaInicial, taxaFinal);
+    }
+
+    public List<Restaurante> buscarPorNomeETaxaEntrega(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
+        return restauranteRepository.buscarPorNomeETaxaEntrega(nome, taxaInicial, taxaFinal);
+    }
+
+    public List<Restaurante> buscarPorNomeEFreteGratis(String nome) {
+        return restauranteRepository.buscarPorNomeEFreteGratis(nome);
     }
 
     @Transactional
