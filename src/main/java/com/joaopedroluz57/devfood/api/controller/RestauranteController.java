@@ -8,7 +8,9 @@ import com.joaopedroluz57.devfood.domain.exception.CozinhaNaoEncontradaException
 import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import com.joaopedroluz57.devfood.domain.exception.ValidacaoException;
+import com.joaopedroluz57.devfood.domain.model.Cozinha;
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
+import com.joaopedroluz57.devfood.domain.model.input.RestauranteInput;
 import com.joaopedroluz57.devfood.domain.service.RestauranteService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
@@ -83,8 +85,10 @@ public class RestauranteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RestauranteModel adicionar(@RequestBody @Valid Restaurante restaurante) {
+    public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
         try {
+            Restaurante restaurante = fromModel(restauranteInput);
+
             Restaurante restaurantePersistido = restauranteService.salvar(restaurante);
 
             return toModel(restaurantePersistido);
@@ -109,7 +113,7 @@ public class RestauranteController {
     }
 
     @PatchMapping("/{restauranteId}")
-    public RestauranteModel atualizarParcial(
+    public RestauranteModel atualizarParcialmente(
             @PathVariable Long restauranteId, @RequestBody Map<String, Object> campos, HttpServletRequest request
     ) {
         Restaurante restauranteAtual = restauranteService.buscarOuFalharPorId(restauranteId);
@@ -175,6 +179,19 @@ public class RestauranteController {
         restauranteModel.setCozinha(cozinhaModel);
 
         return restauranteModel;
+    }
+
+    private Restaurante fromModel(RestauranteInput restauranteInput) {
+        Restaurante restaurante = new Restaurante();
+
+        Cozinha cozinha = new Cozinha();
+        cozinha.setId(restauranteInput.getCozinha().getId());
+
+        restaurante.setNome(restauranteInput.getNome());
+        restaurante.setTaxaEntrega(restauranteInput.getTaxaEntrega());
+        restaurante.setCozinha(cozinha);
+
+        return restaurante;
     }
 
 }
