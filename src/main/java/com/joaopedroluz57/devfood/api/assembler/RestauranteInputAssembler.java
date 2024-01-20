@@ -1,24 +1,21 @@
 package com.joaopedroluz57.devfood.api.assembler;
 
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
-import com.joaopedroluz57.devfood.domain.model.input.CozinhaIdInput;
 import com.joaopedroluz57.devfood.domain.model.input.RestauranteInput;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RestauranteInputAssembler {
 
+    private final ModelMapper modelMapper;
+
+    public RestauranteInputAssembler(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
     public RestauranteInput toInput(Restaurante restaurante) {
-        RestauranteInput restauranteInput = new RestauranteInput();
-
-        CozinhaIdInput cozinhaIdInput = new CozinhaIdInput();
-        cozinhaIdInput.setId(restaurante.getCozinha().getId());
-
-        restauranteInput.setNome(restaurante.getNome());
-        restauranteInput.setTaxaEntrega(restaurante.getTaxaEntrega());
-        restauranteInput.setCozinha(cozinhaIdInput);
-
-        return restauranteInput;
+        return modelMapper.map(restaurante, RestauranteInput.class);
     }
 
 }
