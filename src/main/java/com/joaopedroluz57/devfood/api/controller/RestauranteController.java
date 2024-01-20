@@ -2,13 +2,14 @@ package com.joaopedroluz57.devfood.api.controller;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.joaopedroluz57.devfood.api.assembler.RestauranteInputAssembler;
+import com.joaopedroluz57.devfood.api.assembler.RestauranteInputDisassembler;
 import com.joaopedroluz57.devfood.api.assembler.RestauranteModelAssembler;
 import com.joaopedroluz57.devfood.api.model.RestauranteModel;
 import com.joaopedroluz57.devfood.domain.exception.CozinhaNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import com.joaopedroluz57.devfood.domain.exception.ValidacaoException;
-import com.joaopedroluz57.devfood.domain.model.Cozinha;
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
 import com.joaopedroluz57.devfood.domain.model.input.RestauranteInput;
 import com.joaopedroluz57.devfood.domain.service.RestauranteService;
@@ -37,13 +38,20 @@ public class RestauranteController {
     private final RestauranteService restauranteService;
     private final SmartValidator validator;
     private final RestauranteModelAssembler restauranteModelAssembler;
+    private final RestauranteInputAssembler restauranteInputAssembler;
+    private final RestauranteInputDisassembler restauranteInputDisassembler;
 
     public RestauranteController(RestauranteService restauranteService,
                                  SmartValidator validator,
-                                 RestauranteModelAssembler restauranteModelAssembler) {
+                                 RestauranteModelAssembler restauranteModelAssembler,
+                                 RestauranteInputAssembler restauranteInputAssembler,
+                                 RestauranteInputDisassembler restauranteInputDisassembler) {
         this.restauranteService = restauranteService;
         this.validator = validator;
         this.restauranteModelAssembler = restauranteModelAssembler;
+        this.restauranteInputAssembler = restauranteInputAssembler;
+        this.restauranteInputDisassembler = restauranteInputDisassembler;
+
     }
 
 
@@ -93,7 +101,7 @@ public class RestauranteController {
     @ResponseStatus(HttpStatus.CREATED)
     public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
         try {
-            Restaurante restaurante = fromModel(restauranteInput);
+            Restaurante restaurante = restauranteInputDisassembler.fromModel(restauranteInput);
 
             Restaurante restaurantePersistido = restauranteService.salvar(restaurante);
 
@@ -104,10 +112,10 @@ public class RestauranteController {
     }
 
     @PutMapping("/{restauranteId}")
-    public RestauranteModel atualizar(@PathVariable Long restauranteId, @RequestBody @Valid Restaurante restaurante) {
+    public RestauranteModel atualizar(@PathVariable Long restauranteId, @RequestBody @Valid RestauranteInput restauranteInput) {
         Restaurante restauranteAtual = restauranteService.buscarOuFalharPorId(restauranteId);
 
-        BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
+        BeanUtils.copyProperties(restauranteInput, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
 
         try {
             Restaurante restaurantePersistido = restauranteService.salvar(restauranteAtual);
@@ -125,10 +133,11 @@ public class RestauranteController {
         Restaurante restauranteAtual = restauranteService.buscarOuFalharPorId(restauranteId);
 
         merge(campos, restauranteAtual, request);
-
         validate(restauranteAtual);
 
-        return atualizar(restauranteId, restauranteAtual);
+        RestauranteInput restauranteInput = restauranteInputAssembler.toInput(restauranteAtual);
+
+        return atualizar(restauranteId, restauranteInput);
     }
 
     @DeleteMapping("/{restauranteId}")
@@ -171,19 +180,6 @@ public class RestauranteController {
         if (errors.hasErrors()) {
             throw new ValidacaoException(errors);
         }
-    }
-
-    private Restaurante fromModel(RestauranteInput restauranteInput) {
-        Restaurante restaurante = new Restaurante();
-
-        Cozinha cozinha = new Cozinha();
-        cozinha.setId(restauranteInput.getCozinha().getId());
-
-        restaurante.setNome(restauranteInput.getNome());
-        restaurante.setTaxaEntrega(restauranteInput.getTaxaEntrega());
-        restaurante.setCozinha(cozinha);
-
-        return restaurante;
     }
 
 }
