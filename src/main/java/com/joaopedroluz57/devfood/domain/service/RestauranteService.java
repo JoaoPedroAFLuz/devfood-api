@@ -5,7 +5,6 @@ import com.joaopedroluz57.devfood.domain.exception.RestauranteNaoEncontradoExcep
 import com.joaopedroluz57.devfood.domain.model.Cozinha;
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
 import com.joaopedroluz57.devfood.domain.repository.RestauranteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -19,11 +18,13 @@ public class RestauranteService {
 
     public static final String MSG_CIDADE_EM_USO = "Restaurante com o código %d não pode ser removido, pois está em uso";
 
-    @Autowired
-    private RestauranteRepository restauranteRepository;
+    private final RestauranteRepository restauranteRepository;
+    private final CozinhaService cozinhaService;
 
-    @Autowired
-    private CozinhaService cozinhaService;
+    public RestauranteService(RestauranteRepository restauranteRepository, CozinhaService cozinhaService) {
+        this.restauranteRepository = restauranteRepository;
+        this.cozinhaService = cozinhaService;
+    }
 
     public List<Restaurante> buscarTodos() {
         return restauranteRepository.findAll();
