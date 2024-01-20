@@ -25,7 +25,7 @@ public class RestauranteService {
     @Autowired
     private CozinhaService cozinhaService;
 
-    public List<Restaurante> listar() {
+    public List<Restaurante> buscarTodos() {
         return restauranteRepository.findAll();
     }
 

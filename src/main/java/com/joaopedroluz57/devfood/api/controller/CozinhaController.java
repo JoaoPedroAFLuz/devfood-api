@@ -22,12 +22,12 @@ public class CozinhaController {
     private CozinhaService cozinhaService;
 
     @GetMapping
-    public List<Cozinha> listar() {
+    public List<Cozinha> buscarTodos() {
         return cozinhaRepository.findAll();
     }
 
     @GetMapping("/{cozinhaId}")
-    public Cozinha buscar(@PathVariable Long cozinhaId) {
+    public Cozinha buscarPorId(@PathVariable Long cozinhaId) {
         return cozinhaService.buscarOuFalharPorId(cozinhaId);
     }
 

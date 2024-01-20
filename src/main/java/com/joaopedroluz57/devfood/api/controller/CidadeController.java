@@ -24,12 +24,12 @@ public class CidadeController {
     private CidadeService cidadeService;
 
     @GetMapping
-    public List<Cidade> listar() {
+    public List<Cidade> buscarTodos() {
         return cidadeRepository.findAll();
     }
 
     @GetMapping("/{cidadeId}")
-    public Cidade buscar(@PathVariable Long cidadeId) {
+    public Cidade buscarPorId(@PathVariable Long cidadeId) {
         return cidadeService.buscarOuFalharPorId(cidadeId);
     }
 

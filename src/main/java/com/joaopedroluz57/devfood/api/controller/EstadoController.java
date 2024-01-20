@@ -22,12 +22,12 @@ public class EstadoController {
     private EstadoService estadoService;
 
     @GetMapping
-    public List<Estado> listar() {
+    public List<Estado> buscarTodos() {
         return estadoRepository.findAll();
     }
 
     @GetMapping("/{estadoId}")
-    public Estado buscar(@PathVariable Long estadoId) {
+    public Estado buscarPorId(@PathVariable Long estadoId) {
         return estadoService.buscarOuFalharPorId(estadoId);
     }
 

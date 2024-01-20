@@ -40,14 +40,14 @@ public class RestauranteController {
     private SmartValidator validator;
 
     @GetMapping()
-    public List<RestauranteModel> listar() {
-        return restauranteService.listar().stream()
+    public List<RestauranteModel> buscarTodos() {
+        return restauranteService.buscarTodos().stream()
                 .map(this::toModel)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{restauranteId}")
-    public RestauranteModel buscar(@PathVariable Long restauranteId) {
+    public RestauranteModel buscarPorId(@PathVariable Long restauranteId) {
         Restaurante restaurante = restauranteService.buscarOuFalharPorId(restauranteId);
 
         return toModel(restaurante);
