@@ -5,7 +5,6 @@ import com.joaopedroluz57.devfood.domain.exception.EntidadeEmUsoException;
 import com.joaopedroluz57.devfood.domain.model.Cidade;
 import com.joaopedroluz57.devfood.domain.model.Estado;
 import com.joaopedroluz57.devfood.domain.repository.CidadeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -16,11 +15,15 @@ public class CidadeService {
 
     public static final String MSG_CIDADE_EM_USO = "Cidade com o código %d não pode ser removida, pois está em uso";
 
-    @Autowired
-    private CidadeRepository cidadeRepository;
+    private final CidadeRepository cidadeRepository;
 
-    @Autowired
-    private EstadoService estadoService;
+    private final EstadoService estadoService;
+
+    public CidadeService(CidadeRepository cidadeRepository, EstadoService estadoService) {
+        this.cidadeRepository = cidadeRepository;
+        this.estadoService = estadoService;
+    }
+
 
     public Cidade buscarOuFalharPorId(Long cidadeId) {
         return cidadeRepository.findById(cidadeId)

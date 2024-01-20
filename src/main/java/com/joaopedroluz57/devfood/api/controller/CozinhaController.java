@@ -4,7 +4,6 @@ import com.joaopedroluz57.devfood.domain.model.Cozinha;
 import com.joaopedroluz57.devfood.domain.repository.CozinhaRepository;
 import com.joaopedroluz57.devfood.domain.service.CozinhaService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +14,14 @@ import java.util.List;
 @RequestMapping("/cozinhas")
 public class CozinhaController {
 
-    @Autowired
-    private CozinhaRepository cozinhaRepository;
+    private final CozinhaRepository cozinhaRepository;
+    private final CozinhaService cozinhaService;
 
-    @Autowired
-    private CozinhaService cozinhaService;
+    public CozinhaController(CozinhaRepository cozinhaRepository, CozinhaService cozinhaService) {
+        this.cozinhaRepository = cozinhaRepository;
+        this.cozinhaService = cozinhaService;
+    }
+
 
     @GetMapping
     public List<Cozinha> buscarTodos() {

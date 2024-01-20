@@ -2,7 +2,6 @@ package com.joaopedroluz57.devfood.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -14,11 +13,14 @@ import java.util.List;
 public class DatabaseCleaner {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
-    @Autowired
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     private Connection connection;
+
+    public DatabaseCleaner(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
 
     public void clearTables() {
         try (Connection connection = dataSource.getConnection()) {
@@ -51,7 +53,7 @@ public class DatabaseCleaner {
         List<String> tableNames = new ArrayList<>();
 
         DatabaseMetaData metaData = connection.getMetaData();
-        ResultSet rs = metaData.getTables(connection.getCatalog(), null, null, new String[] { "TABLE" });
+        ResultSet rs = metaData.getTables(connection.getCatalog(), null, null, new String[]{"TABLE"});
 
         while (rs.next()) {
             tableNames.add(rs.getString("TABLE_NAME"));

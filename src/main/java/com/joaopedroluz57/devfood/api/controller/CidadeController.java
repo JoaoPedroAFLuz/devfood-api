@@ -6,7 +6,6 @@ import com.joaopedroluz57.devfood.domain.model.Cidade;
 import com.joaopedroluz57.devfood.domain.repository.CidadeRepository;
 import com.joaopedroluz57.devfood.domain.service.CidadeService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,11 +16,14 @@ import java.util.List;
 @RequestMapping("/cidades")
 public class CidadeController {
 
-    @Autowired
-    private CidadeRepository cidadeRepository;
+    private final CidadeRepository cidadeRepository;
+    private final CidadeService cidadeService;
 
-    @Autowired
-    private CidadeService cidadeService;
+    public CidadeController(CidadeRepository cidadeRepository, CidadeService cidadeService) {
+        this.cidadeRepository = cidadeRepository;
+        this.cidadeService = cidadeService;
+    }
+
 
     @GetMapping
     public List<Cidade> buscarTodos() {

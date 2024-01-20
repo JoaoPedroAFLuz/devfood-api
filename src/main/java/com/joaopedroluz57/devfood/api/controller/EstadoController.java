@@ -4,7 +4,6 @@ import com.joaopedroluz57.devfood.domain.model.Estado;
 import com.joaopedroluz57.devfood.domain.repository.EstadoRepository;
 import com.joaopedroluz57.devfood.domain.service.EstadoService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +14,14 @@ import java.util.List;
 @RequestMapping("/estados")
 public class EstadoController {
 
-    @Autowired
-    private EstadoRepository estadoRepository;
+    private final EstadoRepository estadoRepository;
+    private final EstadoService estadoService;
 
-    @Autowired
-    private EstadoService estadoService;
+    public EstadoController(EstadoRepository estadoRepository, EstadoService estadoService) {
+        this.estadoRepository = estadoRepository;
+        this.estadoService = estadoService;
+    }
+
 
     @GetMapping
     public List<Estado> buscarTodos() {
