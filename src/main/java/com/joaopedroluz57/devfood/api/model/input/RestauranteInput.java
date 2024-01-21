@@ -1,4 +1,4 @@
-package com.joaopedroluz57.devfood.domain.model.input;
+package com.joaopedroluz57.devfood.api.model.input;
 
 import com.joaopedroluz57.devfood.core.validation.TaxaFrete;
 import lombok.Getter;
