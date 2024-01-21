@@ -14,7 +14,6 @@ import com.joaopedroluz57.devfood.domain.model.Restaurante;
 import com.joaopedroluz57.devfood.domain.model.input.RestauranteInput;
 import com.joaopedroluz57.devfood.domain.service.RestauranteService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -115,7 +114,7 @@ public class RestauranteController {
     public RestauranteModel atualizar(@PathVariable Long restauranteId, @RequestBody @Valid RestauranteInput restauranteInput) {
         Restaurante restauranteAtual = restauranteService.buscarOuFalharPorId(restauranteId);
 
-        BeanUtils.copyProperties(restauranteInput, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
+        restauranteInputDisassembler.copyFromModel(restauranteInput, restauranteAtual);
 
         try {
             Restaurante restaurantePersistido = restauranteService.salvar(restauranteAtual);
