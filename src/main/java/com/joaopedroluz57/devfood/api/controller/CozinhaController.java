@@ -80,4 +80,5 @@ public class CozinhaController {
     public void remover(@PathVariable Long id) {
         cozinhaService.excluir(id);
     }
+
 }

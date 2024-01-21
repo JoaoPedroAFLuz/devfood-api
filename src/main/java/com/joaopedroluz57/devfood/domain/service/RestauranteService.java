@@ -66,13 +66,13 @@ public class RestauranteService {
     public void excluir(Long restauranteId) {
         try {
             restauranteRepository.deleteById(restauranteId);
+            restauranteRepository.flush();
 
-        } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(
-                    String.format(MSG_CIDADE_EM_USO, restauranteId)
-            );
         } catch (EmptyResultDataAccessException e) {
             throw new RestauranteNaoEncontradoException(restauranteId);
+
+        } catch (DataIntegrityViolationException e) {
+            throw new EntidadeEmUsoException(String.format(MSG_CIDADE_EM_USO, restauranteId));
         }
     }
 
