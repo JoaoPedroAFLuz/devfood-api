@@ -15,11 +15,11 @@ public class RestauranteInputDisassembler {
         this.modelMapper = modelMapper;
     }
 
-    public Restaurante fromModel(RestauranteInput restauranteInput) {
+    public Restaurante toDomainObject(RestauranteInput restauranteInput) {
         return modelMapper.map(restauranteInput, Restaurante.class);
     }
 
-    public void copyFromModel(RestauranteInput restauranteInput, Restaurante restaurante) {
+    public void copyToDomainObject(RestauranteInput restauranteInput, Restaurante restaurante) {
         restaurante.setCozinha(new Cozinha());
 
         modelMapper.map(restauranteInput, restaurante);

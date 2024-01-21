@@ -1,7 +1,7 @@
 package com.joaopedroluz57.devfood.api.controller;
 
+import com.joaopedroluz57.devfood.api.assembler.CidadeInputDisassembler;
 import com.joaopedroluz57.devfood.api.assembler.CidadeModelAssembler;
-import com.joaopedroluz57.devfood.api.assembler.CidadeModelDisassembler;
 import com.joaopedroluz57.devfood.api.model.CidadeModel;
 import com.joaopedroluz57.devfood.api.model.input.CidadeInput;
 import com.joaopedroluz57.devfood.domain.exception.EstadoNaoEncontradoException;
@@ -23,16 +23,16 @@ public class CidadeController {
     private final CidadeRepository cidadeRepository;
     private final CidadeService cidadeService;
     private final CidadeModelAssembler cidadeModelAssembler;
-    private final CidadeModelDisassembler cidadeModelDisassembler;
+    private final CidadeInputDisassembler cidadeInputDisassembler;
 
     public CidadeController(CidadeRepository cidadeRepository,
                             CidadeService cidadeService,
                             CidadeModelAssembler cidadeModelAssembler,
-                            CidadeModelDisassembler cidadeModelDisassembler) {
+                            CidadeInputDisassembler cidadeInputDisassembler) {
         this.cidadeRepository = cidadeRepository;
         this.cidadeService = cidadeService;
         this.cidadeModelAssembler = cidadeModelAssembler;
-        this.cidadeModelDisassembler = cidadeModelDisassembler;
+        this.cidadeInputDisassembler = cidadeInputDisassembler;
     }
 
 
@@ -61,7 +61,7 @@ public class CidadeController {
     @ResponseStatus(HttpStatus.CREATED)
     public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
         try {
-            Cidade cidade = cidadeModelDisassembler.fromModel(cidadeInput);
+            Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
 
             Cidade cidadePersistida = cidadeService.salvar(cidade);
 
@@ -76,7 +76,7 @@ public class CidadeController {
         try {
             Cidade cidadeAtual = cidadeService.buscarOuFalharPorId(cidadeId);
 
-            cidadeModelDisassembler.copyFromModel(cidadeInput, cidadeAtual);
+            cidadeInputDisassembler.copyToDomainObject(cidadeInput, cidadeAtual);
 
             Cidade cidadePersistida = cidadeService.salvar(cidadeAtual);
 

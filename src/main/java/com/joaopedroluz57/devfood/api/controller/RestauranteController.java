@@ -100,7 +100,7 @@ public class RestauranteController {
     @ResponseStatus(HttpStatus.CREATED)
     public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
         try {
-            Restaurante restaurante = restauranteInputDisassembler.fromModel(restauranteInput);
+            Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 
             Restaurante restaurantePersistido = restauranteService.salvar(restaurante);
 
@@ -114,7 +114,7 @@ public class RestauranteController {
     public RestauranteModel atualizar(@PathVariable Long restauranteId, @RequestBody @Valid RestauranteInput restauranteInput) {
         Restaurante restauranteAtual = restauranteService.buscarOuFalharPorId(restauranteId);
 
-        restauranteInputDisassembler.copyFromModel(restauranteInput, restauranteAtual);
+        restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
 
         try {
             Restaurante restaurantePersistido = restauranteService.salvar(restauranteAtual);

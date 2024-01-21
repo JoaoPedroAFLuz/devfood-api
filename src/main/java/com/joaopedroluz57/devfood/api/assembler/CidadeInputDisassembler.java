@@ -7,19 +7,19 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CidadeModelDisassembler {
+public class CidadeInputDisassembler {
 
     private final ModelMapper modelMapper;
 
-    public CidadeModelDisassembler(ModelMapper modelMapper) {
+    public CidadeInputDisassembler(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 
-    public Cidade fromModel(CidadeInput cidadeInput) {
+    public Cidade toDomainObject(CidadeInput cidadeInput) {
         return modelMapper.map(cidadeInput, Cidade.class);
     }
 
-    public void copyFromModel(CidadeInput cidadeInput, Cidade cidade) {
+    public void copyToDomainObject(CidadeInput cidadeInput, Cidade cidade) {
         cidade.setEstado(new Estado());
 
         modelMapper.map(cidadeInput, cidade);
