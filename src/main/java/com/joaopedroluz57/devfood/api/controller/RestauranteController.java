@@ -125,6 +125,11 @@ public class RestauranteController {
         }
     }
 
+    @PutMapping("/{restauranteId}/ativo")
+    public void ativar(@PathVariable Long restauranteId) {
+        restauranteService.ativar(restauranteId);
+    }
+
     @PatchMapping("/{restauranteId}")
     public RestauranteModel atualizarParcialmente(
             @PathVariable Long restauranteId, @RequestBody Map<String, Object> campos, HttpServletRequest request
@@ -143,6 +148,11 @@ public class RestauranteController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long restauranteId) {
         restauranteService.excluir(restauranteId);
+    }
+
+    @DeleteMapping("/{restauranteId}/desativo")
+    public void desativar(@PathVariable Long restauranteId) {
+        restauranteService.desativar(restauranteId);
     }
 
     private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {

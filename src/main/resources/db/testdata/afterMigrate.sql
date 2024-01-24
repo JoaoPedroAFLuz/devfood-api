@@ -75,19 +75,19 @@ values (5, 'Fortaleza', 3);
 insert into cidade (id, nome, estado_id)
 values (6, 'Juazeiro do Norte', 3);
 
-insert into restaurante (id, nome, taxa_entrega, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id,
+insert into restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao, endereco_cidade_id,
                          endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro)
-values (1, 'Thai Gourmet', 10, 1, utc_timestamp, utc_timestamp, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro');
-insert into restaurante (id, nome, taxa_entrega, cozinha_id, data_cadastro, data_atualizacao)
-values (2, 'Thai Delivery', 9.50, 1, utc_timestamp, utc_timestamp);
-insert into restaurante (id, nome, taxa_entrega, cozinha_id, data_cadastro, data_atualizacao)
-values (3, 'Tuk Tuk Comida Indiana', 15, 2, utc_timestamp, utc_timestamp);
-insert into restaurante (id, nome, taxa_entrega, cozinha_id, data_cadastro, data_atualizacao)
-values (4, 'Java Steakhouse', 12, 3, utc_timestamp, utc_timestamp);
-insert into restaurante (id, nome, taxa_entrega, cozinha_id, data_cadastro, data_atualizacao)
-values (5, 'Lanchonete do Tio Sam', 11, 4, utc_timestamp, utc_timestamp);
-insert into restaurante (id, nome, taxa_entrega, cozinha_id, data_cadastro, data_atualizacao)
-values (6, 'Bar da Maria', 6, 4, utc_timestamp, utc_timestamp);
+values (1, 'Thai Gourmet', 10, 1, true ,utc_timestamp, utc_timestamp, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro');
+insert into restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao)
+values (2, 'Thai Delivery', 9.50, 1, true ,utc_timestamp, utc_timestamp);
+insert into restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao)
+values (3, 'Tuk Tuk Comida Indiana', 15, 2, true ,utc_timestamp, utc_timestamp);
+insert into restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao)
+values (4, 'Java Steakhouse', 12, 3, true ,utc_timestamp, utc_timestamp);
+insert into restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao)
+values (5, 'Lanchonete do Tio Sam', 11, 4, true ,utc_timestamp, utc_timestamp);
+insert into restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao)
+values (6, 'Bar da Maria', 6, 4, true ,utc_timestamp, utc_timestamp);
 
 insert into forma_pagamento (id, descricao)
 values (1, 'Cartão de crédito');
