@@ -151,6 +151,7 @@ public class RestauranteController {
     }
 
     @DeleteMapping("/{restauranteId}/desativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void desativar(@PathVariable Long restauranteId) {
         restauranteService.desativar(restauranteId);
     }
