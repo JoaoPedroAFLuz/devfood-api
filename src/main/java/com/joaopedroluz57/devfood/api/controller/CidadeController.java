@@ -2,7 +2,7 @@ package com.joaopedroluz57.devfood.api.controller;
 
 import com.joaopedroluz57.devfood.api.assembler.CidadeInputDisassembler;
 import com.joaopedroluz57.devfood.api.assembler.CidadeModelAssembler;
-import com.joaopedroluz57.devfood.api.model.CidadeModel;
+import com.joaopedroluz57.devfood.api.model.CidadeResumidaModel;
 import com.joaopedroluz57.devfood.api.model.input.CidadeInput;
 import com.joaopedroluz57.devfood.domain.exception.EstadoNaoEncontradoException;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
@@ -37,21 +37,21 @@ public class CidadeController {
 
 
     @GetMapping
-    public List<CidadeModel> buscarTodas() {
+    public List<CidadeResumidaModel> buscarTodas() {
         return cidadeRepository.findAll().stream()
                 .map(cidadeModelAssembler::toModel)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{cidadeId}")
-    public CidadeModel buscarPorId(@PathVariable Long cidadeId) {
+    public CidadeResumidaModel buscarPorId(@PathVariable Long cidadeId) {
         Cidade cidade = cidadeService.buscarOuFalharPorId(cidadeId);
 
         return cidadeModelAssembler.toModel(cidade);
     }
 
     @GetMapping("/por-estado")
-    public List<CidadeModel> buscarPorEstado(Long estadoId) {
+    public List<CidadeResumidaModel> buscarPorEstado(Long estadoId) {
         return cidadeRepository.findByEstadoId(estadoId).stream()
                 .map(cidadeModelAssembler::toModel)
                 .collect(Collectors.toList());
@@ -59,7 +59,7 @@ public class CidadeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
+    public CidadeResumidaModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
         try {
             Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
 
@@ -72,7 +72,7 @@ public class CidadeController {
     }
 
     @PutMapping("/{cidadeId}")
-    public CidadeModel atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
+    public CidadeResumidaModel atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
         try {
             Cidade cidadeAtual = cidadeService.buscarOuFalharPorId(cidadeId);
 
