@@ -7,7 +7,6 @@ import com.joaopedroluz57.devfood.api.assembler.RestauranteInputDisassembler;
 import com.joaopedroluz57.devfood.api.assembler.RestauranteModelAssembler;
 import com.joaopedroluz57.devfood.api.model.RestauranteModel;
 import com.joaopedroluz57.devfood.api.model.input.RestauranteInput;
-import com.joaopedroluz57.devfood.domain.exception.CozinhaNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import com.joaopedroluz57.devfood.domain.exception.ValidacaoException;
@@ -120,7 +119,7 @@ public class RestauranteController {
             Restaurante restaurantePersistido = restauranteService.salvar(restauranteAtual);
 
             return restauranteModelAssembler.toModel(restaurantePersistido);
-        } catch (CozinhaNaoEncontradaException e) {
+        } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
     }

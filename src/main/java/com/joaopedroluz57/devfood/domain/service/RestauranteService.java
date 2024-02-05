@@ -2,6 +2,7 @@ package com.joaopedroluz57.devfood.domain.service;
 
 import com.joaopedroluz57.devfood.domain.exception.EntidadeEmUsoException;
 import com.joaopedroluz57.devfood.domain.exception.RestauranteNaoEncontradoException;
+import com.joaopedroluz57.devfood.domain.model.Cidade;
 import com.joaopedroluz57.devfood.domain.model.Cozinha;
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
 import com.joaopedroluz57.devfood.domain.repository.RestauranteRepository;
@@ -20,10 +21,14 @@ public class RestauranteService {
 
     private final RestauranteRepository restauranteRepository;
     private final CozinhaService cozinhaService;
+    private final CidadeService cidadeService;
 
-    public RestauranteService(RestauranteRepository restauranteRepository, CozinhaService cozinhaService) {
+    public RestauranteService(RestauranteRepository restauranteRepository,
+                              CozinhaService cozinhaService,
+                              CidadeService cidadeService) {
         this.restauranteRepository = restauranteRepository;
         this.cozinhaService = cozinhaService;
+        this.cidadeService = cidadeService;
     }
 
     public List<Restaurante> buscarTodos() {
@@ -54,10 +59,13 @@ public class RestauranteService {
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
+        Long cidadeId = restaurante.getEndereco().getCidade().getId();
 
         Cozinha cozinha = cozinhaService.buscarOuFalharPorId(cozinhaId);
+        Cidade cidade = cidadeService.buscarOuFalharPorId(cidadeId);
 
         restaurante.setCozinha(cozinha);
+        restaurante.getEndereco().setCidade(cidade);
 
         return restauranteRepository.save(restaurante);
     }
