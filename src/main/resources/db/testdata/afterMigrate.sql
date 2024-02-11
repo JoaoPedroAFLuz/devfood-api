@@ -149,3 +149,6 @@ VALUES ('Gerente'),
        ('Vendedor'),
        ('Sercretária'),
        ('Cadastrador');
+
+INSERT INTO usuario (nome, email, senha, data_cadastro)
+VALUES ('João Pedro', 'joao.pedro.luz@hotmail.com', '12345678', UTC_TIMESTAMP())

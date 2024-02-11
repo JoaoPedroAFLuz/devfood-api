@@ -21,6 +21,9 @@ public class Usuario {
     private Long Id;
 
     @Column(nullable = false)
+    private String nome;
+
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
