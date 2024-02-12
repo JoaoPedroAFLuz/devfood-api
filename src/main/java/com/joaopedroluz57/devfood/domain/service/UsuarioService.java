@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
 
     private static final String MSG_USUARIO_EM_USO = "Usuário com o código %d não pode ser removido, pois está em uso";
+    private static final String MSG_USUARIO_JA_EXISTENTE_COM_MESMO_EMAIL = "Já existe um usuário cadastrado com o e-mail %s";
 
     private final UsuarioRepository usuarioRepository;
 
@@ -35,6 +37,14 @@ public class UsuarioService {
 
     @Transactional
     public Usuario salvar(Usuario usuario) {
+        usuarioRepository.detach(usuario);
+
+        Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
+
+        if (usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
+            throw new NegocioException(String.format(MSG_USUARIO_JA_EXISTENTE_COM_MESMO_EMAIL, usuario.getEmail()));
+        }
+
         return usuarioRepository.save(usuario);
     }
 
