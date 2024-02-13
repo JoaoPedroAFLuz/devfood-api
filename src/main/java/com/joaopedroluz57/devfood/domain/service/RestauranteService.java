@@ -4,6 +4,7 @@ import com.joaopedroluz57.devfood.domain.exception.EntidadeEmUsoException;
 import com.joaopedroluz57.devfood.domain.exception.RestauranteNaoEncontradoException;
 import com.joaopedroluz57.devfood.domain.model.Cidade;
 import com.joaopedroluz57.devfood.domain.model.Cozinha;
+import com.joaopedroluz57.devfood.domain.model.FormaPagamento;
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
 import com.joaopedroluz57.devfood.domain.repository.RestauranteRepository;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,13 +23,16 @@ public class RestauranteService {
     private final RestauranteRepository restauranteRepository;
     private final CozinhaService cozinhaService;
     private final CidadeService cidadeService;
+    private final FormaPagamentoService formaPagamentoService;
 
     public RestauranteService(RestauranteRepository restauranteRepository,
                               CozinhaService cozinhaService,
-                              CidadeService cidadeService) {
+                              CidadeService cidadeService,
+                              FormaPagamentoService formaPagamentoService) {
         this.restauranteRepository = restauranteRepository;
         this.cozinhaService = cozinhaService;
         this.cidadeService = cidadeService;
+        this.formaPagamentoService = formaPagamentoService;
     }
 
     public List<Restaurante> buscarTodos() {
@@ -71,6 +75,16 @@ public class RestauranteService {
     }
 
     @Transactional
+    public FormaPagamento associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = buscarOuFalharPorId(restauranteId);
+        FormaPagamento formaPagamento = formaPagamentoService.buscarOuFalharPorId(formaPagamentoId);
+
+        restaurante.adicionarFormaPagamento(formaPagamento);
+
+        return formaPagamento;
+    }
+
+    @Transactional
     public void ativar(Long restauranteId) {
         Restaurante restaurante = buscarOuFalharPorId(restauranteId);
 
@@ -96,6 +110,14 @@ public class RestauranteService {
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format(MSG_CIDADE_EM_USO, restauranteId));
         }
+    }
+
+    @Transactional
+    public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = buscarOuFalharPorId(restauranteId);
+        FormaPagamento formaPagamento = formaPagamentoService.buscarOuFalharPorId(formaPagamentoId);
+
+        restaurante.removerFormaPagamento(formaPagamento);
     }
 
 }
