@@ -3,13 +3,12 @@ package com.joaopedroluz57.devfood.api.controller;
 import com.joaopedroluz57.devfood.api.assembler.ProdutoInputDisassembler;
 import com.joaopedroluz57.devfood.api.assembler.ProdutoModelAssembler;
 import com.joaopedroluz57.devfood.api.model.ProdutoModel;
+import com.joaopedroluz57.devfood.api.model.input.ProdutoInput;
 import com.joaopedroluz57.devfood.domain.model.Produto;
 import com.joaopedroluz57.devfood.domain.service.ProdutoService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,5 +43,16 @@ public class RestauranteProdutoController {
 
         return produtoModelAssembler.toModel(produto);
     }
+
+    @PostMapping
+    public ProdutoModel adicionar(@PathVariable Long restauranteId, @RequestBody @Valid ProdutoInput produtoInput) {
+        Produto produto = produtoInputDisassembler.toDomainObject(produtoInput);
+
+        Produto produtoPersistido = produtoService.salvar(restauranteId, produto);
+
+        return produtoModelAssembler.toModel(produtoPersistido);
+    }
+
+    // TODO: rota de atualização de produto
 
 }
