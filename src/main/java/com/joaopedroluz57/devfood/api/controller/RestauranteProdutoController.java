@@ -53,6 +53,17 @@ public class RestauranteProdutoController {
         return produtoModelAssembler.toModel(produtoPersistido);
     }
 
-    // TODO: rota de atualização de produto
+    @PutMapping("/{produtoId}")
+    public ProdutoModel atualizar(@PathVariable Long restauranteId,
+                                  @PathVariable Long produtoId,
+                                  @RequestBody @Valid ProdutoInput produtoInput) {
+        Produto produtoAtual = produtoService.buscarOuFalharPorIdERestauranteId(produtoId, restauranteId);
+
+        produtoInputDisassembler.copyToDomainObject(produtoInput, produtoAtual);
+
+        Produto produtoPersistido = produtoService.salvar(restauranteId, produtoAtual);
+
+        return produtoModelAssembler.toModel(produtoPersistido);
+    }
 
 }
