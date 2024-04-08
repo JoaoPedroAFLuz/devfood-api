@@ -31,8 +31,14 @@ public class UsuarioGrupoController {
 
     @PutMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void associarGrupo(@PathVariable Long usuarioId, @PathVariable Long grupoId) {
+    public void associar(@PathVariable Long usuarioId, @PathVariable Long grupoId) {
         usuarioService.associarGrupo(usuarioId, grupoId);
+    }
+
+    @DeleteMapping("/{grupoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void desassociar(@PathVariable Long usuarioId, @PathVariable Long grupoId) {
+        usuarioService.desassociarGrupo(usuarioId, grupoId);
     }
 
 }

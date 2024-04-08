@@ -69,7 +69,15 @@ public class UsuarioService {
         Usuario usuario = buscarOuFalharPorId(usuarioId);
         Grupo grupo = grupoService.buscarOuFalharPorId(grupoId);
 
-        usuario.getGrupos().add(grupo);
+        usuario.adicionarGrupo(grupo);
+    }
+
+    @Transactional
+    public void desassociarGrupo(Long usuarioId, Long grupoId) {
+        Usuario usuario = buscarOuFalharPorId(usuarioId);
+        Grupo grupo = grupoService.buscarOuFalharPorId(grupoId);
+
+        usuario.removerGrupo(grupo);
     }
 
     @Transactional
