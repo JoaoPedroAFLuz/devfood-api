@@ -67,7 +67,8 @@ VALUES (1, 'Vitória da Conquista', 1),
 
 INSERT INTO restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao, endereco_cidade_id,
                          endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro, aberto)
-VALUES (1, 'Lanchonete do Brasil Brasileiro', 10, 1, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, 1, '38400-999', 'Rua João Pinheiro',
+VALUES (1, 'Lanchonete do Brasil Brasileiro', 10, 1, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, 1, '38400-999',
+        'Rua João Pinheiro',
         '1000',
         'Centro', TRUE);
 
@@ -116,7 +117,7 @@ VALUES (1, 'Sanduíche X-Tudo', 'Sandubão com muito queijo, hamburger bovino, b
 INSERT INTO grupo (id, nome)
 VALUES (1, 'Gerente'),
        (2, 'Vendedor'),
-       (3, 'Sercretária'),
+       (3, 'Secretária'),
        (4, 'Cadastrador');
 
 INSERT INTO permissao (id, nome, descricao)
@@ -131,4 +132,12 @@ VALUES (1, 1),
        (3, 1);
 
 INSERT INTO usuario (id, nome, email, senha, data_cadastro)
-VALUES (1, 'João Pedro', 'joao.pedro.luz@hotmail.com', '12345678', UTC_TIMESTAMP());
+VALUES (1, 'João Pedro', 'joao.pedro.luz@hotmail.com', '12345678', UTC_TIMESTAMP()),
+       (2, 'Mirella', 'mirella@hotmail.com', '12345678', UTC_TIMESTAMP());
+
+INSERT INTO usuario_grupo (usuario_id, grupo_id)
+VALUES (1, 1),
+       (1, 2),
+       (1, 4),
+       (2, 1),
+       (2, 3);

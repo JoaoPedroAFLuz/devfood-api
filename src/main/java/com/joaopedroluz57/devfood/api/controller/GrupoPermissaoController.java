@@ -21,6 +21,7 @@ public class GrupoPermissaoController {
         this.permissaoModelAssembler = permissaoModelAssembler;
     }
 
+
     @GetMapping
     public List<PermissaoModel> buscarTodas(@PathVariable Long grupoId) {
         return grupoService.buscarOuFalharPorId(grupoId).getPermissoes().stream()
