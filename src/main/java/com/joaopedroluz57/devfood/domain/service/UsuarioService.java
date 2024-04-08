@@ -3,6 +3,7 @@ package com.joaopedroluz57.devfood.domain.service;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeEmUsoException;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import com.joaopedroluz57.devfood.domain.exception.UsuarioNaoEncontradoException;
+import com.joaopedroluz57.devfood.domain.model.Grupo;
 import com.joaopedroluz57.devfood.domain.model.Usuario;
 import com.joaopedroluz57.devfood.domain.repository.UsuarioRepository;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,9 +21,11 @@ public class UsuarioService {
     private static final String MSG_USUARIO_JA_EXISTENTE_COM_MESMO_EMAIL = "Já existe um usuário cadastrado com o e-mail %s";
 
     private final UsuarioRepository usuarioRepository;
+    private final GrupoService grupoService;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, GrupoService grupoService) {
         this.usuarioRepository = usuarioRepository;
+        this.grupoService = grupoService;
     }
 
 
@@ -59,6 +62,14 @@ public class UsuarioService {
         }
 
         usuario.setSenha(novaSenha);
+    }
+
+    @Transactional
+    public void associarGrupo(Long usuarioId, Long grupoId) {
+        Usuario usuario = buscarOuFalharPorId(usuarioId);
+        Grupo grupo = grupoService.buscarOuFalharPorId(grupoId);
+
+        usuario.getGrupos().add(grupo);
     }
 
     @Transactional

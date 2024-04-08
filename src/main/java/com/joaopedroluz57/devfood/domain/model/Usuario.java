@@ -40,4 +40,12 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "grupo_id"))
     private Set<Grupo> grupos = new HashSet<>();
 
+    public void adicionarGrupo(Grupo grupo) {
+        getGrupos().add(grupo);
+    }
+
+    public void removerGrupo(Grupo grupo) {
+        getGrupos().remove(grupo);
+    }
+
 }

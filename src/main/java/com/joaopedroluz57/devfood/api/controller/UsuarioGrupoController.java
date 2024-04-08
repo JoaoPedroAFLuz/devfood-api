@@ -3,10 +3,8 @@ package com.joaopedroluz57.devfood.api.controller;
 import com.joaopedroluz57.devfood.api.assembler.GrupoModelAssembler;
 import com.joaopedroluz57.devfood.api.model.GrupoModel;
 import com.joaopedroluz57.devfood.domain.service.UsuarioService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,10 +23,16 @@ public class UsuarioGrupoController {
 
 
     @GetMapping
-    public List<GrupoModel> listar(@PathVariable Long usuarioId) {
+    public List<GrupoModel> buscarTodos(@PathVariable Long usuarioId) {
         return usuarioService.buscarOuFalharPorId(usuarioId).getGrupos().stream()
                 .map(grupoModelAssembler::toModel)
                 .collect(Collectors.toList());
+    }
+
+    @PutMapping("/{grupoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void associarGrupo(@PathVariable Long usuarioId, @PathVariable Long grupoId) {
+        usuarioService.associarGrupo(usuarioId, grupoId);
     }
 
 }
