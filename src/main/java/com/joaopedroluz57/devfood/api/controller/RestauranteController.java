@@ -129,6 +129,18 @@ public class RestauranteController {
         restauranteService.ativar(restauranteId);
     }
 
+    @PutMapping("/{restauranteId}/abertura")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void abertura(@PathVariable Long restauranteId) {
+        restauranteService.abrir(restauranteId);
+    }
+
+    @PutMapping("/{restauranteId}/fechamento")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void fechamento(@PathVariable Long restauranteId) {
+        restauranteService.fechar(restauranteId);
+    }
+
     @PatchMapping("/{restauranteId}")
     public RestauranteModel atualizarParcialmente(
             @PathVariable Long restauranteId, @RequestBody Map<String, Object> campos, HttpServletRequest request

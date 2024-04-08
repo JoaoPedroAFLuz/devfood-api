@@ -99,6 +99,20 @@ public class RestauranteService {
     }
 
     @Transactional
+    public void abrir(Long restauranteId) {
+        Restaurante restaurante = buscarOuFalharPorId(restauranteId);
+
+        restaurante.abrir();
+    }
+
+    @Transactional
+    public void fechar(Long restauranteId) {
+        Restaurante restaurante = buscarOuFalharPorId(restauranteId);
+
+        restaurante.fechar();
+    }
+
+    @Transactional
     public void excluir(Long restauranteId) {
         try {
             restauranteRepository.deleteById(restauranteId);

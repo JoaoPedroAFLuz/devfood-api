@@ -37,6 +37,9 @@ public class Restaurante {
     @Column(nullable = false)
     private Boolean ativo = Boolean.TRUE;
 
+    @Column(nullable = false)
+    private Boolean aberto = Boolean.FALSE;
+
     @Embedded
     private Endereco endereco;
 
@@ -63,6 +66,14 @@ public class Restaurante {
 
     public void desativar() {
         setAtivo(false);
+    }
+
+    public void abrir() {
+        setAberto(true);
+    }
+
+    public void fechar() {
+        setAberto(false);
     }
 
     public void adicionarFormaPagamento(FormaPagamento formaPagamento) {

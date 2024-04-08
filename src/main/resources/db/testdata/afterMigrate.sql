@@ -76,19 +76,19 @@ INSERT INTO cidade (id, nome, estado_id)
 VALUES (6, 'Juazeiro do Norte', 3);
 
 INSERT INTO restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao, endereco_cidade_id,
-                         endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro)
+                         endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro, aberto)
 VALUES (1, 'Thai Gourmet', 10, 1, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, 1, '38400-999', 'Rua João Pinheiro', '1000',
-        'Centro');
-INSERT INTO restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao)
-VALUES (2, 'Thai Delivery', 9.50, 1, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP);
-INSERT INTO restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao)
-VALUES (3, 'Tuk Tuk Comida Indiana', 15, 2, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP);
-INSERT INTO restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao)
-VALUES (4, 'Java Steakhouse', 12, 3, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP);
-INSERT INTO restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao)
-VALUES (5, 'Lanchonete do Tio Sam', 11, 4, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP);
-INSERT INTO restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao)
-VALUES (6, 'Bar da Maria', 6, 4, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP);
+        'Centro', true);
+INSERT INTO restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao, aberto)
+VALUES (2, 'Thai Delivery', 9.50, 1, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, true);
+INSERT INTO restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao, aberto)
+VALUES (3, 'Tuk Tuk Comida Indiana', 15, 2, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, true);
+INSERT INTO restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao, aberto)
+VALUES (4, 'Java Steakhouse', 12, 3, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, true);
+INSERT INTO restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao, aberto)
+VALUES (5, 'Lanchonete do Tio Sam', 11, 4, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, true);
+INSERT INTO restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao, aberto)
+VALUES (6, 'Bar da Maria', 6, 4, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, true);
 
 INSERT INTO forma_pagamento (id, descricao)
 VALUES (1, 'Cartão de crédito');
