@@ -35,7 +35,7 @@ public class ValorZeroIncluiDescricaoValidator implements ConstraintValidator<Va
                     .invoke(objetoValidacao);
 
             if (valor != null && BigDecimal.ZERO.compareTo(valor) == 0 && descricao != null) {
-                isValido = descricao.toLowerCase().contains(this.descricaoObrigatoria.toLowerCase());
+                isValido = descricao.toLowerCase().contains(descricaoObrigatoria.toLowerCase());
             }
 
             return isValido;

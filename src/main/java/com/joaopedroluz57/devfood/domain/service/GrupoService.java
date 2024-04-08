@@ -3,6 +3,7 @@ package com.joaopedroluz57.devfood.domain.service;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeEmUsoException;
 import com.joaopedroluz57.devfood.domain.exception.GrupoNaoEncontradoException;
 import com.joaopedroluz57.devfood.domain.model.Grupo;
+import com.joaopedroluz57.devfood.domain.model.Permissao;
 import com.joaopedroluz57.devfood.domain.repository.GrupoRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -17,9 +18,11 @@ public class GrupoService {
     private static final String MSG_GRUPO_EM_USO = "Grupo com o código %d não pode ser removido, pois está em uso";
 
     private final GrupoRepository grupoRepository;
+    private final PermissaoService permissaoService;
 
-    public GrupoService(GrupoRepository grupoRepository) {
+    public GrupoService(GrupoRepository grupoRepository, PermissaoService permissaoService) {
         this.grupoRepository = grupoRepository;
+        this.permissaoService = permissaoService;
     }
 
 
@@ -35,6 +38,22 @@ public class GrupoService {
     @Transactional
     public Grupo salvar(Grupo grupo) {
         return grupoRepository.save(grupo);
+    }
+
+    @Transactional
+    public void associarPermissao(Long grupoId, Long permissaoId) {
+        Grupo grupo = buscarOuFalharPorId(grupoId);
+        Permissao permissao = permissaoService.buscarOuFalharPorId(permissaoId);
+
+        grupo.adicionarPermissao(permissao);
+    }
+
+    @Transactional
+    public void desassociarPermissao(Long grupoId, Long permissaoId) {
+        Grupo grupo = buscarOuFalharPorId(grupoId);
+        Permissao permissao = permissaoService.buscarOuFalharPorId(permissaoId);
+
+        grupo.removerPermissao(permissao);
     }
 
     @Transactional
