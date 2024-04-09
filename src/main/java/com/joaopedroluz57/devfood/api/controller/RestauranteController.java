@@ -110,7 +110,8 @@ public class RestauranteController {
     }
 
     @PutMapping("/{restauranteId}")
-    public RestauranteModel atualizar(@PathVariable Long restauranteId, @RequestBody @Valid RestauranteInput restauranteInput) {
+    public RestauranteModel atualizar(@PathVariable Long restauranteId,
+                                      @RequestBody @Valid RestauranteInput restauranteInput) {
         Restaurante restauranteAtual = restauranteService.buscarOuFalharPorId(restauranteId);
 
         restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
@@ -125,8 +126,15 @@ public class RestauranteController {
     }
 
     @PutMapping("/{restauranteId}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void ativar(@PathVariable Long restauranteId) {
         restauranteService.ativar(restauranteId);
+    }
+
+    @PutMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativarMultiplos(@RequestBody List<Long> restauranteIds) {
+        restauranteService.ativar(restauranteIds);
     }
 
     @PutMapping("/{restauranteId}/abertura")
@@ -143,8 +151,7 @@ public class RestauranteController {
 
     @PatchMapping("/{restauranteId}")
     public RestauranteModel atualizarParcialmente(
-            @PathVariable Long restauranteId, @RequestBody Map<String, Object> campos, HttpServletRequest request
-    ) {
+            @PathVariable Long restauranteId, @RequestBody Map<String, Object> campos, HttpServletRequest request) {
         Restaurante restauranteAtual = restauranteService.buscarOuFalharPorId(restauranteId);
 
         merge(campos, restauranteAtual, request);

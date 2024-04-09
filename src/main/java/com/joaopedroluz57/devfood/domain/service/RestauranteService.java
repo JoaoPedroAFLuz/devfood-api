@@ -100,6 +100,13 @@ public class RestauranteService {
     }
 
     @Transactional
+    public void ativar(List<Long> restauranteIds) {
+        for (Long restauranteId : restauranteIds) {
+            ativar(restauranteId);
+        }
+    }
+
+    @Transactional
     public void desativar(Long restauranteId) {
         Restaurante restaurante = buscarOuFalharPorId(restauranteId);
 
@@ -149,6 +156,5 @@ public class RestauranteService {
             throw new EntidadeEmUsoException(String.format(MSG_CIDADE_EM_USO, restauranteId));
         }
     }
-
 
 }
