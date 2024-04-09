@@ -9,6 +9,7 @@ import com.joaopedroluz57.devfood.api.model.RestauranteModel;
 import com.joaopedroluz57.devfood.api.model.input.RestauranteInput;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
+import com.joaopedroluz57.devfood.domain.exception.RestauranteNaoEncontradoException;
 import com.joaopedroluz57.devfood.domain.exception.ValidacaoException;
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
 import com.joaopedroluz57.devfood.domain.service.RestauranteService;
@@ -134,7 +135,11 @@ public class RestauranteController {
     @PutMapping("/ativacoes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void ativarMultiplos(@RequestBody List<Long> restauranteIds) {
-        restauranteService.ativar(restauranteIds);
+        try {
+            restauranteService.ativar(restauranteIds);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @PutMapping("/{restauranteId}/abertura")
@@ -177,7 +182,11 @@ public class RestauranteController {
     @DeleteMapping("/ativacoes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void desativarMultiplos(@RequestBody List<Long> restauranteIds) {
-        restauranteService.desativar(restauranteIds);
+        try {
+            restauranteService.desativar(restauranteIds);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
