@@ -36,4 +36,10 @@ public class RestauranteUsuarioController {
         restauranteService.associarUsuario(restauranteId, usuarioId);
     }
 
+    @DeleteMapping("/{usuarioId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void desassociarUsuario(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
+        restauranteService.desassociarUsuario(restauranteId, usuarioId);
+    }
+
 }

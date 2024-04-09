@@ -94,7 +94,7 @@ public class Restaurante {
         this.getUsuarios().add(usuario);
     }
 
-    public void removerUsuario(Usuario usuario) {
+    public void desassociarUsuario(Usuario usuario) {
         this.getUsuarios().remove(usuario);
     }
 

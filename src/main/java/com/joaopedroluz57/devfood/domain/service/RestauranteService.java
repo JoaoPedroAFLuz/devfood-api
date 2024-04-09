@@ -142,4 +142,12 @@ public class RestauranteService {
         restaurante.removerFormaPagamento(formaPagamento);
     }
 
+    @Transactional
+    public void desassociarUsuario(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = buscarOuFalharPorId(restauranteId);
+        Usuario usuario = usuarioService.buscarOuFalharPorId(usuarioId);
+
+        restaurante.desassociarUsuario(usuario);
+    }
+
 }
