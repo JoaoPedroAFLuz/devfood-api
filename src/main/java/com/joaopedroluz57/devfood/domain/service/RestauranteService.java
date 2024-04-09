@@ -2,10 +2,7 @@ package com.joaopedroluz57.devfood.domain.service;
 
 import com.joaopedroluz57.devfood.domain.exception.EntidadeEmUsoException;
 import com.joaopedroluz57.devfood.domain.exception.RestauranteNaoEncontradoException;
-import com.joaopedroluz57.devfood.domain.model.Cidade;
-import com.joaopedroluz57.devfood.domain.model.Cozinha;
-import com.joaopedroluz57.devfood.domain.model.FormaPagamento;
-import com.joaopedroluz57.devfood.domain.model.Restaurante;
+import com.joaopedroluz57.devfood.domain.model.*;
 import com.joaopedroluz57.devfood.domain.repository.RestauranteRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -24,15 +21,18 @@ public class RestauranteService {
     private final CozinhaService cozinhaService;
     private final CidadeService cidadeService;
     private final FormaPagamentoService formaPagamentoService;
+    private final UsuarioService usuarioService;
 
     public RestauranteService(RestauranteRepository restauranteRepository,
                               CozinhaService cozinhaService,
                               CidadeService cidadeService,
-                              FormaPagamentoService formaPagamentoService) {
+                              FormaPagamentoService formaPagamentoService,
+                              UsuarioService usuarioService) {
         this.restauranteRepository = restauranteRepository;
         this.cozinhaService = cozinhaService;
         this.cidadeService = cidadeService;
         this.formaPagamentoService = formaPagamentoService;
+        this.usuarioService = usuarioService;
     }
 
     public List<Restaurante> buscarTodos() {
@@ -110,6 +110,14 @@ public class RestauranteService {
         Restaurante restaurante = buscarOuFalharPorId(restauranteId);
 
         restaurante.fechar();
+    }
+
+    @Transactional
+    public void associarUsuario(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = buscarOuFalharPorId(restauranteId);
+        Usuario usuario = usuarioService.buscarOuFalharPorId(usuarioId);
+
+        restaurante.associarUsuario(usuario);
     }
 
     @Transactional

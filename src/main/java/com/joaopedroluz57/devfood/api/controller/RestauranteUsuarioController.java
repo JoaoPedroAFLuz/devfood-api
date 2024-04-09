@@ -3,10 +3,8 @@ package com.joaopedroluz57.devfood.api.controller;
 import com.joaopedroluz57.devfood.api.assembler.UsuarioModelAssembler;
 import com.joaopedroluz57.devfood.api.model.UsuarioModel;
 import com.joaopedroluz57.devfood.domain.service.RestauranteService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,11 +22,18 @@ public class RestauranteUsuarioController {
         this.usuarioModelAssembler = usuarioModelAssembler;
     }
 
+
     @GetMapping
     public List<UsuarioModel> buscarTodos(@PathVariable Long restauranteId) {
         return restauranteService.buscarOuFalharPorId(restauranteId).getUsuarios().stream()
                 .map(usuarioModelAssembler::toModel)
                 .collect(Collectors.toList());
+    }
+
+    @PutMapping("/{usuarioId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void associarUsuario(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
+        restauranteService.associarUsuario(restauranteId, usuarioId);
     }
 
 }
