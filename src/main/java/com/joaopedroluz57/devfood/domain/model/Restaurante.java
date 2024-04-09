@@ -56,7 +56,7 @@ public class Restaurante {
     @JoinTable(name = "restaurante_usuario_responsavel",
             joinColumns = @JoinColumn(name = "restaurante_id"),
             inverseJoinColumns = @JoinColumn(name = "usuario_id"))
-    private Set<Usuario> usuarios = new HashSet<>();
+    private Set<Usuario> resposaveis = new HashSet<>();
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
@@ -90,12 +90,12 @@ public class Restaurante {
         this.getFormasPagamento().remove(formaPagamento);
     }
 
-    public void associarUsuario(Usuario usuario) {
-        this.getUsuarios().add(usuario);
+    public void adicionarResponsavel(Usuario usuario) {
+        this.getResposaveis().add(usuario);
     }
 
-    public void desassociarUsuario(Usuario usuario) {
-        this.getUsuarios().remove(usuario);
+    public void removerResponsavel(Usuario usuario) {
+        this.getResposaveis().remove(usuario);
     }
 
 }

@@ -85,6 +85,14 @@ public class RestauranteService {
     }
 
     @Transactional
+    public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = buscarOuFalharPorId(restauranteId);
+        FormaPagamento formaPagamento = formaPagamentoService.buscarOuFalharPorId(formaPagamentoId);
+
+        restaurante.removerFormaPagamento(formaPagamento);
+    }
+
+    @Transactional
     public void ativar(Long restauranteId) {
         Restaurante restaurante = buscarOuFalharPorId(restauranteId);
 
@@ -113,11 +121,19 @@ public class RestauranteService {
     }
 
     @Transactional
-    public void associarUsuario(Long restauranteId, Long usuarioId) {
+    public void adicionarResponsavel(Long restauranteId, Long usuarioId) {
         Restaurante restaurante = buscarOuFalharPorId(restauranteId);
         Usuario usuario = usuarioService.buscarOuFalharPorId(usuarioId);
 
-        restaurante.associarUsuario(usuario);
+        restaurante.adicionarResponsavel(usuario);
+    }
+
+    @Transactional
+    public void removerResponsavel(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = buscarOuFalharPorId(restauranteId);
+        Usuario usuario = usuarioService.buscarOuFalharPorId(usuarioId);
+
+        restaurante.removerResponsavel(usuario);
     }
 
     @Transactional
@@ -134,20 +150,5 @@ public class RestauranteService {
         }
     }
 
-    @Transactional
-    public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
-        Restaurante restaurante = buscarOuFalharPorId(restauranteId);
-        FormaPagamento formaPagamento = formaPagamentoService.buscarOuFalharPorId(formaPagamentoId);
-
-        restaurante.removerFormaPagamento(formaPagamento);
-    }
-
-    @Transactional
-    public void desassociarUsuario(Long restauranteId, Long usuarioId) {
-        Restaurante restaurante = buscarOuFalharPorId(restauranteId);
-        Usuario usuario = usuarioService.buscarOuFalharPorId(usuarioId);
-
-        restaurante.desassociarUsuario(usuario);
-    }
 
 }

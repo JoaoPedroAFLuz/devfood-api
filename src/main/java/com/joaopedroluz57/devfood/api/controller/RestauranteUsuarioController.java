@@ -25,21 +25,21 @@ public class RestauranteUsuarioController {
 
     @GetMapping
     public List<UsuarioModel> buscarTodos(@PathVariable Long restauranteId) {
-        return restauranteService.buscarOuFalharPorId(restauranteId).getUsuarios().stream()
+        return restauranteService.buscarOuFalharPorId(restauranteId).getResposaveis().stream()
                 .map(usuarioModelAssembler::toModel)
                 .collect(Collectors.toList());
     }
 
     @PutMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void associarUsuario(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
-        restauranteService.associarUsuario(restauranteId, usuarioId);
+    public void associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
+        restauranteService.adicionarResponsavel(restauranteId, usuarioId);
     }
 
     @DeleteMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void desassociarUsuario(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
-        restauranteService.desassociarUsuario(restauranteId, usuarioId);
+    public void desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
+        restauranteService.removerResponsavel(restauranteId, usuarioId);
     }
 
 }
