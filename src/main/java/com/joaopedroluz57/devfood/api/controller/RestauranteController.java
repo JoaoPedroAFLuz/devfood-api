@@ -174,6 +174,12 @@ public class RestauranteController {
         restauranteService.desativar(restauranteId);
     }
 
+    @DeleteMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void desativarMultiplos(@RequestBody List<Long> restauranteIds) {
+        restauranteService.desativar(restauranteIds);
+    }
+
     private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
         ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
 

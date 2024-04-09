@@ -114,6 +114,13 @@ public class RestauranteService {
     }
 
     @Transactional
+    public void desativar(List<Long> restauranteIds) {
+        for (Long restauranteId : restauranteIds) {
+            desativar(restauranteId);
+        }
+    }
+
+    @Transactional
     public void abrir(Long restauranteId) {
         Restaurante restaurante = buscarOuFalharPorId(restauranteId);
 
