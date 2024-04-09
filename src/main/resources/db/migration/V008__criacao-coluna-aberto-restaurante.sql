@@ -1,1 +1,2 @@
-alter table restaurante add aberto tinyint(1) not null default false;
+ALTER TABLE restaurante
+    ADD aberto TINYINT(1) NOT NULL DEFAULT FALSE;

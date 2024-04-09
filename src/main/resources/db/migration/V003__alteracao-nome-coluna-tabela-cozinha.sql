@@ -1,2 +1,2 @@
-alter table cozinha
-    change name nome varchar(60) not null;
+ALTER TABLE cozinha
+    CHANGE name nome VARCHAR(60) NOT NULL;

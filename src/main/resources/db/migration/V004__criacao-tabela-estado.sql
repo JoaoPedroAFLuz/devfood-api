@@ -1,32 +1,32 @@
-create table estado
+CREATE TABLE estado
 (
-    id   bigint      not null auto_increment,
-    nome varchar(60) not null,
-    sigla varchar(2) not null,
+    id    BIGINT      NOT NULL AUTO_INCREMENT,
+    nome  VARCHAR(60) NOT NULL,
+    sigla VARCHAR(2)  NOT NULL,
 
-    primary key (id)
-) engine = InnoDB
-  default charset = utf8;
+    PRIMARY KEY (id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
-insert into estado (nome)
-select nome_estado
-from cidade;
+INSERT INTO estado (nome)
+SELECT nome_estado
+FROM cidade;
 
-select *
-from estado e;
+SELECT *
+FROM estado e;
 
-alter table cidade
-    add column estado_id bigint not null;
+ALTER TABLE cidade
+    ADD COLUMN estado_id BIGINT NOT NULL;
 
-update cidade c
-set c.estado_id = (select e.id from estado e where e.nome = c.nome_estado);
+UPDATE cidade c
+SET c.estado_id = (SELECT e.id FROM estado e WHERE e.nome = c.nome_estado);
 
-alter table cidade
-    add constraint fk_cidade_estado
-        foreign key (estado_id) references estado (id);
+ALTER TABLE cidade
+    ADD CONSTRAINT fk_cidade_estado
+        FOREIGN KEY (estado_id) REFERENCES estado (id);
 
-alter table cidade
-    drop column nome_estado;
+ALTER TABLE cidade
+    DROP COLUMN nome_estado;
 
-alter table cidade
-    change nome_cidade nome varchar(80) not null;
+ALTER TABLE cidade
+    CHANGE nome_cidade nome VARCHAR(80) NOT NULL;

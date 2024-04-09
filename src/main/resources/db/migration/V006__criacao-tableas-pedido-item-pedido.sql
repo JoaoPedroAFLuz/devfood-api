@@ -1,50 +1,50 @@
-create table pedido
+CREATE TABLE pedido
 (
-    id                   bigint         not null auto_increment,
-    subtotal             decimal(10, 2) not null,
-    taxa_entrega         decimal(10, 2) not null,
-    valor_total          decimal(10, 2) not null,
+    id                   BIGINT         NOT NULL AUTO_INCREMENT,
+    subtotal             DECIMAL(10, 2) NOT NULL,
+    taxa_entrega         DECIMAL(10, 2) NOT NULL,
+    valor_total          DECIMAL(10, 2) NOT NULL,
 
-    restaurante_id       bigint         not null,
-    usuario_cliente_id   bigint         not null,
-    forma_pagamento_id   bigint         not null,
+    restaurante_id       BIGINT         NOT NULL,
+    usuario_cliente_id   BIGINT         NOT NULL,
+    forma_pagamento_id   BIGINT         NOT NULL,
 
-    endereco_cidade_id   bigint(20)     not null,
-    endereco_cep         varchar(9)     not null,
-    endereco_logradouro  varchar(100)   not null,
-    endereco_numero      varchar(20)    not null,
-    endereco_complemento varchar(60)    null,
-    endereco_bairro      varchar(60)    not null,
+    endereco_cidade_id   BIGINT(20)     NOT NULL,
+    endereco_cep         VARCHAR(9)     NOT NULL,
+    endereco_logradouro  VARCHAR(100)   NOT NULL,
+    endereco_numero      VARCHAR(20)    NOT NULL,
+    endereco_complemento VARCHAR(60)    NULL,
+    endereco_bairro      VARCHAR(60)    NOT NULL,
 
-    status               varchar(10)    not null,
-    data_criacao         datetime       not null,
-    data_confirmacao     datetime       null,
-    data_cancelamento    datetime       null,
-    data_entrega         datetime       null,
+    status               VARCHAR(10)    NOT NULL,
+    data_criacao         DATETIME       NOT NULL,
+    data_confirmacao     DATETIME       NULL,
+    data_cancelamento    DATETIME       NULL,
+    data_entrega         DATETIME       NULL,
 
-    primary key (id),
+    PRIMARY KEY (id),
 
-    constraint fk_pedido_endereco_cidade foreign key (endereco_cidade_id) references cidade (id),
-    constraint fk_pedido_restaurante foreign key (restaurante_id) references restaurante (id),
-    constraint fk_pedido_usuario_cliente foreign key (usuario_cliente_id) references usuario (id),
-    constraint fk_pedido_forma_pagamento foreign key (forma_pagamento_id) references forma_pagamento (id)
-) engine = InnoDB
-  default charset = utf8;
+    CONSTRAINT fk_pedido_endereco_cidade FOREIGN KEY (endereco_cidade_id) REFERENCES cidade (id),
+    CONSTRAINT fk_pedido_restaurante FOREIGN KEY (restaurante_id) REFERENCES restaurante (id),
+    CONSTRAINT fk_pedido_usuario_cliente FOREIGN KEY (usuario_cliente_id) REFERENCES usuario (id),
+    CONSTRAINT fk_pedido_forma_pagamento FOREIGN KEY (forma_pagamento_id) REFERENCES forma_pagamento (id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
-create table item_pedido
+CREATE TABLE item_pedido
 (
-    id             bigint         not null auto_increment,
-    quantidade     smallint(6)    not null,
-    preco_unitario decimal(10, 2) not null,
-    preco_total    decimal(10, 2) not null,
-    observacao     varchar(255)   null,
-    pedido_id      bigint         not null,
-    produto_id     bigint         not null,
+    id             BIGINT         NOT NULL AUTO_INCREMENT,
+    quantidade     SMALLINT(6)    NOT NULL,
+    preco_unitario DECIMAL(10, 2) NOT NULL,
+    preco_total    DECIMAL(10, 2) NOT NULL,
+    observacao     VARCHAR(255)   NULL,
+    pedido_id      BIGINT         NOT NULL,
+    produto_id     BIGINT         NOT NULL,
 
-    primary key (id),
-    unique key uk_item_pedido_produto (pedido_id, produto_id),
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_item_pedido_produto (pedido_id, produto_id),
 
-    constraint fk_item_pedido_pedido foreign key (pedido_id) references pedido (id),
-    constraint fk_item_pedido_produto foreign key (produto_id) references produto (id)
-) engine = InnoDB
-  default charset = utf8;
+    CONSTRAINT fk_item_pedido_pedido FOREIGN KEY (pedido_id) REFERENCES pedido (id),
+    CONSTRAINT fk_item_pedido_produto FOREIGN KEY (produto_id) REFERENCES produto (id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;

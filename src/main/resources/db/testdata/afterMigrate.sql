@@ -24,6 +24,8 @@ DELETE
 FROM usuario;
 DELETE
 FROM usuario_grupo;
+DELETE
+FROM restaurante_usuario_responsavel;
 
 SET foreign_key_checks = 1;
 
@@ -141,3 +143,7 @@ VALUES (1, 1),
        (1, 4),
        (2, 1),
        (2, 3);
+
+INSERT INTO restaurante_usuario_responsavel
+VALUES (1, 1),
+       (1, 2);

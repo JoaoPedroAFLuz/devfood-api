@@ -1,8 +1,8 @@
-create table cozinha
+CREATE TABLE cozinha
 (
-    id   bigint      not null auto_increment,
-    name varchar(60) not null,
+    id   BIGINT      NOT NULL AUTO_INCREMENT,
+    name VARCHAR(60) NOT NULL,
 
-    primary key (id)
-) engine = InnoDB
-  default charset = utf8;
+    PRIMARY KEY (id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;

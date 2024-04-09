@@ -1,2 +1,4 @@
-alter table restaurante add ativo tinyint(1) not null;
-update restaurante set ativo = true;
+ALTER TABLE restaurante
+    ADD ativo TINYINT(1) NOT NULL;
+UPDATE restaurante
+SET ativo = TRUE;

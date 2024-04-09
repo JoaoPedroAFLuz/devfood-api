@@ -29,7 +29,7 @@ public class Restaurante {
 
     @Column(nullable = false)
     private BigDecimal taxaEntrega;
-    
+
     @ManyToOne
     @JoinColumn(nullable = false)
     private Cozinha cozinha;
@@ -51,6 +51,12 @@ public class Restaurante {
 
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos;
+
+    @ManyToMany
+    @JoinTable(name = "restaurante_usuario_responsavel",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+    private Set<Usuario> usuarios = new HashSet<>();
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
@@ -82,6 +88,14 @@ public class Restaurante {
 
     public void removerFormaPagamento(FormaPagamento formaPagamento) {
         this.getFormasPagamento().remove(formaPagamento);
+    }
+
+    public void associarUsuario(Usuario usuario) {
+        this.getUsuarios().add(usuario);
+    }
+
+    public void removerUsuario(Usuario usuario) {
+        this.getUsuarios().remove(usuario);
     }
 
 }
