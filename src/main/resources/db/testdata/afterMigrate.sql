@@ -26,6 +26,10 @@ DELETE
 FROM usuario_grupo;
 DELETE
 FROM restaurante_usuario_responsavel;
+DELETE
+FROM pedido;
+DELETE
+FROM item_pedido;
 
 SET foreign_key_checks = 1;
 
@@ -75,7 +79,7 @@ VALUES (1, 'Lanchonete do Brasil Brasileiro', 10, 1, TRUE, UTC_TIMESTAMP, UTC_TI
         'Centro', TRUE);
 
 INSERT INTO restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao, aberto)
-VALUES (2, 'Bar da Maria', 6, 1, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, TRUE),
+VALUES (2, 'Bar da Maria', 0, 1, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, TRUE),
        (3, 'Thai Gourmet', 11, 2, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, TRUE),
        (4, 'Thai Delivery', 9.50, 2, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, TRUE),
        (5, 'Tuk Tuk Comida Indiana', 15, 3, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, TRUE),
@@ -101,18 +105,20 @@ VALUES (1, 1),
 
 INSERT INTO produto (id, nome, descricao, preco, ativo, restaurante_id)
 VALUES (1, 'Sanduíche X-Tudo', 'Sandubão com muito queijo, hamburger bovino, bacon, ovo, salada e maionese', 19, 1, 1),
-       (2, 'Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 2),
-       (3, 'Porco com molho agridoce', 'Deliciosa carne suína ao molho especial', 78.90, 1, 3),
-       (4, 'Camarão tailandês', '16 camarões grandes ao molho picante', 110, 1, 3),
-       (5, 'Salada picante com carne grelhada',
+       (2, 'Coca-Cola 350ml', 'Coca-Cola gelada', 5.5, 1, 1),
+       (3, 'Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 2),
+       (4, 'Coca-Cola 350ml', 'Coca-Cola gelada', 5, 1, 1),
+       (5, 'Porco com molho agridoce', 'Deliciosa carne suína ao molho especial', 78.90, 1, 3),
+       (6, 'Camarão tailandês', '16 camarões grandes ao molho picante', 110, 1, 3),
+       (7, 'Salada picante com carne grelhada',
         'Salada de folhas com cortes finos de carne bovina grelhada e nosso molho especial de pimenta vermelha', 87.20,
         1, 4),
-       (6, 'Garlic Naan', 'Pão tradicional indiano com cobertura de alho', 21, 1, 5),
-       (7, 'Murg Curry', 'Cubos de frango preparados com molho curry e especiarias', 43, 1, 5),
-       (8, 'Bife Ancho',
+       (8, 'Garlic Naan', 'Pão tradicional indiano com cobertura de alho', 21, 1, 5),
+       (9, 'Murg Curry', 'Cubos de frango preparados com molho curry e especiarias', 43, 1, 5),
+       (10, 'Bife Ancho',
         'Corte macio e suculento, com dois dedos de espessura, retirado da parte dianteira do contrafilé',
         79, 1, 6),
-       (9, 'T-Bone',
+       (11, 'T-Bone',
         'Corte muito saboroso, com um osso em formato de T, sendo de um lado o contrafilé e do outro o filé mignon', 89,
         1, 6);
 
@@ -147,3 +153,23 @@ VALUES (1, 1),
 INSERT INTO restaurante_usuario_responsavel
 VALUES (1, 1),
        (1, 2);
+
+INSERT INTO pedido (id, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
+                    endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao,
+                    subtotal, taxa_entrega, valor_total)
+VALUES (1, 1, 1, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil', 'CRIADO', UTC_TIMESTAMP,
+        24.5, 10, 34.5);
+
+INSERT INTO item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+VALUES (1, 1, 1, 1, 19, 19, 'Ao ponto'),
+       (2, 1, 2, 1, 5.5, 5.5, NULL);
+
+
+INSERT INTO pedido (id, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
+                    endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao,
+                    subtotal, taxa_entrega, valor_total)
+VALUES (2, 4, 2, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro', 'CRIADO', UTC_TIMESTAMP, 27, 0, 27);
+
+INSERT INTO item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+VALUES (3, 2, 3, 2, 8, 16, 'Com farinha'),
+       (4, 2, 4, 2, 5.5, 11, NULL);

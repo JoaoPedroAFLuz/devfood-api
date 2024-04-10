@@ -38,13 +38,14 @@ public class Pedido {
 
     private OffsetDateTime dataEntrega;
 
-    private StatusPedido status;
+    @Enumerated(EnumType.STRING)
+    private StatusPedido status = StatusPedido.CRIADO;
 
     @Embedded
     private Endereco enderecoEntrega;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "usuario_cliente_id", insertable = false, updatable = false, nullable = false)
     private Usuario cliente;
 
     @ManyToOne
@@ -57,5 +58,21 @@ public class Pedido {
 
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itens = new ArrayList<>();
+
+    public void calcularValorTotal() {
+        this.subtotal = getItens().stream()
+                .map(ItemPedido::getPrecoTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        this.valorTotal = this.subtotal.add(this.taxaEntrega);
+    }
+
+    public void definirFrete() {
+        setTaxaEntrega(getRestaurante().getTaxaEntrega());
+    }
+
+    public void atribuirPedidoAosItens() {
+        getItens().forEach(item -> item.setPedido(this));
+    }
 
 }
