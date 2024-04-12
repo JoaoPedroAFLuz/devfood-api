@@ -1,7 +1,9 @@
 package com.joaopedroluz57.devfood.api.controller;
 
 import com.joaopedroluz57.devfood.api.assembler.PedidoModelAssembler;
+import com.joaopedroluz57.devfood.api.assembler.PedidoResumidoModelAssembler;
 import com.joaopedroluz57.devfood.api.model.PedidoModel;
+import com.joaopedroluz57.devfood.api.model.PedidoResumidoModel;
 import com.joaopedroluz57.devfood.domain.model.Pedido;
 import com.joaopedroluz57.devfood.domain.service.PedidoService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,17 +20,21 @@ public class PedidoController {
 
     private final PedidoService pedidoService;
     private final PedidoModelAssembler pedidoModelAssembler;
+    private final PedidoResumidoModelAssembler pedidoResumidoModelAssembler;
 
-    public PedidoController(PedidoService pedidoService, PedidoModelAssembler pedidoModelAssembler) {
+    public PedidoController(PedidoService pedidoService,
+                            PedidoModelAssembler pedidoModelAssembler,
+                            PedidoResumidoModelAssembler pedidoResumidoModelAssembler) {
         this.pedidoService = pedidoService;
         this.pedidoModelAssembler = pedidoModelAssembler;
+        this.pedidoResumidoModelAssembler = pedidoResumidoModelAssembler;
     }
 
 
     @GetMapping
-    public List<PedidoModel> buscarTodos() {
+    public List<PedidoResumidoModel> buscarTodos() {
         return pedidoService.buscarTodos().stream()
-                .map(pedidoModelAssembler::toModel)
+                .map(pedidoResumidoModelAssembler::toModel)
                 .collect(Collectors.toList());
     }
 

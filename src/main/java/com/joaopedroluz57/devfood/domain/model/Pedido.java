@@ -48,7 +48,7 @@ public class Pedido {
     @JoinColumn(name = "usuario_cliente_id", insertable = false, updatable = false, nullable = false)
     private Usuario cliente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private FormaPagamento formaPagamento;
 
