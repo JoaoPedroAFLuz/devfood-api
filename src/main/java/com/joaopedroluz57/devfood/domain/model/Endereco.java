@@ -1,10 +1,12 @@
 package com.joaopedroluz57.devfood.domain.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Embeddable
 public class Endereco {
 

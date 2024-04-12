@@ -1,8 +1,9 @@
 package com.joaopedroluz57.devfood.domain.model;
 
 import com.joaopedroluz57.devfood.core.validation.ValorZeroIncluiDescricao;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -13,14 +14,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@ValorZeroIncluiDescricao(valorField = "taxaEntrega", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
-@Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ValorZeroIncluiDescricao(valorField = "taxaEntrega", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 public class Restaurante {
 
-    @EqualsAndHashCode.Include
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

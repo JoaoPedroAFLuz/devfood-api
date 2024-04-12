@@ -51,6 +51,10 @@ ALTER TABLE restaurante
     AUTO_INCREMENT = 1;
 ALTER TABLE usuario
     AUTO_INCREMENT = 1;
+ALTER TABLE pedido
+    AUTO_INCREMENT = 1;
+ALTER TABLE item_pedido
+    AUTO_INCREMENT = 1;
 
 INSERT INTO cozinha (id, nome)
 VALUES (1, 'Brasileira'),
@@ -73,10 +77,8 @@ VALUES (1, 'Vitória da Conquista', 1),
 
 INSERT INTO restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao, endereco_cidade_id,
                          endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro, aberto)
-VALUES (1, 'Lanchonete do Brasil Brasileiro', 10, 1, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, 1, '38400-999',
-        'Rua João Pinheiro',
-        '1000',
-        'Centro', TRUE);
+VALUES (1, 'Lanchonete do Brasil Brasileiro', 10, 1, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, 1, '45005-000',
+        'Rua João Pinheiro', '1000', 'Centro', TRUE);
 
 INSERT INTO restaurante (id, nome, taxa_entrega, cozinha_id, ativo, data_cadastro, data_atualizacao, aberto)
 VALUES (2, 'Bar da Maria', 0, 1, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, TRUE),
@@ -116,8 +118,7 @@ VALUES (1, 'Sanduíche X-Tudo', 'Sandubão com muito queijo, hamburger bovino, b
        (8, 'Garlic Naan', 'Pão tradicional indiano com cobertura de alho', 21, 1, 5),
        (9, 'Murg Curry', 'Cubos de frango preparados com molho curry e especiarias', 43, 1, 5),
        (10, 'Bife Ancho',
-        'Corte macio e suculento, com dois dedos de espessura, retirado da parte dianteira do contrafilé',
-        79, 1, 6),
+        'Corte macio e suculento, com dois dedos de espessura, retirado da parte dianteira do contrafilé', 79, 1, 6),
        (11, 'T-Bone',
         'Corte muito saboroso, com um osso em formato de T, sendo de um lado o contrafilé e do outro o filé mignon', 89,
         1, 6);

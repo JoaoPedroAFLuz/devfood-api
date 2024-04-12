@@ -1,18 +1,23 @@
 package com.joaopedroluz57.devfood.core.modelmapper;
 
 import com.joaopedroluz57.devfood.api.model.EnderecoModel;
+import com.joaopedroluz57.devfood.api.model.input.ItemPedidoInput;
 import com.joaopedroluz57.devfood.domain.model.Endereco;
+import com.joaopedroluz57.devfood.domain.model.ItemPedido;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
-@Component
+@Configuration
 public class ModelMapperConfig {
 
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
+
+        modelMapper.createTypeMap(ItemPedidoInput.class, ItemPedido.class)
+                .addMappings(mapper -> mapper.skip(ItemPedido::setId));
 
         TypeMap<Endereco, EnderecoModel> enderecoToEnderecoModelTypeMap = modelMapper
                 .createTypeMap(Endereco.class, EnderecoModel.class);
