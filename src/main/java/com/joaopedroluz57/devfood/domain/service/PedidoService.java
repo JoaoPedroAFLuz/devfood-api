@@ -118,6 +118,21 @@ public class PedidoService {
     }
 
     @Transactional
+    public void encaminhar(Long pedidoId) {
+        Pedido pedido = buscarOuFalharPorId(pedidoId);
+
+        if (!pedido.getStatus().equals(StatusPedido.CONFIRMADO)) {
+            throw new NegocioException(
+                    String.format("Status do pedido %d não pode ser alterado de %s para %s",
+                            pedido.getId(), pedido.getStatus().getDescricao(), StatusPedido.A_CAMINHO.getDescricao())
+            );
+        }
+
+        pedido.setStatus(StatusPedido.A_CAMINHO);
+        pedido.setDataEncaminhamento(OffsetDateTime.now());
+    }
+
+    @Transactional
     public void cancelar(Long pedidoId) {
         Pedido pedido = buscarOuFalharPorId(pedidoId);
 
@@ -136,7 +151,7 @@ public class PedidoService {
     public void entregar(Long pedidoId) {
         Pedido pedido = buscarOuFalharPorId(pedidoId);
 
-        if (!pedido.getStatus().equals(StatusPedido.CONFIRMADO)) {
+        if (!pedido.getStatus().equals(StatusPedido.A_CAMINHO)) {
             throw new NegocioException(
                     String.format("Status do pedido %d não pode ser alterado de %s para %s",
                             pedido.getId(), pedido.getStatus().getDescricao(), StatusPedido.ENTREGUE.getDescricao())

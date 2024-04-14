@@ -57,6 +57,8 @@ public class Pedido {
 
     private OffsetDateTime dataCancelamento;
 
+    private OffsetDateTime dataEncaminhamento;
+
     private OffsetDateTime dataEntrega;
 
     @CreationTimestamp
