@@ -117,5 +117,20 @@ public class PedidoService {
         pedido.setDataConfirmacao(OffsetDateTime.now());
     }
 
+    @Transactional
+    public void cancelar(Long pedidoId) {
+        Pedido pedido = buscarOuFalharPorId(pedidoId);
+
+        if (!pedido.getStatus().equals(StatusPedido.CRIADO)) {
+            throw new NegocioException(
+                    String.format("Status do pedido %d não pode ser alterado de %s para %s",
+                            pedido.getId(), pedido.getStatus().getDescricao(), StatusPedido.CANCELADO.getDescricao())
+            );
+        }
+
+        pedido.setStatus(StatusPedido.CANCELADO);
+        pedido.setDataConfirmacao(OffsetDateTime.now());
+    }
+
 }
 
