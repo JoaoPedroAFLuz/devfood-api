@@ -1,6 +1,5 @@
 package com.joaopedroluz57.devfood.domain.service;
 
-import com.joaopedroluz57.devfood.domain.enums.StatusPedido;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import com.joaopedroluz57.devfood.domain.exception.PedidoNaoEncontradoException;
 import com.joaopedroluz57.devfood.domain.model.*;
@@ -8,7 +7,6 @@ import com.joaopedroluz57.devfood.domain.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -106,60 +104,28 @@ public class PedidoService {
     public void confirmar(Long pedidoId) {
         Pedido pedido = buscarOuFalharPorId(pedidoId);
 
-        if (!pedido.getStatus().equals(StatusPedido.CRIADO)) {
-            throw new NegocioException(
-                    String.format("Status do pedido %d não pode ser alterado de %s para %s",
-                            pedido.getId(), pedido.getStatus().getDescricao(), StatusPedido.CONFIRMADO.getDescricao())
-            );
-        }
-
-        pedido.setStatus(StatusPedido.CONFIRMADO);
-        pedido.setDataConfirmacao(OffsetDateTime.now());
+        pedido.confirmar();
     }
 
     @Transactional
     public void encaminhar(Long pedidoId) {
         Pedido pedido = buscarOuFalharPorId(pedidoId);
 
-        if (!pedido.getStatus().equals(StatusPedido.CONFIRMADO)) {
-            throw new NegocioException(
-                    String.format("Status do pedido %d não pode ser alterado de %s para %s",
-                            pedido.getId(), pedido.getStatus().getDescricao(), StatusPedido.A_CAMINHO.getDescricao())
-            );
-        }
-
-        pedido.setStatus(StatusPedido.A_CAMINHO);
-        pedido.setDataEncaminhamento(OffsetDateTime.now());
-    }
-
-    @Transactional
-    public void cancelar(Long pedidoId) {
-        Pedido pedido = buscarOuFalharPorId(pedidoId);
-
-        if (!pedido.getStatus().equals(StatusPedido.CRIADO)) {
-            throw new NegocioException(
-                    String.format("Status do pedido %d não pode ser alterado de %s para %s",
-                            pedido.getId(), pedido.getStatus().getDescricao(), StatusPedido.CANCELADO.getDescricao())
-            );
-        }
-
-        pedido.setStatus(StatusPedido.CANCELADO);
-        pedido.setDataCancelamento(OffsetDateTime.now());
+        pedido.encaminhar();
     }
 
     @Transactional
     public void entregar(Long pedidoId) {
         Pedido pedido = buscarOuFalharPorId(pedidoId);
 
-        if (!pedido.getStatus().equals(StatusPedido.A_CAMINHO)) {
-            throw new NegocioException(
-                    String.format("Status do pedido %d não pode ser alterado de %s para %s",
-                            pedido.getId(), pedido.getStatus().getDescricao(), StatusPedido.ENTREGUE.getDescricao())
-            );
-        }
+        pedido.entregar();
+    }
 
-        pedido.setStatus(StatusPedido.ENTREGUE);
-        pedido.setDataEntrega(OffsetDateTime.now());
+    @Transactional
+    public void cancelar(Long pedidoId) {
+        Pedido pedido = buscarOuFalharPorId(pedidoId);
+
+        pedido.cancelar();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.joaopedroluz57.devfood.domain.model;
 
 import com.joaopedroluz57.devfood.domain.enums.StatusPedido;
+import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -72,6 +73,37 @@ public class Pedido {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         this.valorTotal = this.subtotal.add(this.taxaEntrega);
+    }
+
+    public void confirmar() {
+        this.setStatus(StatusPedido.CONFIRMADO);
+        this.setDataConfirmacao(OffsetDateTime.now());
+    }
+
+    public void encaminhar() {
+        this.setStatus(StatusPedido.A_CAMINHO);
+        this.setDataEncaminhamento(OffsetDateTime.now());
+    }
+
+    public void entregar() {
+        this.setStatus(StatusPedido.ENTREGUE);
+        this.setDataEntrega(OffsetDateTime.now());
+    }
+
+    public void cancelar() {
+        this.setStatus(StatusPedido.CANCELADO);
+        this.setDataCancelamento(OffsetDateTime.now());
+    }
+
+    private void setStatus(StatusPedido novoStatus) {
+        if (getStatus().naoPodeAlterarPara(novoStatus)) {
+            throw new NegocioException(
+                    String.format("Status do pedido %d não pode ser alterado de %s para %s",
+                            getId(), getStatus().getDescricao(), novoStatus.getDescricao())
+            );
+        }
+
+        this.status = novoStatus;
     }
 
 }
