@@ -8,6 +8,7 @@ import com.joaopedroluz57.devfood.api.model.PedidoResumidoModel;
 import com.joaopedroluz57.devfood.api.model.input.PedidoInput;
 import com.joaopedroluz57.devfood.domain.model.Pedido;
 import com.joaopedroluz57.devfood.domain.service.PedidoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -55,6 +56,12 @@ public class PedidoController {
         Pedido pedidoPersistido = pedidoService.emitir(pedido);
 
         return pedidoModelAssembler.toModel(pedidoPersistido);
+    }
+
+    @PutMapping("/{pedidoId}/confirmacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void confirmar(@PathVariable Long pedidoId) {
+        pedidoService.confirmar(pedidoId);
     }
 
 }

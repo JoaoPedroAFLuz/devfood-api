@@ -1,11 +1,14 @@
 package com.joaopedroluz57.devfood.domain.service;
 
+import com.joaopedroluz57.devfood.domain.enums.StatusPedido;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import com.joaopedroluz57.devfood.domain.exception.PedidoNaoEncontradoException;
 import com.joaopedroluz57.devfood.domain.model.*;
 import com.joaopedroluz57.devfood.domain.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,10 +46,12 @@ public class PedidoService {
                 .orElseThrow(() -> new PedidoNaoEncontradoException(pedidoId));
     }
 
+    @Transactional
     public Pedido salvar(Pedido pedido) {
         return pedidoRepository.save(pedido);
     }
 
+    @Transactional
     public Pedido emitir(Pedido pedido) {
         validarPedido(pedido);
         validarItens(pedido);
@@ -95,6 +100,21 @@ public class PedidoService {
             item.setProduto(produto);
             item.setPrecoUnitario(produto.getPreco());
         });
+    }
+
+    @Transactional
+    public void confirmar(Long pedidoId) {
+        Pedido pedido = buscarOuFalharPorId(pedidoId);
+
+        if (!pedido.getStatus().equals(StatusPedido.CRIADO)) {
+            throw new NegocioException(
+                    String.format("Status do pedido %d não pode ser alterado de %s para %s",
+                            pedido.getId(), pedido.getStatus().getDescricao(), StatusPedido.CONFIRMADO.getDescricao())
+            );
+        }
+
+        pedido.setStatus(StatusPedido.CONFIRMADO);
+        pedido.setDataConfirmacao(OffsetDateTime.now());
     }
 
 }
