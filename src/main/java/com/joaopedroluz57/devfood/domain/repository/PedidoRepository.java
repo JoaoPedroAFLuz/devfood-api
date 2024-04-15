@@ -4,6 +4,8 @@ import com.joaopedroluz57.devfood.domain.model.Pedido;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface PedidoRepository extends CustomJpaRepository<Pedido, Long> {
 
@@ -12,5 +14,7 @@ public interface PedidoRepository extends CustomJpaRepository<Pedido, Long> {
             "JOIN p.restaurante r " +
             "JOIN FETCH r.cozinha")
     List<Pedido> findAll();
+
+    Optional<Pedido> findByCodigo(UUID codigoPedido);
 
 }

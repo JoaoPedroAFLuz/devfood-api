@@ -5,12 +5,13 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class PedidoResumidoModel {
 
-    private Long id;
+    private UUID codigo;
     private BigDecimal subTotal;
     private BigDecimal taxaEntrega;
     private BigDecimal valorTotal;

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class PedidoService {
@@ -39,9 +40,9 @@ public class PedidoService {
         return pedidoRepository.findAll();
     }
 
-    public Pedido buscarOuFalharPorId(Long pedidoId) {
-        return pedidoRepository.findById(pedidoId)
-                .orElseThrow(() -> new PedidoNaoEncontradoException(pedidoId));
+    public Pedido buscarOuFalharPorCodigo(UUID codigoPedido) {
+        return pedidoRepository.findByCodigo(codigoPedido)
+                .orElseThrow(() -> new PedidoNaoEncontradoException(codigoPedido));
     }
 
     @Transactional
@@ -101,29 +102,29 @@ public class PedidoService {
     }
 
     @Transactional
-    public void confirmar(Long pedidoId) {
-        Pedido pedido = buscarOuFalharPorId(pedidoId);
+    public void confirmar(UUID codigoPedido) {
+        Pedido pedido = buscarOuFalharPorCodigo(codigoPedido);
 
         pedido.confirmar();
     }
 
     @Transactional
-    public void encaminhar(Long pedidoId) {
-        Pedido pedido = buscarOuFalharPorId(pedidoId);
+    public void encaminhar(UUID codigoPedido) {
+        Pedido pedido = buscarOuFalharPorCodigo(codigoPedido);
 
         pedido.encaminhar();
     }
 
     @Transactional
-    public void entregar(Long pedidoId) {
-        Pedido pedido = buscarOuFalharPorId(pedidoId);
+    public void entregar(UUID codigoPedido) {
+        Pedido pedido = buscarOuFalharPorCodigo(codigoPedido);
 
         pedido.entregar();
     }
 
     @Transactional
-    public void cancelar(Long pedidoId) {
-        Pedido pedido = buscarOuFalharPorId(pedidoId);
+    public void cancelar(UUID codigoPedido) {
+        Pedido pedido = buscarOuFalharPorCodigo(codigoPedido);
 
         pedido.cancelar();
     }

@@ -6,12 +6,13 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class PedidoModel {
 
-    private Long id;
+    private UUID codigo;
     private BigDecimal subTotal;
     private BigDecimal taxaEntrega;
     private BigDecimal valorTotal;

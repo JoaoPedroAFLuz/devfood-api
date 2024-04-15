@@ -155,10 +155,10 @@ INSERT INTO restaurante_usuario_responsavel
 VALUES (1, 1),
        (1, 2);
 
-INSERT INTO pedido (id, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
+INSERT INTO pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
                     endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao,
                     subtotal, taxa_entrega, valor_total)
-VALUES (1, 1, 1, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil', 'CRIADO', UTC_TIMESTAMP,
+VALUES (1, '11e02651-0531-4f9c-b903-940a8e354385', 1, 1, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil', 'CRIADO', UTC_TIMESTAMP,
         24.5, 10, 34.5);
 
 INSERT INTO item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
@@ -166,10 +166,10 @@ VALUES (1, 1, 1, 1, 19, 19, 'Ao ponto'),
        (2, 1, 2, 1, 5.5, 5.5, NULL);
 
 
-INSERT INTO pedido (id, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
+INSERT INTO pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
                     endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status, data_criacao,
                     subtotal, taxa_entrega, valor_total)
-VALUES (2, 4, 2, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro', 'CRIADO', UTC_TIMESTAMP, 27, 0, 27);
+VALUES (2, '1d5e5ad2-299b-45be-94f8-a73026c2aa77' ,4, 2, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro', 'CRIADO', UTC_TIMESTAMP, 27, 0, 27);
 
 INSERT INTO item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
 VALUES (3, 2, 3, 2, 8, 16, 'Com farinha'),

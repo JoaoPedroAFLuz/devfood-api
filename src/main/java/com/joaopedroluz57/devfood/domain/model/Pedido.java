@@ -6,12 +6,14 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -23,6 +25,10 @@ public class Pedido {
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    @Type(type = "org.hibernate.type.UUIDCharType")
+    private UUID codigo;
 
     @Column(nullable = false)
     private BigDecimal subtotal;
@@ -65,6 +71,22 @@ public class Pedido {
     @CreationTimestamp
     private OffsetDateTime dataCriacao;
 
+    @PrePersist
+    private void gerarCodigo() {
+        this.setCodigo(UUID.randomUUID());
+    }
+
+    private void setStatus(StatusPedido novoStatus) {
+        if (getStatus().naoPodeAlterarPara(novoStatus)) {
+            throw new NegocioException(
+                    String.format("Status do pedido %s não pode ser alterado de %s para %s",
+                            getCodigo(), getStatus().getDescricao(), novoStatus.getDescricao())
+            );
+        }
+
+        this.status = novoStatus;
+    }
+
     public void calcularValorTotal() {
         getItens().forEach(ItemPedido::calcularPrecoTotal);
 
@@ -93,17 +115,6 @@ public class Pedido {
     public void cancelar() {
         this.setStatus(StatusPedido.CANCELADO);
         this.setDataCancelamento(OffsetDateTime.now());
-    }
-
-    private void setStatus(StatusPedido novoStatus) {
-        if (getStatus().naoPodeAlterarPara(novoStatus)) {
-            throw new NegocioException(
-                    String.format("Status do pedido %d não pode ser alterado de %s para %s",
-                            getId(), getStatus().getDescricao(), novoStatus.getDescricao())
-            );
-        }
-
-        this.status = novoStatus;
     }
 
 }

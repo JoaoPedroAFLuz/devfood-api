@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -42,9 +43,9 @@ public class PedidoController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{pedidoId}")
-    public PedidoModel buscarTodos(@PathVariable Long pedidoId) {
-        Pedido pedido = pedidoService.buscarOuFalharPorId(pedidoId);
+    @GetMapping("/{codigoPedido}")
+    public PedidoModel buscarTodos(@PathVariable UUID codigoPedido) {
+        Pedido pedido = pedidoService.buscarOuFalharPorCodigo(codigoPedido);
 
         return pedidoModelAssembler.toModel(pedido);
     }
@@ -58,28 +59,28 @@ public class PedidoController {
         return pedidoModelAssembler.toModel(pedidoPersistido);
     }
 
-    @PutMapping("/{pedidoId}/confirmacao")
+    @PutMapping("/{codigoPedido}/confirmacao")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void confirmar(@PathVariable Long pedidoId) {
-        pedidoService.confirmar(pedidoId);
+    public void confirmar(@PathVariable UUID codigoPedido) {
+        pedidoService.confirmar(codigoPedido);
     }
 
-    @PutMapping("/{pedidoId}/encaminho")
+    @PutMapping("/{codigoPedido}/encaminho")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void encaminhar(@PathVariable Long pedidoId) {
-        pedidoService.encaminhar(pedidoId);
+    public void encaminhar(@PathVariable UUID codigoPedido) {
+        pedidoService.encaminhar(codigoPedido);
     }
 
-    @PutMapping("/{pedidoId}/cancelamento")
+    @PutMapping("/{codigoPedido}/cancelamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void cancelar(@PathVariable Long pedidoId) {
-        pedidoService.cancelar(pedidoId);
+    public void cancelar(@PathVariable UUID codigoPedido) {
+        pedidoService.cancelar(codigoPedido);
     }
 
-    @PutMapping("/{pedidoId}/entrega")
+    @PutMapping("/{codigoPedido}/entrega")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void entregar(@PathVariable Long pedidoId) {
-        pedidoService.entregar(pedidoId);
+    public void entregar(@PathVariable UUID codigoPedido) {
+        pedidoService.entregar(codigoPedido);
     }
 
 }
