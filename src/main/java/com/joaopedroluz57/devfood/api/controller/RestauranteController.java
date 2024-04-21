@@ -1,5 +1,6 @@
 package com.joaopedroluz57.devfood.api.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.joaopedroluz57.devfood.api.assembler.RestauranteInputAssembler;
@@ -7,6 +8,7 @@ import com.joaopedroluz57.devfood.api.assembler.RestauranteInputDisassembler;
 import com.joaopedroluz57.devfood.api.assembler.RestauranteModelAssembler;
 import com.joaopedroluz57.devfood.api.model.RestauranteModel;
 import com.joaopedroluz57.devfood.api.model.input.RestauranteInput;
+import com.joaopedroluz57.devfood.api.view.RestauranteView;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import com.joaopedroluz57.devfood.domain.exception.RestauranteNaoEncontradoException;
@@ -34,32 +36,56 @@ import java.util.stream.Collectors;
 @RequestMapping("/restaurantes")
 public class RestauranteController {
 
-    private final RestauranteService restauranteService;
     private final SmartValidator validator;
+    private final RestauranteService restauranteService;
     private final RestauranteModelAssembler restauranteModelAssembler;
     private final RestauranteInputAssembler restauranteInputAssembler;
     private final RestauranteInputDisassembler restauranteInputDisassembler;
 
-    public RestauranteController(RestauranteService restauranteService,
-                                 SmartValidator validator,
+    public RestauranteController(SmartValidator validator,
+                                 RestauranteService restauranteService,
                                  RestauranteModelAssembler restauranteModelAssembler,
                                  RestauranteInputAssembler restauranteInputAssembler,
                                  RestauranteInputDisassembler restauranteInputDisassembler) {
-        this.restauranteService = restauranteService;
         this.validator = validator;
+        this.restauranteService = restauranteService;
         this.restauranteModelAssembler = restauranteModelAssembler;
         this.restauranteInputAssembler = restauranteInputAssembler;
         this.restauranteInputDisassembler = restauranteInputDisassembler;
-
     }
 
 
     @GetMapping()
+    @JsonView(RestauranteView.Resumo.class)
     public List<RestauranteModel> buscarTodos() {
         return restauranteService.buscarTodos().stream()
                 .map(restauranteModelAssembler::toModel)
                 .collect(Collectors.toList());
     }
+
+    @GetMapping(params = "projecao=apenas-nome")
+    @JsonView(RestauranteView.ApenasNome.class)
+    public List<RestauranteModel> buscarTodosNomes() {
+        return buscarTodos();
+    }
+
+//    @GetMapping()
+//    public MappingJacksonValue buscarTodos(@RequestParam(required = false) String projecao) {
+//        List<RestauranteModel> restaurantesModel = restauranteService.buscarTodos().stream()
+//                .map(restauranteModelAssembler::toModel)
+//                .collect(Collectors.toList());
+//
+//        MappingJacksonValue restaurantesWrapper = new MappingJacksonValue(restaurantesModel);
+//        restaurantesWrapper.setSerializationView(RestauranteView.Resumo.class);
+//
+//        if ("completo".equals(projecao)) {
+//            restaurantesWrapper.setSerializationView(null);
+//        } else if ("apenas-nome".equals(projecao)) {
+//            restaurantesWrapper.setSerializationView(RestauranteView.ApenasNome.class);
+//        }
+//
+//        return restaurantesWrapper;
+//    }
 
     @GetMapping("/{restauranteId}")
     public RestauranteModel buscarPorId(@PathVariable Long restauranteId) {
