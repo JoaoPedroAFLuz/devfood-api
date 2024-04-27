@@ -1,6 +1,5 @@
 package com.joaopedroluz57.devfood.api.model;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@JsonFilter("pedidoFilter")
+//@JsonFilter("pedidoFilter")
 public class PedidoResumidoModel {
 
     private UUID codigo;
