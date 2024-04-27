@@ -30,9 +30,15 @@ public class RestauranteProdutoController {
 
 
     @GetMapping
-    public List<ProdutoModel> buscarTodos(@PathVariable Long restauranteId) {
-        return produtoService.buscarPorRestauranteId(restauranteId)
-                .stream()
+    public List<ProdutoModel> buscarTodos(@PathVariable Long restauranteId,
+                                          @RequestParam(required = false) boolean incluirInativos) {
+        if (incluirInativos) {
+            return produtoService.buscarPorRestauranteId(restauranteId).stream()
+                    .map(produtoModelAssembler::toModel)
+                    .collect(Collectors.toList());
+        }
+
+        return produtoService.buscarAtivosPorRestauranteId(restauranteId).stream()
                 .map(produtoModelAssembler::toModel)
                 .collect(Collectors.toList());
     }

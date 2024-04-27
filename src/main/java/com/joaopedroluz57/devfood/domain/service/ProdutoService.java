@@ -23,6 +23,10 @@ public class ProdutoService {
         return produtoRepository.findByRestauranteId(restauranteId);
     }
 
+    public List<Produto> buscarAtivosPorRestauranteId(Long restauranteId) {
+        return produtoRepository.findByRestauranteIdAndAtivoIsTrue(restauranteId);
+    }
+
     public Produto buscarOuFalharPorIdERestauranteId(Long produtoId, Long restauranteId) {
         return produtoRepository.findByIdAndRestauranteId(produtoId, restauranteId)
                 .orElseThrow(() -> new ProdutoNaoEncontradoException(produtoId, restauranteId));
