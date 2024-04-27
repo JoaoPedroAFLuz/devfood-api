@@ -7,6 +7,7 @@ import com.joaopedroluz57.devfood.api.model.PedidoModel;
 import com.joaopedroluz57.devfood.api.model.PedidoResumidoModel;
 import com.joaopedroluz57.devfood.api.model.input.PedidoInput;
 import com.joaopedroluz57.devfood.domain.model.Pedido;
+import com.joaopedroluz57.devfood.domain.repository.filter.PedidoFilter;
 import com.joaopedroluz57.devfood.domain.service.PedidoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -36,8 +37,8 @@ public class PedidoController {
     }
 
     @GetMapping
-    public List<PedidoResumidoModel> buscarTodos() {
-        return pedidoService.buscarTodos().stream()
+    public List<PedidoResumidoModel> buscarTodos(PedidoFilter filtro) {
+        return pedidoService.buscarTodos(filtro).stream()
                 .map(pedidoResumidoModelAssembler::toModel)
                 .collect(Collectors.toList());
     }

@@ -4,6 +4,8 @@ import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import com.joaopedroluz57.devfood.domain.exception.PedidoNaoEncontradoException;
 import com.joaopedroluz57.devfood.domain.model.*;
 import com.joaopedroluz57.devfood.domain.repository.PedidoRepository;
+import com.joaopedroluz57.devfood.domain.repository.filter.PedidoFilter;
+import com.joaopedroluz57.devfood.infrastructure.repository.spec.PedidoSpecs;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +38,8 @@ public class PedidoService {
     }
 
 
-    public List<Pedido> buscarTodos() {
-        return pedidoRepository.findAll();
+    public List<Pedido> buscarTodos(PedidoFilter filtro) {
+        return pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
     }
 
     public Pedido buscarOuFalharPorCodigo(UUID codigoPedido) {

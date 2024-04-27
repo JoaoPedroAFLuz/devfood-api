@@ -1,13 +1,14 @@
 package com.joaopedroluz57.devfood.domain.repository;
 
 import com.joaopedroluz57.devfood.domain.model.Pedido;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface PedidoRepository extends CustomJpaRepository<Pedido, Long> {
+public interface PedidoRepository extends CustomJpaRepository<Pedido, Long>, JpaSpecificationExecutor<Pedido> {
 
     @Query("FROM Pedido p " +
             "JOIN FETCH p.cliente " +

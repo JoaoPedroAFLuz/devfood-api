@@ -1,2 +1,2 @@
 ALTER TABLE pedido
-    ADD COLUMN data_encaminhamento DATETIME;
+    ADD data_encaminhamento DATETIME AFTER data_cancelamento;
