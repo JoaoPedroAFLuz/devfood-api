@@ -6,6 +6,7 @@ import com.joaopedroluz57.devfood.api.assembler.PedidoResumidoModelAssembler;
 import com.joaopedroluz57.devfood.api.model.PedidoModel;
 import com.joaopedroluz57.devfood.api.model.PedidoResumidoModel;
 import com.joaopedroluz57.devfood.api.model.input.PedidoInput;
+import com.joaopedroluz57.devfood.core.data.PageableTranslator;
 import com.joaopedroluz57.devfood.domain.model.Pedido;
 import com.joaopedroluz57.devfood.domain.repository.filter.PedidoFilter;
 import com.joaopedroluz57.devfood.domain.service.PedidoService;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -38,6 +40,8 @@ public class PedidoController {
 
     @GetMapping
     public Page<PedidoResumidoModel> buscarTodos(PedidoFilter filtro, Pageable pageable) {
+        pageable = traduzirPageable(pageable);
+
         return pedidoService.buscarTodos(filtro, pageable)
                 .map(pedidoResumidoModelAssembler::toModel);
     }
@@ -105,6 +109,17 @@ public class PedidoController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void entregar(@PathVariable UUID codigoPedido) {
         pedidoService.entregar(codigoPedido);
+    }
+
+    private Pageable traduzirPageable(Pageable pageable) {
+        Map<String, String> mapeamento = Map.of(
+                "codigo", "codigo",
+                "valorTotal", "valorTotal",
+                "nomeCliente", "cliente.nome",
+                "restaurante.nome", "restaurante.nome"
+        );
+
+        return PageableTranslator.translate(pageable, mapeamento);
     }
 
 }
