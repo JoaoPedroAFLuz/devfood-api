@@ -6,11 +6,12 @@ import com.joaopedroluz57.devfood.domain.model.*;
 import com.joaopedroluz57.devfood.domain.repository.PedidoRepository;
 import com.joaopedroluz57.devfood.domain.repository.filter.PedidoFilter;
 import com.joaopedroluz57.devfood.infrastructure.repository.spec.PedidoSpecs;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -38,8 +39,8 @@ public class PedidoService {
     }
 
 
-    public List<Pedido> buscarTodos(PedidoFilter filtro) {
-        return pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
+    public Page<Pedido> buscarTodos(PedidoFilter filtro, Pageable pageable) {
+        return pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
     }
 
     public Pedido buscarOuFalharPorCodigo(UUID codigoPedido) {

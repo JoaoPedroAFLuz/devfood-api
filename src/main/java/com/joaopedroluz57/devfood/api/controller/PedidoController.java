@@ -9,13 +9,13 @@ import com.joaopedroluz57.devfood.api.model.input.PedidoInput;
 import com.joaopedroluz57.devfood.domain.model.Pedido;
 import com.joaopedroluz57.devfood.domain.repository.filter.PedidoFilter;
 import com.joaopedroluz57.devfood.domain.service.PedidoService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -37,10 +37,9 @@ public class PedidoController {
     }
 
     @GetMapping
-    public List<PedidoResumidoModel> buscarTodos(PedidoFilter filtro) {
-        return pedidoService.buscarTodos(filtro).stream()
-                .map(pedidoResumidoModelAssembler::toModel)
-                .collect(Collectors.toList());
+    public Page<PedidoResumidoModel> buscarTodos(PedidoFilter filtro, Pageable pageable) {
+        return pedidoService.buscarTodos(filtro, pageable)
+                .map(pedidoResumidoModelAssembler::toModel);
     }
 
 //    @GetMapping
