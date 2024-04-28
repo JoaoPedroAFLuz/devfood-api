@@ -6,8 +6,12 @@ import com.joaopedroluz57.devfood.domain.model.Cozinha;
 import com.joaopedroluz57.devfood.domain.repository.CozinhaRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class CozinhaService {
@@ -21,9 +25,17 @@ public class CozinhaService {
     }
 
 
+    public Page<Cozinha> buscarPaginadas(Pageable pageable) {
+        return cozinhaRepository.findAll(pageable);
+    }
+
     public Cozinha buscarOuFalharPorId(Long cozinhaId) {
         return cozinhaRepository.findById(cozinhaId)
                 .orElseThrow(() -> new CozinhaNaoEncontradaException(cozinhaId));
+    }
+
+    public List<Cozinha> buscarPorNome(String nome) {
+        return cozinhaRepository.findByNomeContaining(nome);
     }
 
     @Transactional

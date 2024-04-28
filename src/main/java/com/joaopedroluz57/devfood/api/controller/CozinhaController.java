@@ -5,8 +5,9 @@ import com.joaopedroluz57.devfood.api.assembler.CozinhaModelAssembler;
 import com.joaopedroluz57.devfood.api.model.CozinhaModel;
 import com.joaopedroluz57.devfood.api.model.input.CozinhaInput;
 import com.joaopedroluz57.devfood.domain.model.Cozinha;
-import com.joaopedroluz57.devfood.domain.repository.CozinhaRepository;
 import com.joaopedroluz57.devfood.domain.service.CozinhaService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,26 +19,22 @@ import java.util.stream.Collectors;
 @RequestMapping("/cozinhas")
 public class CozinhaController {
 
-    private final CozinhaRepository cozinhaRepository;
     private final CozinhaService cozinhaService;
     private final CozinhaInputDisassembler cozinhaInputDisassembler;
     private final CozinhaModelAssembler cozinhaModelAssembler;
 
-    public CozinhaController(CozinhaRepository cozinhaRepository,
-                             CozinhaService cozinhaService,
+    public CozinhaController(CozinhaService cozinhaService,
                              CozinhaInputDisassembler cozinhaInputDisassembler,
                              CozinhaModelAssembler cozinhaModelAssembler) {
-        this.cozinhaRepository = cozinhaRepository;
         this.cozinhaService = cozinhaService;
         this.cozinhaInputDisassembler = cozinhaInputDisassembler;
         this.cozinhaModelAssembler = cozinhaModelAssembler;
     }
 
     @GetMapping
-    public List<CozinhaModel> buscarTodos() {
-        return cozinhaRepository.findAll().stream()
-                .map(cozinhaModelAssembler::toModel)
-                .collect(Collectors.toList());
+    public Page<CozinhaModel> buscarPaginadas(Pageable pageable) {
+        return cozinhaService.buscarPaginadas(pageable)
+                .map(cozinhaModelAssembler::toModel);
     }
 
     @GetMapping("/{cozinhaId}")
@@ -49,7 +46,7 @@ public class CozinhaController {
 
     @GetMapping("/por-nome")
     public List<CozinhaModel> buscarPorNome(String nome) {
-        return cozinhaRepository.findByNomeContaining(nome).stream()
+        return cozinhaService.buscarPorNome(nome).stream()
                 .map(cozinhaModelAssembler::toModel)
                 .collect(Collectors.toList());
     }
