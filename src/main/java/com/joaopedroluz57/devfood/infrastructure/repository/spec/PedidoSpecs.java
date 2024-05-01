@@ -1,7 +1,7 @@
 package com.joaopedroluz57.devfood.infrastructure.repository.spec;
 
 import com.joaopedroluz57.devfood.domain.model.Pedido;
-import com.joaopedroluz57.devfood.domain.repository.filter.PedidoFilter;
+import com.joaopedroluz57.devfood.domain.filter.PedidoFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;

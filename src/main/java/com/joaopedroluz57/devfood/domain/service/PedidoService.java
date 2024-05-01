@@ -4,7 +4,7 @@ import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import com.joaopedroluz57.devfood.domain.exception.PedidoNaoEncontradoException;
 import com.joaopedroluz57.devfood.domain.model.*;
 import com.joaopedroluz57.devfood.domain.repository.PedidoRepository;
-import com.joaopedroluz57.devfood.domain.repository.filter.PedidoFilter;
+import com.joaopedroluz57.devfood.domain.filter.PedidoFilter;
 import com.joaopedroluz57.devfood.infrastructure.repository.spec.PedidoSpecs;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

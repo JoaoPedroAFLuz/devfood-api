@@ -8,7 +8,7 @@ import com.joaopedroluz57.devfood.api.model.PedidoResumidoModel;
 import com.joaopedroluz57.devfood.api.model.input.PedidoInput;
 import com.joaopedroluz57.devfood.core.data.PageableTranslator;
 import com.joaopedroluz57.devfood.domain.model.Pedido;
-import com.joaopedroluz57.devfood.domain.repository.filter.PedidoFilter;
+import com.joaopedroluz57.devfood.domain.filter.PedidoFilter;
 import com.joaopedroluz57.devfood.domain.service.PedidoService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,4 +1,4 @@
-package com.joaopedroluz57.devfood.domain.repository.filter;
+package com.joaopedroluz57.devfood.domain.filter;
 
 import lombok.Getter;
 import lombok.Setter;
