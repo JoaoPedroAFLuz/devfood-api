@@ -1,4 +1,4 @@
-package com.joaopedroluz57.devfood.infrastructure.service;
+package com.joaopedroluz57.devfood.infrastructure.service.query;
 
 import com.joaopedroluz57.devfood.domain.enums.StatusPedido;
 import com.joaopedroluz57.devfood.domain.filter.VendaDiariaFilter;
