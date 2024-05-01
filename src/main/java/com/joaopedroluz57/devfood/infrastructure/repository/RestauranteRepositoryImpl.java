@@ -34,7 +34,6 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
     public List<Restaurante> buscarPorNomeETaxaEntrega(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
 
         // Consulta com Criteria API
-
         CriteriaBuilder builder = manager.getCriteriaBuilder();
 
         CriteriaQuery<Restaurante> criteria = builder.createQuery(Restaurante.class);
