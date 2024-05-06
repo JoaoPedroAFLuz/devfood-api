@@ -3,6 +3,7 @@ package com.joaopedroluz57.devfood.domain.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -30,5 +31,13 @@ public class FotoProduto {
     private String tipoArquivo;
 
     private Long tamanho;
+
+    public Long getRestauranteId() {
+        if (!Objects.isNull(getProduto())) {
+            return getProduto().getRestaurante().getId();
+        }
+
+        return null;
+    }
 
 }

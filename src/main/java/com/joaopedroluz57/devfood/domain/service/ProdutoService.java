@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProdutoService {
@@ -35,6 +36,10 @@ public class ProdutoService {
                 .orElseThrow(() -> new ProdutoNaoEncontradoException(produtoId, restauranteId));
     }
 
+    public Optional<FotoProduto> buscarFotoProdutoOuFalharPorIdERestauranteId(Long produtoId, Long restauranteId) {
+        return produtoRepository.findFotoProdutoByProdutoIdAndRestauranteId(produtoId, restauranteId);
+    }
+
     @Transactional
     public Produto salvar(Long restaurantId, Produto produto) {
         Restaurante restaurante = restauranteService.buscarOuFalharPorId(restaurantId);
@@ -45,7 +50,14 @@ public class ProdutoService {
     }
 
     @Transactional
-    public FotoProduto  salvarFoto(FotoProduto fotoProduto) {
+    public FotoProduto salvarFoto(FotoProduto fotoProduto) {
+        Long produtoId = fotoProduto.getProduto().getId();
+        Long restauranteId = fotoProduto.getRestauranteId();
+
+        Optional<FotoProduto> fotoExistente = buscarFotoProdutoOuFalharPorIdERestauranteId(produtoId, restauranteId);
+
+        fotoExistente.ifPresent(produtoRepository::deleteProductPhoto);
+
         return produtoRepository.saveProductPhoto(fotoProduto);
     }
 
