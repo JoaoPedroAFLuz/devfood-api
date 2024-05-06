@@ -1,11 +1,16 @@
 package com.joaopedroluz57.devfood.api.controller;
 
+import com.joaopedroluz57.devfood.api.assembler.FotoProdutoModelAssembler;
 import com.joaopedroluz57.devfood.api.assembler.ProdutoInputDisassembler;
 import com.joaopedroluz57.devfood.api.assembler.ProdutoModelAssembler;
+import com.joaopedroluz57.devfood.api.model.FotoProdutoModel;
 import com.joaopedroluz57.devfood.api.model.ProdutoModel;
+import com.joaopedroluz57.devfood.api.model.input.FotoProdutoInput;
 import com.joaopedroluz57.devfood.api.model.input.ProdutoInput;
+import com.joaopedroluz57.devfood.domain.model.FotoProduto;
 import com.joaopedroluz57.devfood.domain.model.Produto;
 import com.joaopedroluz57.devfood.domain.service.ProdutoService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,13 +24,16 @@ public class RestauranteProdutoController {
     private final ProdutoService produtoService;
     private final ProdutoModelAssembler produtoModelAssembler;
     private final ProdutoInputDisassembler produtoInputDisassembler;
+    private final FotoProdutoModelAssembler fotoProdutoModelAssembler;
 
     public RestauranteProdutoController(ProdutoService produtoService,
                                         ProdutoModelAssembler produtoModelAssembler,
-                                        ProdutoInputDisassembler produtoInputDisassembler) {
+                                        ProdutoInputDisassembler produtoInputDisassembler,
+                                        FotoProdutoModelAssembler fotoProdutoModelAssembler) {
         this.produtoService = produtoService;
         this.produtoModelAssembler = produtoModelAssembler;
         this.produtoInputDisassembler = produtoInputDisassembler;
+        this.fotoProdutoModelAssembler = fotoProdutoModelAssembler;
     }
 
 
@@ -70,6 +78,26 @@ public class RestauranteProdutoController {
         Produto produtoPersistido = produtoService.salvar(restauranteId, produtoAtual);
 
         return produtoModelAssembler.toModel(produtoPersistido);
+    }
+
+    @PutMapping(path = "/{produtoId}/foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId,
+                                          @PathVariable Long produtoId,
+                                          @Valid FotoProdutoInput fotoProdutoInput) {
+        Produto produto = produtoService.buscarOuFalharPorIdERestauranteId(produtoId, restauranteId);
+
+        FotoProduto fotoProduto = FotoProduto.builder()
+                .id(produto.getId())
+                .produto(produto)
+                .nomeArquivo(fotoProdutoInput.getArquivo().getOriginalFilename())
+                .descricao(fotoProdutoInput.getDescricao())
+                .tipoArquivo(fotoProdutoInput.getArquivo().getContentType())
+                .tamanho(fotoProdutoInput.getArquivo().getSize())
+                .build();
+
+        FotoProduto fotoPersistida = produtoService.salvarFoto(fotoProduto);
+
+        return fotoProdutoModelAssembler.toModel(fotoPersistida);
     }
 
 }

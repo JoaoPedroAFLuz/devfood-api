@@ -5,7 +5,7 @@ import com.joaopedroluz57.devfood.domain.model.Produto;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProdutoRepository extends CustomJpaRepository <Produto, Long> {
+public interface ProdutoRepository extends CustomJpaRepository <Produto, Long>, ProdutoRepositoryQueries {
 
     List<Produto> findByRestauranteId(Long restauranteId);
 

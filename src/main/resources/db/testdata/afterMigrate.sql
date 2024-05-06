@@ -30,6 +30,8 @@ DELETE
 FROM pedido;
 DELETE
 FROM item_pedido;
+DELETE
+FROM foto_produto;
 
 SET foreign_key_checks = 1;
 

@@ -1,10 +1,12 @@
 package com.joaopedroluz57.devfood.domain.service;
 
 import com.joaopedroluz57.devfood.domain.exception.ProdutoNaoEncontradoException;
+import com.joaopedroluz57.devfood.domain.model.FotoProduto;
 import com.joaopedroluz57.devfood.domain.model.Produto;
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
 import com.joaopedroluz57.devfood.domain.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class ProdutoService {
         this.restauranteService = restauranteService;
     }
 
+
     public List<Produto> buscarPorRestauranteId(Long restauranteId) {
         return produtoRepository.findByRestauranteId(restauranteId);
     }
@@ -32,12 +35,18 @@ public class ProdutoService {
                 .orElseThrow(() -> new ProdutoNaoEncontradoException(produtoId, restauranteId));
     }
 
+    @Transactional
     public Produto salvar(Long restaurantId, Produto produto) {
         Restaurante restaurante = restauranteService.buscarOuFalharPorId(restaurantId);
 
         produto.setRestaurante(restaurante);
 
         return produtoRepository.save(produto);
+    }
+
+    @Transactional
+    public FotoProduto  salvarFoto(FotoProduto fotoProduto) {
+        return produtoRepository.saveProductPhoto(fotoProduto);
     }
 
 }

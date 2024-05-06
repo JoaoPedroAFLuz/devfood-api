@@ -14,7 +14,8 @@ public class ProdutoInputDisassembler {
         this.modelMapper = modelMapper;
     }
 
-    public Produto toDomainObject(ProdutoInput produtoInput){
+
+    public Produto toDomainObject(ProdutoInput produtoInput) {
         return modelMapper.map(produtoInput, Produto.class);
     }
 
