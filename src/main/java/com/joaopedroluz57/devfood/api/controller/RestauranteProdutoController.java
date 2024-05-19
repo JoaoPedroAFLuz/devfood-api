@@ -9,6 +9,7 @@ import com.joaopedroluz57.devfood.api.model.input.FotoProdutoInput;
 import com.joaopedroluz57.devfood.api.model.input.ProdutoInput;
 import com.joaopedroluz57.devfood.domain.model.FotoProduto;
 import com.joaopedroluz57.devfood.domain.model.Produto;
+import com.joaopedroluz57.devfood.domain.service.FotoProdutoService;
 import com.joaopedroluz57.devfood.domain.service.ProdutoService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -23,15 +24,18 @@ import java.util.stream.Collectors;
 public class RestauranteProdutoController {
 
     private final ProdutoService produtoService;
+    private final FotoProdutoService fotoProdutoService;
     private final ProdutoModelAssembler produtoModelAssembler;
     private final ProdutoInputDisassembler produtoInputDisassembler;
     private final FotoProdutoModelAssembler fotoProdutoModelAssembler;
 
     public RestauranteProdutoController(ProdutoService produtoService,
+                                        FotoProdutoService fotoProdutoService,
                                         ProdutoModelAssembler produtoModelAssembler,
                                         ProdutoInputDisassembler produtoInputDisassembler,
                                         FotoProdutoModelAssembler fotoProdutoModelAssembler) {
         this.produtoService = produtoService;
+        this.fotoProdutoService = fotoProdutoService;
         this.produtoModelAssembler = produtoModelAssembler;
         this.produtoInputDisassembler = produtoInputDisassembler;
         this.fotoProdutoModelAssembler = fotoProdutoModelAssembler;
@@ -57,6 +61,14 @@ public class RestauranteProdutoController {
         Produto produto = produtoService.buscarOuFalharPorIdERestauranteId(produtoId, restauranteId);
 
         return produtoModelAssembler.toModel(produto);
+    }
+
+    @GetMapping("/{produtoId}/foto")
+    public FotoProdutoModel buscarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+        FotoProduto fotoProduto = fotoProdutoService
+                .buscarOuFalharPorProdutoIdEPorRestauranteId(restauranteId, produtoId);
+
+        return fotoProdutoModelAssembler.toModel(fotoProduto);
     }
 
     @PostMapping
@@ -96,7 +108,7 @@ public class RestauranteProdutoController {
                 .tamanho(fotoProdutoInput.getArquivo().getSize())
                 .build();
 
-        FotoProduto fotoPersistida = produtoService.salvarFoto(fotoProduto,
+        FotoProduto fotoPersistida = fotoProdutoService.salvarFoto(fotoProduto,
                 fotoProdutoInput.getArquivo().getInputStream());
 
         return fotoProdutoModelAssembler.toModel(fotoPersistida);
