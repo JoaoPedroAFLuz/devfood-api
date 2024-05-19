@@ -2,12 +2,14 @@ package com.joaopedroluz57.devfood.domain.service;
 
 import com.joaopedroluz57.devfood.domain.exception.ProdutoNaoEncontradoException;
 import com.joaopedroluz57.devfood.domain.model.FotoProduto;
+import com.joaopedroluz57.devfood.domain.model.NovaFoto;
 import com.joaopedroluz57.devfood.domain.model.Produto;
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
 import com.joaopedroluz57.devfood.domain.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,10 +18,14 @@ public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
     private final RestauranteService restauranteService;
+    private final ArmazenamentoFotoService armazenamentoFotoService;
 
-    public ProdutoService(ProdutoRepository produtoRepository, RestauranteService restauranteService) {
+    public ProdutoService(ProdutoRepository produtoRepository,
+                          RestauranteService restauranteService,
+                          ArmazenamentoFotoService armazenamentoFotoService) {
         this.produtoRepository = produtoRepository;
         this.restauranteService = restauranteService;
+        this.armazenamentoFotoService = armazenamentoFotoService;
     }
 
 
@@ -50,15 +56,33 @@ public class ProdutoService {
     }
 
     @Transactional
-    public FotoProduto salvarFoto(FotoProduto fotoProduto) {
+    public FotoProduto salvarFoto(FotoProduto fotoProduto, InputStream dadosArquivo) {
         Long produtoId = fotoProduto.getProduto().getId();
         Long restauranteId = fotoProduto.getRestauranteId();
+        String novoNomeArquivo = armazenamentoFotoService.gerarNomeArquivo(fotoProduto.getNomeArquivo());
+        String nomeArquivoExistente = null;
+
+        fotoProduto.setNomeArquivo(novoNomeArquivo);
 
         Optional<FotoProduto> fotoExistente = buscarFotoProdutoOuFalharPorIdERestauranteId(produtoId, restauranteId);
 
-        fotoExistente.ifPresent(produtoRepository::deleteProductPhoto);
+        if (fotoExistente.isPresent()) {
+            nomeArquivoExistente = fotoExistente.get().getNomeArquivo();
+            produtoRepository.deleteProductPhoto(fotoExistente.get());
+        }
 
-        return produtoRepository.saveProductPhoto(fotoProduto);
+        FotoProduto fotoPersistida = produtoRepository.saveProductPhoto(fotoProduto);
+
+        produtoRepository.flush();
+
+        NovaFoto novaFoto = NovaFoto.builder()
+                .inputStream(dadosArquivo)
+                .nomeArquivo(novoNomeArquivo)
+                .build();
+
+        armazenamentoFotoService.substituir(nomeArquivoExistente, novaFoto);
+
+        return fotoPersistida;
     }
 
 }

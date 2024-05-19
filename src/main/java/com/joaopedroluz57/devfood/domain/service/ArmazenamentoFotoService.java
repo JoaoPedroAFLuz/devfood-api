@@ -1,23 +1,25 @@
 package com.joaopedroluz57.devfood.domain.service;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.joaopedroluz57.devfood.domain.model.NovaFoto;
 
-import java.io.InputStream;
+import java.util.UUID;
 
 public interface ArmazenamentoFotoService {
 
     void armazenar(NovaFoto novaFoto);
 
-    @Getter
-    @Setter
-    @Builder
-    class NovaFoto {
+    void remover(String nomeArquivo);
 
-        private String nomeArquivo;
-        private InputStream inputStream;
+    default void substituir(String nomeArquivo, NovaFoto novaFoto) {
+        this.armazenar(novaFoto);
 
+        if (nomeArquivo != null) {
+            this.remover(nomeArquivo);
+        }
+    }
+
+    default String gerarNomeArquivo(String nomeArquivo) {
+        return  UUID.randomUUID() + "_" + nomeArquivo;
     }
 
 }

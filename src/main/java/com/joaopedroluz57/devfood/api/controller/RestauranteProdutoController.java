@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,7 +84,7 @@ public class RestauranteProdutoController {
     @PutMapping(path = "/{produtoId}/foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId,
                                           @PathVariable Long produtoId,
-                                          @Valid FotoProdutoInput fotoProdutoInput) {
+                                          @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
         Produto produto = produtoService.buscarOuFalharPorIdERestauranteId(produtoId, restauranteId);
 
         FotoProduto fotoProduto = FotoProduto.builder()
@@ -95,7 +96,8 @@ public class RestauranteProdutoController {
                 .tamanho(fotoProdutoInput.getArquivo().getSize())
                 .build();
 
-        FotoProduto fotoPersistida = produtoService.salvarFoto(fotoProduto);
+        FotoProduto fotoPersistida = produtoService.salvarFoto(fotoProduto,
+                fotoProdutoInput.getArquivo().getInputStream());
 
         return fotoProdutoModelAssembler.toModel(fotoPersistida);
     }
