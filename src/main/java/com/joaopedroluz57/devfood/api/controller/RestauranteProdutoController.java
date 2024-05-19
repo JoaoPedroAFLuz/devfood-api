@@ -1,21 +1,14 @@
 package com.joaopedroluz57.devfood.api.controller;
 
-import com.joaopedroluz57.devfood.api.assembler.FotoProdutoModelAssembler;
 import com.joaopedroluz57.devfood.api.assembler.ProdutoInputDisassembler;
 import com.joaopedroluz57.devfood.api.assembler.ProdutoModelAssembler;
-import com.joaopedroluz57.devfood.api.model.FotoProdutoModel;
 import com.joaopedroluz57.devfood.api.model.ProdutoModel;
-import com.joaopedroluz57.devfood.api.model.input.FotoProdutoInput;
 import com.joaopedroluz57.devfood.api.model.input.ProdutoInput;
-import com.joaopedroluz57.devfood.domain.model.FotoProduto;
 import com.joaopedroluz57.devfood.domain.model.Produto;
-import com.joaopedroluz57.devfood.domain.service.FotoProdutoService;
 import com.joaopedroluz57.devfood.domain.service.ProdutoService;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,21 +17,15 @@ import java.util.stream.Collectors;
 public class RestauranteProdutoController {
 
     private final ProdutoService produtoService;
-    private final FotoProdutoService fotoProdutoService;
     private final ProdutoModelAssembler produtoModelAssembler;
     private final ProdutoInputDisassembler produtoInputDisassembler;
-    private final FotoProdutoModelAssembler fotoProdutoModelAssembler;
 
     public RestauranteProdutoController(ProdutoService produtoService,
-                                        FotoProdutoService fotoProdutoService,
                                         ProdutoModelAssembler produtoModelAssembler,
-                                        ProdutoInputDisassembler produtoInputDisassembler,
-                                        FotoProdutoModelAssembler fotoProdutoModelAssembler) {
+                                        ProdutoInputDisassembler produtoInputDisassembler) {
         this.produtoService = produtoService;
-        this.fotoProdutoService = fotoProdutoService;
         this.produtoModelAssembler = produtoModelAssembler;
         this.produtoInputDisassembler = produtoInputDisassembler;
-        this.fotoProdutoModelAssembler = fotoProdutoModelAssembler;
     }
 
 
@@ -63,14 +50,6 @@ public class RestauranteProdutoController {
         return produtoModelAssembler.toModel(produto);
     }
 
-    @GetMapping("/{produtoId}/foto")
-    public FotoProdutoModel buscarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
-        FotoProduto fotoProduto = fotoProdutoService
-                .buscarOuFalharPorProdutoIdEPorRestauranteId(restauranteId, produtoId);
-
-        return fotoProdutoModelAssembler.toModel(fotoProduto);
-    }
-
     @PostMapping
     public ProdutoModel adicionar(@PathVariable Long restauranteId, @RequestBody @Valid ProdutoInput produtoInput) {
         Produto produto = produtoInputDisassembler.toDomainObject(produtoInput);
@@ -91,27 +70,6 @@ public class RestauranteProdutoController {
         Produto produtoPersistido = produtoService.salvar(restauranteId, produtoAtual);
 
         return produtoModelAssembler.toModel(produtoPersistido);
-    }
-
-    @PutMapping(path = "/{produtoId}/foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId,
-                                          @PathVariable Long produtoId,
-                                          @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
-        Produto produto = produtoService.buscarOuFalharPorIdERestauranteId(produtoId, restauranteId);
-
-        FotoProduto fotoProduto = FotoProduto.builder()
-                .id(produto.getId())
-                .produto(produto)
-                .nomeArquivo(fotoProdutoInput.getArquivo().getOriginalFilename())
-                .descricao(fotoProdutoInput.getDescricao())
-                .tipoArquivo(fotoProdutoInput.getArquivo().getContentType())
-                .tamanho(fotoProdutoInput.getArquivo().getSize())
-                .build();
-
-        FotoProduto fotoPersistida = fotoProdutoService.salvarFoto(fotoProduto,
-                fotoProdutoInput.getArquivo().getInputStream());
-
-        return fotoProdutoModelAssembler.toModel(fotoPersistida);
     }
 
 }
