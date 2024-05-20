@@ -10,6 +10,7 @@ import com.joaopedroluz57.devfood.domain.service.ArmazenamentoFotoService;
 import com.joaopedroluz57.devfood.domain.service.FotoProdutoService;
 import com.joaopedroluz57.devfood.domain.service.ProdutoService;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -41,21 +42,21 @@ public class RestauranteFotoProdutoController {
 
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public FotoProdutoModel buscarDadosFotoProduto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+    public FotoProdutoModel buscarDados(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         FotoProduto fotoProduto = fotoProdutoService
-                .buscarOuFalharPorProdutoIdEPorRestauranteId(restauranteId, produtoId);
+                .buscarOuFalharPorRestauranteIdEPorProdutoId(restauranteId, produtoId);
 
         return fotoProdutoModelAssembler.toModel(fotoProduto);
     }
 
     @GetMapping
-    public ResponseEntity<InputStreamResource> buscarFoto(@PathVariable Long restauranteId,
-                                                          @PathVariable Long produtoId,
-                                                          @RequestHeader(name = "Accept") String acceptHeader)
+    public ResponseEntity<InputStreamResource> buscar(@PathVariable Long restauranteId,
+                                                      @PathVariable Long produtoId,
+                                                      @RequestHeader(name = "Accept") String acceptHeader)
             throws HttpMediaTypeNotAcceptableException {
         try {
             FotoProduto fotoProduto = fotoProdutoService
-                    .buscarOuFalharPorProdutoIdEPorRestauranteId(restauranteId, produtoId);
+                    .buscarOuFalharPorRestauranteIdEPorProdutoId(restauranteId, produtoId);
 
             MediaType mediaTypeDaFotoProduto = MediaType.parseMediaType(fotoProduto.getTipoArquivo());
             List<MediaType> mediaTypesAceitas = MediaType.parseMediaTypes(acceptHeader);
@@ -74,9 +75,9 @@ public class RestauranteFotoProdutoController {
     }
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId,
-                                          @PathVariable Long produtoId,
-                                          @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
+    public FotoProdutoModel atualizar(@PathVariable Long restauranteId,
+                                      @PathVariable Long produtoId,
+                                      @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
         Produto produto = produtoService.buscarOuFalharPorIdERestauranteId(produtoId, restauranteId);
 
         FotoProduto fotoProduto = FotoProduto.builder()
@@ -88,10 +89,16 @@ public class RestauranteFotoProdutoController {
                 .tamanho(fotoProdutoInput.getArquivo().getSize())
                 .build();
 
-        FotoProduto fotoPersistida = fotoProdutoService.salvarFoto(fotoProduto,
+        FotoProduto fotoPersistida = fotoProdutoService.salvar(fotoProduto,
                 fotoProdutoInput.getArquivo().getInputStream());
 
         return fotoProdutoModelAssembler.toModel(fotoPersistida);
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+        fotoProdutoService.remover(restauranteId, produtoId);
     }
 
     private void verificarCompatibilidadeMediaType(MediaType mediaTypeDaFotoProduto, List<MediaType> mediaTypesAceitas)

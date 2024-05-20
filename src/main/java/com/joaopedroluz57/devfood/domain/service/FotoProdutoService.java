@@ -23,17 +23,17 @@ public class FotoProdutoService {
     }
 
 
-    public FotoProduto buscarOuFalharPorProdutoIdEPorRestauranteId(Long produtoId, Long restauranteId) {
-        return produtoRepository.findFotoProdutoByProdutoIdAndRestauranteId(produtoId, restauranteId)
+    public FotoProduto buscarOuFalharPorRestauranteIdEPorProdutoId(Long restauranteId, Long produtoId) {
+        return produtoRepository.findFotoProdutoByProdutoIdAndRestauranteId(restauranteId, produtoId)
                 .orElseThrow(() -> new FotoProdutoNaoEncontrada(produtoId, restauranteId));
     }
 
-    public Optional<FotoProduto> buscarPorProdutoIdEPorRestauranteId(Long produtoId, Long restauranteId) {
-        return produtoRepository.findFotoProdutoByProdutoIdAndRestauranteId(produtoId, restauranteId);
+    public Optional<FotoProduto> buscarPorProdutoIdEPorRestauranteId(Long restauranteId, Long produtoId) {
+        return produtoRepository.findFotoProdutoByProdutoIdAndRestauranteId(restauranteId, produtoId);
     }
 
     @Transactional
-    public FotoProduto salvarFoto(FotoProduto fotoProduto, InputStream dadosArquivo) {
+    public FotoProduto salvar(FotoProduto fotoProduto, InputStream dadosArquivo) {
         Long produtoId = fotoProduto.getProduto().getId();
         Long restauranteId = fotoProduto.getRestauranteId();
 
@@ -42,7 +42,7 @@ public class FotoProdutoService {
 
         fotoProduto.setNomeArquivo(novoNomeArquivo);
 
-        Optional<FotoProduto> fotoExistente = buscarPorProdutoIdEPorRestauranteId(produtoId, restauranteId);
+        Optional<FotoProduto> fotoExistente = buscarPorProdutoIdEPorRestauranteId(restauranteId, produtoId);
 
         if (fotoExistente.isPresent()) {
             nomeArquivoExistente = fotoExistente.get().getNomeArquivo();
@@ -61,6 +61,16 @@ public class FotoProdutoService {
         armazenamentoFotoService.substituir(nomeArquivoExistente, novaFoto);
 
         return fotoPersistida;
+    }
+
+    @Transactional
+    public void remover(Long restauranteId, Long produtoId) {
+        FotoProduto fotoProduto = buscarOuFalharPorRestauranteIdEPorProdutoId(restauranteId, produtoId);
+
+        produtoRepository.deleteProductPhoto(fotoProduto);
+        produtoRepository.flush();
+
+        armazenamentoFotoService.remover(fotoProduto.getNomeArquivo());
     }
 
 }

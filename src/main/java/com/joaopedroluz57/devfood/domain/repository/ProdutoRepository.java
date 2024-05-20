@@ -20,6 +20,6 @@ public interface ProdutoRepository extends CustomJpaRepository<Produto, Long>, P
             "JOIN fp.produto p " +
             "WHERE fp.id = :produtoId " +
             "AND p.restaurante.id = :restauranteId")
-    Optional<FotoProduto> findFotoProdutoByProdutoIdAndRestauranteId(Long produtoId, Long restauranteId);
+    Optional<FotoProduto> findFotoProdutoByProdutoIdAndRestauranteId(Long restauranteId, Long produtoId);
 
 }
