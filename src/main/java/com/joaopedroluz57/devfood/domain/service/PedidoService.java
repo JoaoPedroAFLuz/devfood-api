@@ -18,24 +18,28 @@ import java.util.UUID;
 @Service
 public class PedidoService {
 
-    private final PedidoRepository pedidoRepository;
     private final CidadeService cidadeService;
     private final UsuarioService usuarioService;
+    private final ProdutoService produtoService;
+    private final PedidoRepository pedidoRepository;
+    private final EnvioEmailService envioEmailService;
     private final RestauranteService restauranteService;
     private final FormaPagamentoService formaPagamentoService;
-    private final ProdutoService produtoService;
 
-    public PedidoService(PedidoRepository pedidoRepository,
-                         CidadeService cidadeService,
+    public PedidoService(CidadeService cidadeService,
                          UsuarioService usuarioService,
+                         ProdutoService produtoService,
+                         PedidoRepository pedidoRepository,
+                         EnvioEmailService envioEmailService,
                          RestauranteService restauranteService,
-                         FormaPagamentoService formaPagamentoService, ProdutoService produtoService) {
-        this.pedidoRepository = pedidoRepository;
+                         FormaPagamentoService formaPagamentoService) {
         this.cidadeService = cidadeService;
-        this.restauranteService = restauranteService;
-        this.formaPagamentoService = formaPagamentoService;
         this.usuarioService = usuarioService;
         this.produtoService = produtoService;
+        this.pedidoRepository = pedidoRepository;
+        this.envioEmailService = envioEmailService;
+        this.restauranteService = restauranteService;
+        this.formaPagamentoService = formaPagamentoService;
     }
 
 
@@ -107,8 +111,15 @@ public class PedidoService {
     @Transactional
     public void confirmar(UUID codigoPedido) {
         Pedido pedido = buscarOuFalharPorCodigo(codigoPedido);
-
         pedido.confirmar();
+
+        Email email = Email.builder()
+                .destinatario(pedido.getCliente().getEmail())
+                .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
+                .corpo("O pedido de código <strong>" + pedido.getCodigo() + "</strong> foi confirmado!")
+                .build();
+
+        envioEmailService.enviar(email);
     }
 
     @Transactional

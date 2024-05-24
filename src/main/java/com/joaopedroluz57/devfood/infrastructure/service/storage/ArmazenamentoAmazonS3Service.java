@@ -23,6 +23,7 @@ public class ArmazenamentoAmazonS3Service implements ArmazenamentoFotoService {
         this.storageProperties = storageProperties;
     }
 
+
     @Override
     public FotoRecuperada recuperar(String nomeArquivo) {
         try {

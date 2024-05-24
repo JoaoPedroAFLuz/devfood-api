@@ -18,6 +18,7 @@ public class ArmazenamentoLocalService implements ArmazenamentoFotoService {
         this.storageProperties = storageProperties;
     }
 
+
     @Override
     public FotoRecuperada recuperar(String nomeArquivo) {
         try {

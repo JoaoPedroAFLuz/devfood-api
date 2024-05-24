@@ -143,7 +143,7 @@ VALUES (1, 1),
        (3, 1);
 
 INSERT INTO usuario (id, nome, email, senha, data_cadastro)
-VALUES (1, 'João Pedro', 'joao.pedro.luz@hotmail.com', '12345678', UTC_TIMESTAMP()),
+VALUES (1, 'João Pedro', 'joao.pedro.luz25@gmail.com', '12345678', UTC_TIMESTAMP()),
        (2, 'Mirella', 'mirella@hotmail.com', '12345678', UTC_TIMESTAMP());
 
 INSERT INTO usuario_grupo (usuario_id, grupo_id)
@@ -174,7 +174,7 @@ VALUES (1, '11e02651-0531-4f9c-b903-940a8e354385', 1, 1, 1, 1, '38400-000', 'Rua
 INSERT INTO pedido (id, codigo, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id,
                     endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, status,
                     data_criacao, subtotal, taxa_entrega, valor_total)
-VALUES (4, '1b89b549-c0e0-47d2-b2a0-5cface0dc972', 5, 2, 2, 1, '38400-111', 'Rua Acre', '100', 'Casa 2', 'Centro',
+VALUES (4, '1b89b549-c0e0-47d2-b2a0-5cface0dc972', 5, 1, 2, 1, '38400-111', 'Rua Acre', '100', 'Casa 2', 'Centro',
         'CRIADO', UTC_TIMESTAMP, 43, 15, 58),
        (5, 'ac6ddd5d-fa46-483b-b4be-ab191d403c38', 3, 2, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro',
         'CRIADO', UTC_TIMESTAMP, 110, 11, 111);
