@@ -1,9 +1,8 @@
 package com.joaopedroluz57.devfood.infrastructure.service.storage;
 
-import com.joaopedroluz57.devfood.core.config.StorageProperties;
+import com.joaopedroluz57.devfood.core.storage.StorageProperties;
 import com.joaopedroluz57.devfood.domain.model.NovaFoto;
 import com.joaopedroluz57.devfood.domain.service.ArmazenamentoFotoService;
-import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
@@ -11,7 +10,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Service
+//@Service
 public class ArmazenamentoLocalService implements ArmazenamentoFotoService {
 
     private final StorageProperties storageProperties;

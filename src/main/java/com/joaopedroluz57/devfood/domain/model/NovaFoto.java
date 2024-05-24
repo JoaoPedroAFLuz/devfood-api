@@ -12,6 +12,7 @@ import java.io.InputStream;
 public class NovaFoto {
 
     private String nomeArquivo;
+    private String tipoArquivo;
     private InputStream inputStream;
 
 }

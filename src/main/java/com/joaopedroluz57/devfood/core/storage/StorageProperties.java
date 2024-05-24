@@ -1,5 +1,6 @@
-package com.joaopedroluz57.devfood.core.config;
+package com.joaopedroluz57.devfood.core.storage;
 
+import com.amazonaws.regions.Regions;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -29,7 +30,7 @@ public class StorageProperties {
     public static class S3 {
 
         private String bucket;
-        private String region;
+        private Regions regiao;
         private String diretorioFotos;
         private String idChaveAcesso;
         private String chaveAcessoSecreta;
