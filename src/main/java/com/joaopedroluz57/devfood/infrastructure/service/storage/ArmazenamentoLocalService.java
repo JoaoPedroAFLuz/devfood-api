@@ -1,8 +1,8 @@
 package com.joaopedroluz57.devfood.infrastructure.service.storage;
 
+import com.joaopedroluz57.devfood.core.config.StorageProperties;
 import com.joaopedroluz57.devfood.domain.model.NovaFoto;
 import com.joaopedroluz57.devfood.domain.service.ArmazenamentoFotoService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
@@ -14,8 +14,11 @@ import java.nio.file.Path;
 @Service
 public class ArmazenamentoLocalService implements ArmazenamentoFotoService {
 
-    @Value("${devfood.storage.local.diretorio-fotos}")
-    private Path diretorioFotos;
+    private final StorageProperties storageProperties;
+
+    public ArmazenamentoLocalService(StorageProperties storageProperties) {
+        this.storageProperties = storageProperties;
+    }
 
     @Override
     public InputStream recuperar(String nomeArquivo) {
@@ -51,7 +54,7 @@ public class ArmazenamentoLocalService implements ArmazenamentoFotoService {
     }
 
     private Path getCaminhoDoArquivo(String nomeArquivo) {
-        return diretorioFotos.resolve(nomeArquivo);
+        return storageProperties.getLocal().getDiretorioFotos().resolve(nomeArquivo);
     }
 
 }
