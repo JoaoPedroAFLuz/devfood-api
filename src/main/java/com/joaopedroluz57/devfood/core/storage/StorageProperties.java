@@ -14,8 +14,15 @@ import java.nio.file.Path;
 @ConfigurationProperties("devfood.storage")
 public class StorageProperties {
 
+    private TipoArmazenamento tipoArmazenamento = TipoArmazenamento.LOCAL;
     private final Local local = new Local();
     private final S3 s3 = new S3();
+
+    public enum TipoArmazenamento {
+
+        LOCAL, S3
+
+    }
 
     @Getter
     @Setter

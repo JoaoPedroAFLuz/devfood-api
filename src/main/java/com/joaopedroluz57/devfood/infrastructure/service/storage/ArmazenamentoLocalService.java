@@ -1,16 +1,15 @@
 package com.joaopedroluz57.devfood.infrastructure.service.storage;
 
 import com.joaopedroluz57.devfood.core.storage.StorageProperties;
+import com.joaopedroluz57.devfood.domain.model.FotoRecuperada;
 import com.joaopedroluz57.devfood.domain.model.NovaFoto;
 import com.joaopedroluz57.devfood.domain.service.ArmazenamentoFotoService;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-//@Service
 public class ArmazenamentoLocalService implements ArmazenamentoFotoService {
 
     private final StorageProperties storageProperties;
@@ -20,11 +19,13 @@ public class ArmazenamentoLocalService implements ArmazenamentoFotoService {
     }
 
     @Override
-    public InputStream recuperar(String nomeArquivo) {
-        Path caminhoDoArquivo = getCaminhoDoArquivo(nomeArquivo);
-
+    public FotoRecuperada recuperar(String nomeArquivo) {
         try {
-            return Files.newInputStream(caminhoDoArquivo);
+            Path caminhoDoArquivo = getCaminhoDoArquivo(nomeArquivo);
+
+            return FotoRecuperada.builder()
+                    .inputStream(Files.newInputStream(caminhoDoArquivo))
+                    .build();
         } catch (IOException e) {
             throw new ArmazenamentoException("Não foi possível recuperar o arquivo", e);
         }
@@ -32,9 +33,9 @@ public class ArmazenamentoLocalService implements ArmazenamentoFotoService {
 
     @Override
     public void armazenar(NovaFoto novaFoto) {
-        Path caminhoDoArquivo = getCaminhoDoArquivo(novaFoto.getNomeArquivo());
-
         try {
+            Path caminhoDoArquivo = getCaminhoDoArquivo(novaFoto.getNomeArquivo());
+
             FileCopyUtils.copy(novaFoto.getInputStream(), Files.newOutputStream(caminhoDoArquivo));
         } catch (IOException e) {
             throw new ArmazenamentoException("Não foi possível armazenar o arquivo.", e);

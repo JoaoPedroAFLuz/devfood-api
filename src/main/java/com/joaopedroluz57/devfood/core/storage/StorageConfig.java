@@ -4,17 +4,21 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.joaopedroluz57.devfood.domain.service.ArmazenamentoFotoService;
+import com.joaopedroluz57.devfood.infrastructure.service.storage.ArmazenamentoAmazonS3Service;
+import com.joaopedroluz57.devfood.infrastructure.service.storage.ArmazenamentoLocalService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AmazonS3Config {
+public class StorageConfig {
 
     private final StorageProperties storageProperties;
 
-    public AmazonS3Config(StorageProperties storageProperties) {
+    public StorageConfig(StorageProperties storageProperties) {
         this.storageProperties = storageProperties;
     }
+
 
     @Bean
     public AmazonS3 amazonS3() {
@@ -25,6 +29,15 @@ public class AmazonS3Config {
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(storageProperties.getS3().getRegiao())
                 .build();
+    }
+
+    @Bean
+    public ArmazenamentoFotoService armazenamentoFotoService() {
+        if (StorageProperties.TipoArmazenamento.LOCAL.equals(storageProperties.getTipoArmazenamento())) {
+            return new ArmazenamentoLocalService(storageProperties);
+        }
+
+        return new ArmazenamentoAmazonS3Service(amazonS3(), storageProperties);
     }
 
 }

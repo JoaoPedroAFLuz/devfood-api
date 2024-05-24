@@ -6,13 +6,12 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.joaopedroluz57.devfood.core.storage.StorageProperties;
+import com.joaopedroluz57.devfood.domain.model.FotoRecuperada;
 import com.joaopedroluz57.devfood.domain.model.NovaFoto;
 import com.joaopedroluz57.devfood.domain.service.ArmazenamentoFotoService;
-import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
+import java.net.URL;
 
-@Service
 public class ArmazenamentoAmazonS3Service implements ArmazenamentoFotoService {
 
     private final AmazonS3 amazonS3;
@@ -25,8 +24,18 @@ public class ArmazenamentoAmazonS3Service implements ArmazenamentoFotoService {
     }
 
     @Override
-    public InputStream recuperar(String nomeArquivo) {
-        return null;
+    public FotoRecuperada recuperar(String nomeArquivo) {
+        try {
+            String caminhoArquivo = getCaminho(nomeArquivo);
+
+            URL url = amazonS3.getUrl(storageProperties.getS3().getBucket(), caminhoArquivo);
+
+            return FotoRecuperada.builder()
+                    .url(url)
+                    .build();
+        } catch (Exception e) {
+            throw new ArmazenamentoException("Não foi possível recuperar o arquivo.", e);
+        }
     }
 
     @Override
