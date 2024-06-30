@@ -116,7 +116,8 @@ public class PedidoService {
         Email email = Email.builder()
                 .destinatario(pedido.getCliente().getEmail())
                 .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
-                .corpo("O pedido de código <strong>" + pedido.getCodigo() + "</strong> foi confirmado!")
+                .corpo("pedido-confirmado.html")
+                .variavel("pedido", pedido)
                 .build();
 
         envioEmailService.enviar(email);
