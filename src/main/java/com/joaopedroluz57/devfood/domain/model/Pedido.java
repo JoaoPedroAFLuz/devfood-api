@@ -1,6 +1,7 @@
 package com.joaopedroluz57.devfood.domain.model;
 
 import com.joaopedroluz57.devfood.domain.enums.StatusPedido;
+import com.joaopedroluz57.devfood.domain.event.PedidoCanceladoEvent;
 import com.joaopedroluz57.devfood.domain.event.PedidoConfirmadoEvent;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import lombok.EqualsAndHashCode;
@@ -119,5 +120,7 @@ public class Pedido extends AbstractAggregateRoot<Pedido> {
     public void cancelar() {
         this.setStatus(StatusPedido.CANCELADO);
         this.setDataCancelamento(OffsetDateTime.now());
+
+        registerEvent(new PedidoCanceladoEvent(this));
     }
 }

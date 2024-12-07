@@ -118,8 +118,9 @@ public class PedidoService {
     @Transactional
     public void cancelar(UUID codigoPedido) {
         Pedido pedido = buscarOuFalharPorCodigo(codigoPedido);
-
         pedido.cancelar();
+
+        pedidoRepository.save(pedido);
     }
 }
 
