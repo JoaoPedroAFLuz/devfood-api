@@ -1,7 +1,9 @@
-package com.joaopedroluz57.devfood.core.modelmapper;
+package com.joaopedroluz57.devfood.core.config;
 
+import com.joaopedroluz57.devfood.api.model.CidadeResumidaModel;
 import com.joaopedroluz57.devfood.api.model.EnderecoModel;
 import com.joaopedroluz57.devfood.api.model.input.ItemPedidoInput;
+import com.joaopedroluz57.devfood.domain.model.Cidade;
 import com.joaopedroluz57.devfood.domain.model.Endereco;
 import com.joaopedroluz57.devfood.domain.model.ItemPedido;
 import org.modelmapper.ModelMapper;
@@ -25,6 +27,9 @@ public class ModelMapperConfig {
         enderecoToEnderecoModelTypeMap.<String>addMapping(
                 enderecoSrc -> enderecoSrc.getCidade().getEstado().getNome(),
                 (enderecoModelDest, value) -> enderecoModelDest.getCidade().setEstado(value));
+
+        modelMapper.typeMap(Cidade.class, CidadeResumidaModel.class)
+                .addMapping(src -> src.getEstado().getNome(), CidadeResumidaModel::setEstado);
 
         return modelMapper;
     }

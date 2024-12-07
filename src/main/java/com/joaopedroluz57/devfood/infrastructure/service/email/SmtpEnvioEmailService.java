@@ -5,28 +5,19 @@ import com.joaopedroluz57.devfood.domain.model.Email;
 import com.joaopedroluz57.devfood.domain.service.EnvioEmailService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.internet.MimeMessage;
 
-@Service
+@RequiredArgsConstructor
 public class SmtpEnvioEmailService implements EnvioEmailService {
 
     private final JavaMailSender mailSender;
     private final Configuration freemarkerConfig;
     private final EmailProperties emailProperties;
-
-    public SmtpEnvioEmailService(JavaMailSender javaMailSender,
-                                 Configuration freemarkerConfig,
-                                 EmailProperties emailProperties) {
-        this.mailSender = javaMailSender;
-        this.freemarkerConfig = freemarkerConfig;
-        this.emailProperties = emailProperties;
-    }
-
 
     @Override
     public void enviar(Email email) {
@@ -47,7 +38,7 @@ public class SmtpEnvioEmailService implements EnvioEmailService {
         }
     }
 
-    private String processarTemplate(Email email) {
+    protected String processarTemplate(Email email) {
         try {
             Template template = freemarkerConfig.getTemplate(email.getCorpo());
 

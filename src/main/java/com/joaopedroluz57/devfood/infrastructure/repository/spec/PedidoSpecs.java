@@ -19,6 +19,10 @@ public class PedidoSpecs {
 
             var predicates = new ArrayList<Predicate>();
 
+           if (Objects.nonNull(filtro.getStatus())) {
+               predicates.add(builder.equal(root.get("status"), filtro.getStatus()));
+           }
+
             if (Objects.nonNull(filtro.getClienteId())) {
                 predicates.add(builder.equal(root.get("cliente"), filtro.getClienteId()));
             }

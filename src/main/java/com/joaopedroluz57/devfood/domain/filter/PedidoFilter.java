@@ -1,5 +1,6 @@
 package com.joaopedroluz57.devfood.domain.filter;
 
+import com.joaopedroluz57.devfood.domain.enums.StatusPedido;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,6 +13,7 @@ public class PedidoFilter {
 
     private Long clienteId;
     private Long restauranteId;
+    private StatusPedido status;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private OffsetDateTime dataCriacaoInicio;
