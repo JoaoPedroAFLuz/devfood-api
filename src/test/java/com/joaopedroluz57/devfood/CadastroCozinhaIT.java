@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
@@ -34,7 +35,7 @@ public class CadastroCozinhaIT {
         assertThat(novaCozinha.getNome()).isEqualTo("Chinesa");
     }
 
-    @Test(expected = ConstraintViolationException.class)
+    @Test(expected = DataIntegrityViolationException.class)
     public void deveFalhar_QuandoCadastrarCozinhaSemNome() {
         Cozinha novaCozinha = new Cozinha();
         novaCozinha.setNome(null);

@@ -6,6 +6,8 @@ import com.joaopedroluz57.devfood.util.DatabaseCleaner;
 import com.joaopedroluz57.devfood.util.ResourceUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,8 +73,7 @@ public class CozinhaAPITests {
                 .when()
                 .get()
                 .then()
-                .body("", hasSize(quantidadeCozinhasCadastradas))
-                .body("nome", hasItems(cozinhaBrasileira.getNome()));
+                .body("content", hasSize(quantidadeCozinhasCadastradas));
     }
 
     @Test

@@ -3,5 +3,15 @@
   "taxaEntrega": 6.50,
   "cozinha": {
     "id": 1
+  },
+  "endereco": {
+    "logradouro": "Rua dos Bobos",
+    "numero": "0",
+    "complemento": "Apto 101",
+    "bairro": "Centro",
+    "cep": "00000000",
+    "cidade": {
+      "id": 1
+    }
   }
 }

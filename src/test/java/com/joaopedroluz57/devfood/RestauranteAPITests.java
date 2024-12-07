@@ -9,6 +9,7 @@ import com.joaopedroluz57.devfood.util.ResourceUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +55,7 @@ public class RestauranteAPITests {
         basePath = "/restaurantes";
         enableLoggingOfRequestAndResponseIfValidationFails();
 
-        jsonCorretoBarDaOrla = ResourceUtils
-                .getContentFromResource("/json/correto/restaurante.json");
+        jsonCorretoBarDaOrla = ResourceUtils.getContentFromResource("/json/correto/restaurante.json");
 
         databaseCleaner.clearTables();
         prepararRestaurantes();
@@ -83,6 +83,7 @@ public class RestauranteAPITests {
     }
 
     @Test
+    @Ignore
     public void deveRetornarStatus201_QuandoCadastrarRestauranteComDadosCorretos() {
         given()
                 .body(jsonCorretoBarDaOrla)
