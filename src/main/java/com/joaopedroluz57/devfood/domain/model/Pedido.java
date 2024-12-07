@@ -1,12 +1,14 @@
 package com.joaopedroluz57.devfood.domain.model;
 
 import com.joaopedroluz57.devfood.domain.enums.StatusPedido;
+import com.joaopedroluz57.devfood.domain.event.PedidoConfirmadoEvent;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -18,8 +20,8 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Pedido {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class Pedido extends AbstractAggregateRoot<Pedido> {
 
     @Id
     @EqualsAndHashCode.Include
@@ -100,6 +102,8 @@ public class Pedido {
     public void confirmar() {
         this.setStatus(StatusPedido.CONFIRMADO);
         this.setDataConfirmacao(OffsetDateTime.now());
+
+        registerEvent(new PedidoConfirmadoEvent(this));
     }
 
     public void encaminhar() {
@@ -116,5 +120,4 @@ public class Pedido {
         this.setStatus(StatusPedido.CANCELADO);
         this.setDataCancelamento(OffsetDateTime.now());
     }
-
 }

@@ -2,10 +2,11 @@ package com.joaopedroluz57.devfood.domain.service;
 
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import com.joaopedroluz57.devfood.domain.exception.PedidoNaoEncontradoException;
+import com.joaopedroluz57.devfood.domain.filter.PedidoFilter;
 import com.joaopedroluz57.devfood.domain.model.*;
 import com.joaopedroluz57.devfood.domain.repository.PedidoRepository;
-import com.joaopedroluz57.devfood.domain.filter.PedidoFilter;
 import com.joaopedroluz57.devfood.infrastructure.repository.spec.PedidoSpecs;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,32 +17,15 @@ import java.util.Set;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class PedidoService {
 
     private final CidadeService cidadeService;
     private final UsuarioService usuarioService;
     private final ProdutoService produtoService;
     private final PedidoRepository pedidoRepository;
-    private final EnvioEmailService envioEmailService;
     private final RestauranteService restauranteService;
     private final FormaPagamentoService formaPagamentoService;
-
-    public PedidoService(CidadeService cidadeService,
-                         UsuarioService usuarioService,
-                         ProdutoService produtoService,
-                         PedidoRepository pedidoRepository,
-                         EnvioEmailService envioEmailService,
-                         RestauranteService restauranteService,
-                         FormaPagamentoService formaPagamentoService) {
-        this.cidadeService = cidadeService;
-        this.usuarioService = usuarioService;
-        this.produtoService = produtoService;
-        this.pedidoRepository = pedidoRepository;
-        this.envioEmailService = envioEmailService;
-        this.restauranteService = restauranteService;
-        this.formaPagamentoService = formaPagamentoService;
-    }
-
 
     public Page<Pedido> buscarTodos(PedidoFilter filtro, Pageable pageable) {
         return pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
@@ -94,7 +78,8 @@ public class PedidoService {
 
         for (ItemPedido item : pedido.getItens()) {
             if (!produtoIds.add(item.getProduto().getId())) {
-                throw new NegocioException("Não é possível selecionar o mesmo produto mais de uma vez. Selecione o produto e aumente a sua quantidade!");
+                throw new NegocioException("Não é possível selecionar o mesmo produto mais de uma vez. Selecione o " +
+                        "produto e aumente a sua quantidade!");
             }
         }
 
@@ -113,14 +98,7 @@ public class PedidoService {
         Pedido pedido = buscarOuFalharPorCodigo(codigoPedido);
         pedido.confirmar();
 
-        Email email = Email.builder()
-                .destinatario(pedido.getCliente().getEmail())
-                .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
-                .corpo("pedido-confirmado.html")
-                .variavel("pedido", pedido)
-                .build();
-
-        envioEmailService.enviar(email);
+        pedidoRepository.save(pedido);
     }
 
     @Transactional
@@ -143,6 +121,5 @@ public class PedidoService {
 
         pedido.cancelar();
     }
-
 }
 
