@@ -74,6 +74,10 @@ public class PedidoService {
     }
 
     private void validarItens(Pedido pedido) {
+        if (pedido.getItens().isEmpty()) {
+            throw new NegocioException("Pedido deve ter pelo menos um item");
+        }
+
         Set<Long> produtoIds = new HashSet<>();
 
         for (ItemPedido item : pedido.getItens()) {

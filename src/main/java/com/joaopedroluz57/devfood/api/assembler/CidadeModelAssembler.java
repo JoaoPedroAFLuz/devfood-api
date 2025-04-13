@@ -15,7 +15,10 @@ public class CidadeModelAssembler {
     }
 
     public CidadeResumidaModel toModel(Cidade cidade) {
-        return modelMapper.map(cidade, CidadeResumidaModel.class);
+        var cidadeResumidaModel = modelMapper.map(cidade, CidadeResumidaModel.class);
+        cidadeResumidaModel.setEstado(cidade.getEstado().getNome());
+
+        return cidadeResumidaModel;
     }
 
 }

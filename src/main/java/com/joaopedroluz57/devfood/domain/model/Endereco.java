@@ -1,13 +1,15 @@
 package com.joaopedroluz57.devfood.domain.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
+@Builder
 @Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
 public class Endereco {
 
     @Column(name = "endereco_cep")

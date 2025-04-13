@@ -2,13 +2,15 @@ package com.joaopedroluz57.devfood.api.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.joaopedroluz57.devfood.api.view.RestauranteView;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class RestauranteModel {
 
     @JsonView({RestauranteView.Resumo.class, RestauranteView.ApenasNome.class})

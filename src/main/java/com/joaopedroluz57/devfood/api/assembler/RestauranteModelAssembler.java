@@ -2,20 +2,32 @@ package com.joaopedroluz57.devfood.api.assembler;
 
 import com.joaopedroluz57.devfood.api.model.RestauranteModel;
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
-import org.modelmapper.ModelMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class RestauranteModelAssembler {
 
-    private final ModelMapper modelMapper;
-
-    public RestauranteModelAssembler(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
+    private final CozinhaModelAssembler cozinhaModelAssembler;
+    private final EnderecoModelAssembler enderecoModelAssembler;
 
     public RestauranteModel toModel(Restaurante restaurante) {
-        return modelMapper.map(restaurante, RestauranteModel.class);
+        var cozinhaModel = cozinhaModelAssembler.toModel(restaurante.getCozinha());
+
+        var enderecoModel = restaurante.getEndereco() != null
+                ? enderecoModelAssembler.toModel(restaurante.getEndereco())
+                : null;
+
+        return RestauranteModel.builder()
+                .id(restaurante.getId())
+                .nome(restaurante.getNome())
+                .taxaEntrega(restaurante.getTaxaEntrega())
+                .cozinha(cozinhaModel)
+                .endereco(enderecoModel)
+                .ativo(restaurante.isAtivo())
+                .aberto(restaurante.isAberto())
+                .build();
     }
 
 }

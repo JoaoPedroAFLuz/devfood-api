@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class EnderecoInput {
 
-
     @NotBlank
     private String cep;
 

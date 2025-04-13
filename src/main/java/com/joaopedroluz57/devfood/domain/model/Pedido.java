@@ -4,9 +4,7 @@ import com.joaopedroluz57.devfood.domain.enums.StatusPedido;
 import com.joaopedroluz57.devfood.domain.event.PedidoCanceladoEvent;
 import com.joaopedroluz57.devfood.domain.event.PedidoConfirmadoEvent;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.springframework.data.domain.AbstractAggregateRoot;
@@ -21,6 +19,9 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class Pedido extends AbstractAggregateRoot<Pedido> {
 
@@ -60,7 +61,7 @@ public class Pedido extends AbstractAggregateRoot<Pedido> {
     @JoinColumn(nullable = false)
     private FormaPagamento formaPagamento;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemPedido> itens = new ArrayList<>();
 
     private OffsetDateTime dataConfirmacao;

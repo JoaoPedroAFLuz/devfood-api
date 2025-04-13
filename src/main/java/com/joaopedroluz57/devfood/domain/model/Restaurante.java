@@ -37,10 +37,10 @@ public class Restaurante {
     private Cozinha cozinha;
 
     @Column(nullable = false)
-    private Boolean ativo = Boolean.TRUE;
+    private boolean ativo = Boolean.TRUE;
 
     @Column(nullable = false)
-    private Boolean aberto = Boolean.FALSE;
+    private boolean aberto = Boolean.FALSE;
 
     @Embedded
     private Endereco endereco;

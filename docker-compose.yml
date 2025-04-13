@@ -1,11 +1,44 @@
-version: '3'
-
 services:
-  db:
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - SPRING_DATASOURCE_URL=${DB_URL}
+      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - devfood-network
+
+  database:
     image: bitnami/mysql
     ports:
       - "3306:3306"
+    env_file:
+      - .env
     environment:
-      - MYSQL_ROOT_USER=JoaoPedroAFLuz
-      - MYSQL_ROOT_PASSWORD=docker
-      - MYSQL_DATABASE=devfood
+      - MYSQL_ROOT_USER=${DB_USERNAME}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+    healthcheck: # Verifica se o MySQL está pronto
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_ROOT_USER --password=$$MYSQL_ROOT_PASSWORD
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - devfood-network
+
+volumes:
+  mysql_data:
+
+networks:
+  devfood-network:
+    driver: bridge

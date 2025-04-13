@@ -1,5 +1,6 @@
 package com.joaopedroluz57.devfood.api.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@Builder
 //@JsonFilter("pedidoFilter")
 public class PedidoResumidoModel {
 
