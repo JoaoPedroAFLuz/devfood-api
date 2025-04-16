@@ -2,6 +2,8 @@ package com.joaopedroluz57.devfood.api.model;
 
 import lombok.*;
 
+import java.time.OffsetDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -11,5 +13,6 @@ public class FormaPagamentoModel {
 
     private Long id;
     private String descricao;
+    private OffsetDateTime dataAtualizacao;
 
 }

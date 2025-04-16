@@ -89,10 +89,10 @@ VALUES (2, 'Bar da Maria', 0, 1, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, TRUE),
        (5, 'Tuk Tuk Comida Indiana', 15, 3, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, TRUE),
        (6, 'Java Steakhouse', 12, 4, TRUE, UTC_TIMESTAMP, UTC_TIMESTAMP, TRUE);
 
-INSERT INTO forma_pagamento (id, descricao)
-VALUES (1, 'Cartão de crédito'),
-       (2, 'Cartão de débito'),
-       (3, 'Dinheiro');
+INSERT INTO forma_pagamento (id, descricao, data_atualizacao)
+VALUES (1, 'Cartão de crédito', UTC_TIMESTAMP),
+       (2, 'Cartão de débito', UTC_TIMESTAMP),
+       (3, 'Dinheiro', UTC_TIMESTAMP);
 
 INSERT INTO restaurante_forma_pagamento (restaurante_id, forma_pagamento_id)
 VALUES (1, 1),
