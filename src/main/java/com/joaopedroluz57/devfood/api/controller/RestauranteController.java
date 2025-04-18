@@ -8,6 +8,7 @@ import com.joaopedroluz57.devfood.api.assembler.RestauranteInputDisassembler;
 import com.joaopedroluz57.devfood.api.assembler.RestauranteModelAssembler;
 import com.joaopedroluz57.devfood.api.model.RestauranteModel;
 import com.joaopedroluz57.devfood.api.model.input.RestauranteInput;
+import com.joaopedroluz57.devfood.api.openapi.model.RestauranteBasicoModelOpenApi;
 import com.joaopedroluz57.devfood.api.view.RestauranteView;
 import com.joaopedroluz57.devfood.domain.exception.EntidadeNaoEncontradaException;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
@@ -15,8 +16,14 @@ import com.joaopedroluz57.devfood.domain.exception.RestauranteNaoEncontradoExcep
 import com.joaopedroluz57.devfood.domain.exception.ValidacaoException;
 import com.joaopedroluz57.devfood.domain.model.Restaurante;
 import com.joaopedroluz57.devfood.domain.service.RestauranteService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
@@ -33,7 +40,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/restaurantes")
+@Api(tags = "Restaurantes")
+@RequiredArgsConstructor
+@RequestMapping(path = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteController {
 
     private final SmartValidator validator;
@@ -42,21 +51,13 @@ public class RestauranteController {
     private final RestauranteInputAssembler restauranteInputAssembler;
     private final RestauranteInputDisassembler restauranteInputDisassembler;
 
-    public RestauranteController(SmartValidator validator,
-                                 RestauranteService restauranteService,
-                                 RestauranteModelAssembler restauranteModelAssembler,
-                                 RestauranteInputAssembler restauranteInputAssembler,
-                                 RestauranteInputDisassembler restauranteInputDisassembler) {
-        this.validator = validator;
-        this.restauranteService = restauranteService;
-        this.restauranteModelAssembler = restauranteModelAssembler;
-        this.restauranteInputAssembler = restauranteInputAssembler;
-        this.restauranteInputDisassembler = restauranteInputDisassembler;
-    }
-
-
     @GetMapping()
     @JsonView(RestauranteView.Resumo.class)
+    @ApiOperation(value = "Lista restaurantes", response = RestauranteBasicoModelOpenApi.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "projecao", value = "Nome da projeção de restaurantes", allowableValues = "apenas-nome",
+                    dataType = "string", paramType = "query")
+    })
     public List<RestauranteModel> buscarTodos() {
         return restauranteService.buscarTodos().stream()
                 .map(restauranteModelAssembler::toModel)
@@ -65,6 +66,7 @@ public class RestauranteController {
 
     @GetMapping(params = "projecao=apenas-nome")
     @JsonView(RestauranteView.ApenasNome.class)
+    @ApiOperation(value = "Lista restaurantes", hidden = true)
     public List<RestauranteModel> buscarTodosNomes() {
         return buscarTodos();
     }

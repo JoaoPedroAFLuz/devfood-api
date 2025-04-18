@@ -6,13 +6,16 @@ import com.joaopedroluz57.devfood.api.assembler.PedidoResumidoModelAssembler;
 import com.joaopedroluz57.devfood.api.model.PedidoModel;
 import com.joaopedroluz57.devfood.api.model.PedidoResumidoModel;
 import com.joaopedroluz57.devfood.api.model.input.PedidoInput;
+import com.joaopedroluz57.devfood.api.openapi.controller.PedidoControllerOpenApi;
 import com.joaopedroluz57.devfood.core.data.PageableTranslator;
-import com.joaopedroluz57.devfood.domain.model.Pedido;
 import com.joaopedroluz57.devfood.domain.filter.PedidoFilter;
+import com.joaopedroluz57.devfood.domain.model.Pedido;
 import com.joaopedroluz57.devfood.domain.service.PedidoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,26 +23,17 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/pedidos")
-public class PedidoController {
+@RequiredArgsConstructor
+@RequestMapping(path = "/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
+public class PedidoController implements PedidoControllerOpenApi {
 
     private final PedidoService pedidoService;
     private final PedidoModelAssembler pedidoModelAssembler;
     private final PedidoInputDisassembler pedidoInputDisassembler;
     private final PedidoResumidoModelAssembler pedidoResumidoModelAssembler;
 
-    public PedidoController(PedidoService pedidoService,
-                            PedidoModelAssembler pedidoModelAssembler,
-                            PedidoInputDisassembler pedidoInputDisassembler,
-                            PedidoResumidoModelAssembler pedidoResumidoModelAssembler) {
-        this.pedidoService = pedidoService;
-        this.pedidoModelAssembler = pedidoModelAssembler;
-        this.pedidoInputDisassembler = pedidoInputDisassembler;
-        this.pedidoResumidoModelAssembler = pedidoResumidoModelAssembler;
-    }
-
     @GetMapping
-    public Page<PedidoResumidoModel> buscarTodos(PedidoFilter filtro, Pageable pageable) {
+    public Page<PedidoResumidoModel> buscarPaginada(PedidoFilter filtro, Pageable pageable) {
         pageable = traduzirPageable(pageable);
 
         return pedidoService.buscarTodos(filtro, pageable)
@@ -72,14 +66,14 @@ public class PedidoController {
 //    }
 
     @GetMapping("/{codigoPedido}")
-    public PedidoModel buscarTodos(@PathVariable UUID codigoPedido) {
+    public PedidoModel buscarPorCodigo(@PathVariable UUID codigoPedido) {
         Pedido pedido = pedidoService.buscarOuFalharPorCodigo(codigoPedido);
 
         return pedidoModelAssembler.toModel(pedido);
     }
 
     @PostMapping
-    public PedidoModel cadastrar(@RequestBody @Valid PedidoInput pedidoInput) {
+    public PedidoModel adicionar(@RequestBody @Valid PedidoInput pedidoInput) {
         Pedido pedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
 
         Pedido pedidoPersistido = pedidoService.emitir(pedido);

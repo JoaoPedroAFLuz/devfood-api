@@ -10,18 +10,22 @@ import com.joaopedroluz57.devfood.domain.model.Produto;
 import com.joaopedroluz57.devfood.domain.service.ArmazenamentoFotoService;
 import com.joaopedroluz57.devfood.domain.service.FotoProdutoService;
 import com.joaopedroluz57.devfood.domain.service.ProdutoService;
+import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
 public class RestauranteFotoProdutoController {
 
@@ -29,17 +33,6 @@ public class RestauranteFotoProdutoController {
     private final FotoProdutoService fotoProdutoService;
     private final ArmazenamentoFotoService armazenamentoFotoService;
     private final FotoProdutoModelAssembler fotoProdutoModelAssembler;
-
-    public RestauranteFotoProdutoController(ProdutoService produtoService,
-                                            FotoProdutoService fotoProdutoService,
-                                            ArmazenamentoFotoService armazenamentoFotoService,
-                                            FotoProdutoModelAssembler fotoProdutoModelAssembler) {
-        this.produtoService = produtoService;
-        this.fotoProdutoService = fotoProdutoService;
-        this.armazenamentoFotoService = armazenamentoFotoService;
-        this.fotoProdutoModelAssembler = fotoProdutoModelAssembler;
-    }
-
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public FotoProdutoModel buscarDados(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
@@ -63,7 +56,6 @@ public class RestauranteFotoProdutoController {
 
             verificarCompatibilidadeMediaType(mediaTypeDaFotoProduto, mediaTypesAceitas);
 
-
             FotoRecuperada fotoRecuperada = armazenamentoFotoService.recuperar(fotoProduto.getNomeArquivo());
 
             if (fotoRecuperada.temUrl()) {
@@ -84,7 +76,8 @@ public class RestauranteFotoProdutoController {
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoModel atualizar(@PathVariable Long restauranteId,
                                       @PathVariable Long produtoId,
-                                      @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
+                                      @Valid FotoProdutoInput fotoProdutoInput,
+                                      @ApiParam(value = "teste") @RequestPart MultipartFile arquivo) throws IOException {
         Produto produto = produtoService.buscarOuFalharPorIdERestauranteId(produtoId, restauranteId);
 
         FotoProduto fotoProduto = FotoProduto.builder()

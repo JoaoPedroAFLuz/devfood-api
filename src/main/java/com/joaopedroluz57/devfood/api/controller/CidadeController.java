@@ -2,14 +2,17 @@ package com.joaopedroluz57.devfood.api.controller;
 
 import com.joaopedroluz57.devfood.api.assembler.CidadeInputDisassembler;
 import com.joaopedroluz57.devfood.api.assembler.CidadeModelAssembler;
-import com.joaopedroluz57.devfood.api.model.CidadeResumidaModel;
+import com.joaopedroluz57.devfood.api.model.CidadeModel;
 import com.joaopedroluz57.devfood.api.model.input.CidadeInput;
+import com.joaopedroluz57.devfood.api.openapi.controller.CidadeControllerOpenApi;
 import com.joaopedroluz57.devfood.domain.exception.EstadoNaoEncontradoException;
 import com.joaopedroluz57.devfood.domain.exception.NegocioException;
 import com.joaopedroluz57.devfood.domain.model.Cidade;
 import com.joaopedroluz57.devfood.domain.repository.CidadeRepository;
 import com.joaopedroluz57.devfood.domain.service.CidadeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,41 +20,31 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/cidades")
-public class CidadeController {
+@RequiredArgsConstructor
+@RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
+public class CidadeController implements CidadeControllerOpenApi {
 
     private final CidadeRepository cidadeRepository;
     private final CidadeService cidadeService;
     private final CidadeModelAssembler cidadeModelAssembler;
     private final CidadeInputDisassembler cidadeInputDisassembler;
 
-    public CidadeController(CidadeRepository cidadeRepository,
-                            CidadeService cidadeService,
-                            CidadeModelAssembler cidadeModelAssembler,
-                            CidadeInputDisassembler cidadeInputDisassembler) {
-        this.cidadeRepository = cidadeRepository;
-        this.cidadeService = cidadeService;
-        this.cidadeModelAssembler = cidadeModelAssembler;
-        this.cidadeInputDisassembler = cidadeInputDisassembler;
-    }
-
-
     @GetMapping
-    public List<CidadeResumidaModel> buscarTodas() {
+    public List<CidadeModel> buscarTodas() {
         return cidadeRepository.findAll().stream()
                 .map(cidadeModelAssembler::toModel)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{cidadeId}")
-    public CidadeResumidaModel buscarPorId(@PathVariable Long cidadeId) {
+    public CidadeModel buscarPorId(@PathVariable Long cidadeId) {
         Cidade cidade = cidadeService.buscarOuFalharPorId(cidadeId);
 
         return cidadeModelAssembler.toModel(cidade);
     }
 
     @GetMapping("/por-estado")
-    public List<CidadeResumidaModel> buscarPorEstado(Long estadoId) {
+    public List<CidadeModel> buscarPorEstado(@RequestParam Long estadoId) {
         return cidadeRepository.findByEstadoId(estadoId).stream()
                 .map(cidadeModelAssembler::toModel)
                 .collect(Collectors.toList());
@@ -59,7 +52,7 @@ public class CidadeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CidadeResumidaModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
+    public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
         try {
             Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
 
@@ -72,7 +65,7 @@ public class CidadeController {
     }
 
     @PutMapping("/{cidadeId}")
-    public CidadeResumidaModel atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
+    public CidadeModel atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
         try {
             Cidade cidadeAtual = cidadeService.buscarOuFalharPorId(cidadeId);
 

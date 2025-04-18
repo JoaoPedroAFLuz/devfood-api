@@ -26,7 +26,7 @@ public class PedidoModelAssembler {
                 .descricao(pedido.getFormaPagamento().getDescricao())
                 .build();
 
-        var cidade = CidadeResumidaModel.builder()
+        var cidade = CidadeModel.builder()
                 .id(pedido.getEnderecoEntrega().getCidade().getId())
                 .nome(pedido.getEnderecoEntrega().getCidade().getNome())
                 .estado(pedido.getEnderecoEntrega().getCidade().getEstado().getNome())

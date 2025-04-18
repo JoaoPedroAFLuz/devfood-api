@@ -1,5 +1,6 @@
 package com.joaopedroluz57.devfood.api.model;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Setter
 @Builder
 //@JsonFilter("pedidoFilter")
+@ApiModel(value = "Pedido Resumido Model", description = "Representação resumida de um pedido")
 public class PedidoResumidoModel {
 
     private UUID codigo;
