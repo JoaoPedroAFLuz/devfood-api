@@ -1,5 +1,6 @@
 services:
   backend:
+    container_name: backend
     build: .
     ports:
       - "8080:8080"
@@ -17,17 +18,19 @@ services:
       - devfood-network
 
   database:
-    image: bitnami/mysql
+    container_name: database
+    image: mysql:8.0
     ports:
       - "3306:3306"
     env_file:
       - .env
     environment:
-      - MYSQL_ROOT_USER=${DB_USERNAME}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
       - MYSQL_DATABASE=${DB_DATABASE}
-    healthcheck: # Verifica se o MySQL está pronto
-      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_ROOT_USER --password=$$MYSQL_ROOT_PASSWORD
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USERNAME}", "--password=${DB_PASSWORD}"]
       interval: 5s
       timeout: 5s
       retries: 10
