@@ -20,6 +20,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -34,7 +36,8 @@ public class CidadeController implements CidadeControllerOpenApi {
     public CollectionModel<CidadeModel> buscarTodas() {
         final var cidades = cidadeRepository.findAll();
 
-        return cidadeModelAssembler.toCollectionModel(cidades);
+        return cidadeModelAssembler.toCollectionModel(cidades)
+                .add(linkTo(CidadeController.class).withSelfRel());
     }
 
     @GetMapping("/{cidadeId}")

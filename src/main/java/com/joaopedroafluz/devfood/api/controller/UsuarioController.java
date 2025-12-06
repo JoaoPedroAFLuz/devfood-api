@@ -6,16 +6,18 @@ import com.joaopedroafluz.devfood.api.model.UsuarioModel;
 import com.joaopedroafluz.devfood.api.model.input.SenhaInput;
 import com.joaopedroafluz.devfood.api.model.input.UsuarioComSenhaInput;
 import com.joaopedroafluz.devfood.api.model.input.UsuarioInput;
-import com.joaopedroafluz.devfood.domain.model.Usuario;
 import com.joaopedroafluz.devfood.domain.service.UsuarioService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
@@ -23,46 +25,39 @@ public class UsuarioController {
     private final UsuarioModelAssembler usuarioModelAssembler;
     private final UsuarioInputDisassembler usuarioInputDisassembler;
 
-    public UsuarioController(UsuarioService usuarioService,
-                             UsuarioModelAssembler usuarioModelAssembler,
-                             UsuarioInputDisassembler usuarioInputDisassembler) {
-        this.usuarioService = usuarioService;
-        this.usuarioModelAssembler = usuarioModelAssembler;
-        this.usuarioInputDisassembler = usuarioInputDisassembler;
-    }
-
     @GetMapping
-    public List<UsuarioModel> buscarTodos() {
-        return usuarioService.buscarTodos().stream()
-                .map(usuarioModelAssembler::toModel)
-                .collect(Collectors.toList());
+    public CollectionModel<UsuarioModel> buscarTodos() {
+        final var usuarios = usuarioService.buscarTodos();
+
+        return usuarioModelAssembler.toCollectionModel(usuarios)
+                .add(linkTo(UsuarioController.class).withSelfRel());
     }
 
     @GetMapping("/{usuarioId}")
     public UsuarioModel buscarPorId(@PathVariable Long usuarioId) {
-        Usuario usuario = usuarioService.buscarOuFalharPorId(usuarioId);
+        final var usuario = usuarioService.buscarOuFalharPorId(usuarioId);
 
         return usuarioModelAssembler.toModel(usuario);
     }
 
     @PostMapping
     public UsuarioModel cadastrar(@RequestBody @Valid UsuarioComSenhaInput usuarioComSenhaInput) {
-        Usuario usuario = usuarioInputDisassembler.toDomainObject(usuarioComSenhaInput);
+        final var usuario = usuarioInputDisassembler.toDomainObject(usuarioComSenhaInput);
 
-        Usuario usuarioPersistido = usuarioService.salvar(usuario);
+        usuarioService.salvar(usuario);
 
-        return usuarioModelAssembler.toModel(usuarioPersistido);
+        return usuarioModelAssembler.toModel(usuario);
     }
 
     @PutMapping("/{usuarioId}")
     public UsuarioModel atualizar(@PathVariable Long usuarioId, @RequestBody @Valid UsuarioInput usuarioInput) {
-        Usuario usuario = usuarioService.buscarOuFalharPorId(usuarioId);
+        final var usuario = usuarioService.buscarOuFalharPorId(usuarioId);
 
         usuarioInputDisassembler.copyToDomainObject(usuarioInput, usuario);
 
-        Usuario usuarioPersistido = usuarioService.salvar(usuario);
+        usuarioService.salvar(usuario);
 
-        return usuarioModelAssembler.toModel(usuarioPersistido);
+        return usuarioModelAssembler.toModel(usuario);
     }
 
     @PutMapping("/{usuarioId}/senha")
