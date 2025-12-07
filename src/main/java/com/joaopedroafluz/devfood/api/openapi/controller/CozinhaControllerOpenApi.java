@@ -4,8 +4,8 @@ import com.joaopedroafluz.devfood.api.exceptionhandler.Problema;
 import com.joaopedroafluz.devfood.api.model.CozinhaModel;
 import com.joaopedroafluz.devfood.api.model.input.CozinhaInput;
 import io.swagger.annotations.*;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public interface CozinhaControllerOpenApi {
 
     @ApiOperation("Lista cozinhas com paginação")
-    Page<CozinhaModel> buscarPaginada(Pageable pageable);
+    PagedModel<CozinhaModel> buscarPaginada(Pageable pageable);
 
     @ApiOperation("Busca cozinha por id")
     @ApiResponses({

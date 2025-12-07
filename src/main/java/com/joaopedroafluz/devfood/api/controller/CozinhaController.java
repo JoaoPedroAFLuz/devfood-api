@@ -8,8 +8,9 @@ import com.joaopedroafluz.devfood.api.openapi.controller.CozinhaControllerOpenAp
 import com.joaopedroafluz.devfood.domain.model.Cozinha;
 import com.joaopedroafluz.devfood.domain.service.CozinhaService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -24,18 +25,20 @@ import java.util.stream.Collectors;
 public class CozinhaController implements CozinhaControllerOpenApi {
 
     private final CozinhaService cozinhaService;
-    private final CozinhaInputDisassembler cozinhaInputDisassembler;
     private final CozinhaModelAssembler cozinhaModelAssembler;
+    private final CozinhaInputDisassembler cozinhaInputDisassembler;
+    private final PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
 
     @GetMapping
-    public Page<CozinhaModel> buscarPaginada(Pageable pageable) {
-        return cozinhaService.buscarPaginada(pageable)
-                .map(cozinhaModelAssembler::toModel);
+    public PagedModel<CozinhaModel> buscarPaginada(Pageable pageable) {
+        final var cozinhas = cozinhaService.buscarPaginada(pageable);
+
+        return pagedResourcesAssembler.toModel(cozinhas, cozinhaModelAssembler);
     }
 
     @GetMapping("/{cozinhaId}")
     public CozinhaModel buscarPorId(@PathVariable Long cozinhaId) {
-        Cozinha cozinha = cozinhaService.buscarOuFalharPorId(cozinhaId);
+        final var cozinha = cozinhaService.buscarOuFalharPorId(cozinhaId);
 
         return cozinhaModelAssembler.toModel(cozinha);
     }
@@ -50,20 +53,20 @@ public class CozinhaController implements CozinhaControllerOpenApi {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CozinhaModel adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
-        Cozinha cozinha = cozinhaInputDisassembler.toDomainObject(cozinhaInput);
+        final var cozinha = cozinhaInputDisassembler.toDomainObject(cozinhaInput);
 
-        Cozinha cozinhaPersistida = cozinhaService.salvar(cozinha);
+        cozinhaService.salvar(cozinha);
 
-        return cozinhaModelAssembler.toModel(cozinhaPersistida);
+        return cozinhaModelAssembler.toModel(cozinha);
     }
 
     @PutMapping("/{cozinhaId}")
     public CozinhaModel atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid CozinhaInput cozinhaInput) {
-        Cozinha cozinhaAtual = cozinhaService.buscarOuFalharPorId(cozinhaId);
+        final var cozinhaAtual = cozinhaService.buscarOuFalharPorId(cozinhaId);
 
         cozinhaInputDisassembler.copyToDomainObject(cozinhaInput, cozinhaAtual);
 
-        Cozinha cozinhaPersistida = cozinhaService.salvar(cozinhaAtual);
+        final var cozinhaPersistida = cozinhaService.salvar(cozinhaAtual);
 
         return cozinhaModelAssembler.toModel(cozinhaPersistida);
     }
